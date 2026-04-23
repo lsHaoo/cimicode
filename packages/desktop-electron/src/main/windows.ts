@@ -6,7 +6,7 @@ import type { TitlebarTheme } from "../preload/types"
 
 const root = dirname(fileURLToPath(import.meta.url))
 const rendererRoot = join(root, "../renderer")
-const rendererProtocol = "oc"
+const rendererProtocol = "cimi"
 const rendererHost = "renderer"
 
 protocol.registerSchemesAsPrivileged([
@@ -76,7 +76,7 @@ export function createMainWindow() {
     width: state.width,
     height: state.height,
     show: false,
-    title: "OpenCode",
+    title: "Cimi",
     icon: iconPath(),
     backgroundColor,
     ...(process.platform === "darwin"

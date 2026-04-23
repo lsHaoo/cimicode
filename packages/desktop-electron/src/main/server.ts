@@ -37,9 +37,9 @@ export async function spawnLocalServer(hostname: string, port: number, password:
   const listener = await Server.listen({
     port,
     hostname,
-    username: "opencode",
+    username: "cimi",
     password,
-    cors: ["oc://renderer"],
+    cors: ["cimi://renderer"],
   })
 
   const wait = (async () => {
@@ -61,15 +61,19 @@ export async function spawnLocalServer(hostname: string, port: number, password:
 function prepareServerEnv(password: string) {
   const shell = process.platform === "win32" ? null : getUserShell()
   const shellEnv = shell ? (loadShellEnv(shell) ?? {}) : {}
+
+  // Get custom paths or use defaults
+  const statePath = process.env.XDG_STATE_HOME || require("node:path").join(require("node:os").homedir(), ".local", "state", "cimicode")
+
   const env = {
     ...process.env,
     ...shellEnv,
     OPENCODE_EXPERIMENTAL_ICON_DISCOVERY: "true",
     OPENCODE_EXPERIMENTAL_FILEWATCHER: "true",
     OPENCODE_CLIENT: "desktop",
-    OPENCODE_SERVER_USERNAME: "opencode",
+    OPENCODE_SERVER_USERNAME: "cimi",
     OPENCODE_SERVER_PASSWORD: password,
-    XDG_STATE_HOME: app.getPath("userData"),
+    XDG_STATE_HOME: statePath,
   }
   Object.assign(process.env, env)
 }

@@ -1,21 +1,23 @@
 import fs from "fs/promises"
-import { xdgData, xdgCache, xdgConfig, xdgState } from "xdg-basedir"
+import { xdgData, xdgCache, xdgState } from "xdg-basedir"
 import path from "path"
 import os from "os"
 import { Filesystem } from "../util"
 import { Flock } from "@opencode-ai/shared/util/flock"
 
-const app = "opencode"
+const app = "cimicode"
 
 const data = path.join(xdgData!, app)
 const cache = path.join(xdgCache!, app)
-const config = path.join(xdgConfig!, app)
+// Use custom config path instead of xdgConfig to match desktop-electron settings
+const home = process.env.CIMICODE_TEST_HOME || process.env.OPENCODE_TEST_HOME || os.homedir()
+const config = path.join(home, ".cimi", "cimicode")
 const state = path.join(xdgState!, app)
 
 export const Path = {
-  // Allow override via OPENCODE_TEST_HOME for test isolation
+  // Allow override via CIMICODE_TEST_HOME or OPENCODE_TEST_HOME for test isolation
   get home() {
-    return process.env.OPENCODE_TEST_HOME || os.homedir()
+    return process.env.CIMICODE_TEST_HOME || process.env.OPENCODE_TEST_HOME || os.homedir()
   },
   data,
   bin: path.join(cache, "bin"),

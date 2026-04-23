@@ -4,7 +4,7 @@ import { zod } from "@/util/effect-zod"
 import { Global } from "../global"
 import { AppFileSystem } from "@opencode-ai/shared/filesystem"
 
-export const OAUTH_DUMMY_KEY = "opencode-oauth-dummy-key"
+export const OAUTH_DUMMY_KEY = "cimicode-oauth-dummy-key"
 
 const file = path.join(Global.Path.data, "auth.json")
 

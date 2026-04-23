@@ -27,7 +27,7 @@ const channel = (() => {
 })()
 
 const getBase = (): Configuration => ({
-  artifactName: "opencode-electron-${os}-${arch}.${ext}",
+  artifactName: "cimicode-electron-${os}-${arch}.${ext}",
   directories: {
     output: "dist",
     buildResources: "resources",
@@ -54,15 +54,14 @@ const getBase = (): Configuration => ({
     sign: true,
   },
   protocols: {
-    name: "OpenCode",
-    schemes: ["opencode"],
+    name: "Cimi",
+    schemes: ["cimi"],
   },
   win: {
     icon: `resources/icons/icon.ico`,
-    signtoolOptions: {
-      sign: signWindows,
-    },
-    target: ["nsis"],
+    signAndEditExecutable: false,
+    signtoolOptions: {},
+    target: ["nsis", "dir"],
   },
   nsis: {
     oneClick: false,
@@ -84,29 +83,29 @@ function getConfig() {
     case "dev": {
       return {
         ...base,
-        appId: "ai.opencode.desktop.dev",
-        productName: "OpenCode Dev",
-        rpm: { packageName: "opencode-dev" },
+        appId: "ai.cimicode.desktop.dev",
+        productName: "Cimi Dev",
+        rpm: { packageName: "cimicode-dev" },
       }
     }
     case "beta": {
       return {
         ...base,
-        appId: "ai.opencode.desktop.beta",
-        productName: "OpenCode Beta",
-        protocols: { name: "OpenCode Beta", schemes: ["opencode"] },
-        publish: { provider: "github", owner: "anomalyco", repo: "opencode-beta", channel: "latest" },
-        rpm: { packageName: "opencode-beta" },
+        appId: "ai.cimicode.desktop.beta",
+        productName: "Cimi Beta",
+        protocols: { name: "Cimi Beta", schemes: ["cimi"] },
+        publish: { provider: "github", owner: "anomalyco", repo: "cimicode-beta", channel: "latest" },
+        rpm: { packageName: "cimicode-beta" },
       }
     }
     case "prod": {
       return {
         ...base,
-        appId: "ai.opencode.desktop",
-        productName: "OpenCode",
-        protocols: { name: "OpenCode", schemes: ["opencode"] },
-        publish: { provider: "github", owner: "anomalyco", repo: "opencode", channel: "latest" },
-        rpm: { packageName: "opencode" },
+        appId: "ai.cimicode.desktop",
+        productName: "Cimi",
+        protocols: { name: "Cimi", schemes: ["cimi"] },
+        publish: { provider: "github", owner: "anomalyco", repo: "cimicode", channel: "latest" },
+        rpm: { packageName: "cimicode" },
       }
     }
   }

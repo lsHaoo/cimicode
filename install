@@ -65,7 +65,20 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-INSTALL_DIR=$HOME/.opencode/bin
+# Determine installation directory with priority:
+# 1. $OPENCODE_INSTALL_DIR - User-specified custom installation directory (highest priority)
+# 2. $XDG_BIN_DIR - XDG Base Directory Specification compliant path
+# 3. $HOME/bin - Standard user binary directory (if exists or can be created)
+# 4. $HOME/.cimi/cimicode - Default fallback (lowest priority)
+if [ -n "${OPENCODE_INSTALL_DIR:-}" ]; then
+    INSTALL_DIR="$OPENCODE_INSTALL_DIR"
+elif [ -n "${XDG_BIN_DIR:-}" ]; then
+    INSTALL_DIR="$XDG_BIN_DIR"
+elif [ -d "$HOME/bin" ] || mkdir -p "$HOME/bin" 2>/dev/null; then
+    INSTALL_DIR="$HOME/bin"
+else
+    INSTALL_DIR="$HOME/.cimi/cimicode"
+fi
 mkdir -p "$INSTALL_DIR"
 
 # If --binary is provided, skip all download/detection logic

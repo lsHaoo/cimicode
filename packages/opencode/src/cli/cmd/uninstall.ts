@@ -56,7 +56,7 @@ export const UninstallCommand = {
     UI.empty()
     UI.println(UI.logo("  "))
     UI.empty()
-    prompts.intro("Uninstall OpenCode")
+    prompts.intro("Uninstall Cimi")
 
     const method = await AppRuntime.runPromise(Installation.Service.use((svc) => svc.method()))
     prompts.log.info(`Installation method: ${method}`)
@@ -96,7 +96,7 @@ async function collectRemovalTargets(args: UninstallArgs, method: Installation.M
     { path: Global.Path.state, label: "State", keep: false },
   ]
 
-  const shellConfig = method === "curl" ? await getShellConfigFile() : null
+  const shellConfig = method === "curl" ? await getShellConfigFile("cimicode") : null
   const binary = method === "curl" ? process.execPath : null
 
   return { directories, shellConfig, binary }
@@ -130,6 +130,16 @@ async function showRemovalSummary(targets: RemovalTargets, method: Installation.
 
   if (method !== "curl" && method !== "unknown") {
     const cmds: Record<string, string> = {
+      npm: "npm uninstall -g @cimicode/cimicode",
+      pnpm: "pnpm uninstall -g @cimicode/cimicode",
+      bun: "bun remove -g @cimicode/cimicode",
+      yarn: "yarn global remove @cimicode/cimicode",
+      brew: "brew uninstall cimicode",
+      choco: "choco uninstall cimicode",
+      scoop: "scoop uninstall cimicode",
+    }
+    // Also show legacy opencode commands for backwards compatibility
+    const legacyCmds: Record<string, string> = {
       npm: "npm uninstall -g opencode-ai",
       pnpm: "pnpm uninstall -g opencode-ai",
       bun: "bun remove -g opencode-ai",
@@ -139,6 +149,9 @@ async function showRemovalSummary(targets: RemovalTargets, method: Installation.
       scoop: "scoop uninstall opencode",
     }
     prompts.log.info(`  ✓ Package: ${cmds[method] || method}`)
+    if (legacyCmds[method]) {
+      prompts.log.info(`  (or legacy: ${legacyCmds[method]})`)
+    }
   }
 }
 
@@ -170,7 +183,7 @@ async function executeUninstall(method: Installation.Method, targets: RemovalTar
 
   if (targets.shellConfig) {
     spinner.start("Cleaning shell config...")
-    const err = await cleanShellConfig(targets.shellConfig).catch((e) => e)
+    const err = await cleanShellConfig(targets.shellConfig, "cimicode").catch((e) => e)
     if (err) {
       spinner.stop("Failed to clean shell config", 1)
       errors.push(`Shell config: ${err.message}`)
@@ -181,19 +194,19 @@ async function executeUninstall(method: Installation.Method, targets: RemovalTar
 
   if (method !== "curl" && method !== "unknown") {
     const cmds: Record<string, string[]> = {
-      npm: ["npm", "uninstall", "-g", "opencode-ai"],
-      pnpm: ["pnpm", "uninstall", "-g", "opencode-ai"],
-      bun: ["bun", "remove", "-g", "opencode-ai"],
-      yarn: ["yarn", "global", "remove", "opencode-ai"],
-      brew: ["brew", "uninstall", "opencode"],
-      choco: ["choco", "uninstall", "opencode"],
-      scoop: ["scoop", "uninstall", "opencode"],
+      npm: ["npm", "uninstall", "-g", "@cimicode/cimicode"],
+      pnpm: ["pnpm", "uninstall", "-g", "@cimicode/cimicode"],
+      bun: ["bun", "remove", "-g", "@cimicode/cimicode"],
+      yarn: ["yarn", "global", "remove", "@cimicode/cimicode"],
+      brew: ["brew", "uninstall", "cimicode"],
+      choco: ["choco", "uninstall", "cimicode"],
+      scoop: ["scoop", "uninstall", "cimicode"],
     }
 
     const cmd = cmds[method]
     if (cmd) {
       spinner.start(`Running ${cmd.join(" ")}...`)
-      const result = await Process.run(method === "choco" ? ["choco", "uninstall", "opencode", "-y", "-r"] : cmd, {
+      const result = await Process.run(method === "choco" ? ["choco", "uninstall", "cimicode", "-y", "-r"] : cmd, {
         nothrow: true,
       })
       if (result.code !== 0) {
@@ -216,7 +229,7 @@ async function executeUninstall(method: Installation.Method, targets: RemovalTar
     prompts.log.info(`  rm "${targets.binary}"`)
 
     const binDir = path.dirname(targets.binary)
-    if (binDir.includes(".opencode")) {
+    if (binDir.includes(".opencode") || binDir.includes(".cimicode") || binDir.includes(".cimi")) {
       prompts.log.info(`  rmdir "${binDir}" 2>/dev/null`)
     }
   }
@@ -230,10 +243,10 @@ async function executeUninstall(method: Installation.Method, targets: RemovalTar
   }
 
   UI.empty()
-  prompts.log.success("Thank you for using OpenCode!")
+  prompts.log.success("Thank you for using Cimi!")
 }
 
-async function getShellConfigFile(): Promise<string | null> {
+async function getShellConfigFile(appName: string): Promise<string | null> {
   const shell = path.basename(process.env.SHELL || "bash")
   const home = os.homedir()
   const xdgConfig = process.env.XDG_CONFIG_HOME || path.join(home, ".config")
@@ -267,7 +280,9 @@ async function getShellConfigFile(): Promise<string | null> {
     if (!exists) continue
 
     const content = await Filesystem.readText(file).catch(() => "")
-    if (content.includes("# opencode") || content.includes(".opencode/bin")) {
+    // Check for both old opencode and new cimicode references for backwards compatibility
+    if (content.includes(`# ${appName}`) || content.includes(`.${appName}/bin`) ||
+        content.includes("# opencode") || content.includes(".opencode/bin")) {
       return file
     }
   }
@@ -275,7 +290,7 @@ async function getShellConfigFile(): Promise<string | null> {
   return null
 }
 
-async function cleanShellConfig(file: string) {
+async function cleanShellConfig(file: string, appName: string) {
   const content = await Filesystem.readText(file)
   const lines = content.split("\n")
 
@@ -285,21 +300,22 @@ async function cleanShellConfig(file: string) {
   for (const line of lines) {
     const trimmed = line.trim()
 
-    if (trimmed === "# opencode") {
+    // Check for both old opencode and new cimicode markers
+    if (trimmed === `# ${appName}` || trimmed === "# opencode") {
       skip = true
       continue
     }
 
     if (skip) {
       skip = false
-      if (trimmed.includes(".opencode/bin") || trimmed.includes("fish_add_path")) {
+      if (trimmed.includes(`.${appName}/bin`) || trimmed.includes(".opencode/bin") || trimmed.includes("fish_add_path")) {
         continue
       }
     }
 
     if (
-      (trimmed.startsWith("export PATH=") && trimmed.includes(".opencode/bin")) ||
-      (trimmed.startsWith("fish_add_path") && trimmed.includes(".opencode"))
+      (trimmed.startsWith("export PATH=") && (trimmed.includes(`.${appName}/bin`) || trimmed.includes(".opencode/bin"))) ||
+      (trimmed.startsWith("fish_add_path") && (trimmed.includes(`.${appName}`) || trimmed.includes(".opencode")))
     ) {
       continue
     }
