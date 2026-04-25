@@ -1,4 +1,4 @@
-import { marked } from "marked"
+import { Marked } from "marked"
 import markedKatex from "marked-katex-extension"
 import markedShiki from "marked-shiki"
 import katex from "katex"
@@ -376,6 +376,57 @@ registerCustomTheme("OpenCode", () => {
   } as unknown as ThemeRegistrationResolved)
 })
 
+function escape(text: string) {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;")
+}
+
+function decode(text: string) {
+  return text
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+}
+
+function kind(input?: string | null) {
+  return input?.trim().toLowerCase() ?? ""
+}
+
+function mermaid(text: string) {
+  return `<pre class="mermaid">${escape(text)}</pre>`
+}
+
+function shiki(input?: string | null) {
+  const next = kind(input)
+  if (!next || !(next in bundledLanguages)) return "text"
+  return next as BundledLanguage
+}
+
+async function highlight(text: string, input?: string | null) {
+  const next = shiki(input)
+  const highlighter = await getSharedHighlighter({
+    themes: ["OpenCode"],
+    langs: [],
+    preferredHighlighter: "shiki-wasm",
+  })
+
+  if (next !== "text" && !highlighter.getLoadedLanguages().includes(next)) {
+    await highlighter.loadLanguage(next)
+  }
+
+  return highlighter.codeToHtml(text, {
+    lang: next,
+    theme: "OpenCode",
+    tabindex: false,
+  })
+}
+
 function renderMathInText(text: string): string {
   let result = text
 
@@ -408,7 +459,7 @@ function renderMathInText(text: string): string {
   return result
 }
 
-function renderMathExpressions(html: string): string {
+export function renderMathExpressions(html: string): string {
   // Split on code/pre/kbd tags to avoid processing their contents
   const codeBlockPattern = /(<(?:pre|code|kbd)[^>]*>[\s\S]*?<\/(?:pre|code|kbd)>)/gi
   const parts = html.split(codeBlockPattern)
@@ -423,97 +474,70 @@ function renderMathExpressions(html: string): string {
     .join("")
 }
 
-async function highlightCodeBlocks(html: string): Promise<string> {
+export async function highlightCodeBlocks(html: string): Promise<string> {
   const codeBlockRegex = /<pre><code(?:\s+class="language-([^"]*)")?>([\s\S]*?)<\/code><\/pre>/g
   const matches = [...html.matchAll(codeBlockRegex)]
   if (matches.length === 0) return html
 
-  const highlighter = await getSharedHighlighter({
-    themes: ["OpenCode"],
-    langs: [],
-    preferredHighlighter: "shiki-wasm",
-  })
-
-  let result = html
+  let result = ""
+  let start = 0
   for (const match of matches) {
-    const [fullMatch, lang, escapedCode] = match
-    const code = escapedCode
-      .replace(/&lt;/g, "<")
-      .replace(/&gt;/g, ">")
-      .replace(/&amp;/g, "&")
-      .replace(/&quot;/g, '"')
-      .replace(/&#39;/g, "'")
-
-    let language = lang || "text"
-    if (!(language in bundledLanguages)) {
-      language = "text"
-    }
-    if (!highlighter.getLoadedLanguages().includes(language)) {
-      await highlighter.loadLanguage(language as BundledLanguage)
-    }
-
-    const highlighted = highlighter.codeToHtml(code, {
-      lang: language,
-      theme: "OpenCode",
-      tabindex: false,
-    })
-    result = result.replace(fullMatch, () => highlighted)
+    const [full, lang, text] = match
+    const index = match.index ?? 0
+    result += html.slice(start, index)
+    const code = decode(text)
+    result += kind(lang) === "mermaid" ? mermaid(code) : await highlight(code, lang)
+    start = index + full.length
   }
 
-  return result
+  return result + html.slice(start)
 }
 
 export type NativeMarkdownParser = (markdown: string) => Promise<string>
+export type MarkdownParser = {
+  parse(markdown: string): Promise<string>
+}
+
+export function createMarkdownParser(props: { nativeParser?: NativeMarkdownParser } = {}): MarkdownParser {
+  const native = props.nativeParser
+  const js = new Marked(
+    {
+      renderer: {
+        link({ href, title, text }) {
+          const titleAttr = title ? ` title="${title}"` : ""
+          return `<a href="${href}"${titleAttr} class="external-link" target="_blank" rel="noopener noreferrer">${text}</a>`
+        },
+      },
+    },
+    markedKatex({
+      throwOnError: false,
+      nonStandard: true,
+    }),
+    markedShiki({
+      async highlight(code, lang) {
+        if (kind(lang) === "mermaid") return mermaid(code)
+        return highlight(code, lang)
+      },
+    }),
+  )
+
+  if (native) {
+    return {
+      async parse(markdown: string): Promise<string> {
+        const html = await native(markdown)
+        return highlightCodeBlocks(renderMathExpressions(html))
+      },
+    }
+  }
+
+  return {
+    async parse(markdown: string): Promise<string> {
+      return await js.parse(markdown)
+    },
+  }
+}
 
 export const { use: useMarked, provider: MarkedProvider } = createSimpleContext({
   name: "Marked",
-  init: (props: { nativeParser?: NativeMarkdownParser }) => {
-    const jsParser = marked.use(
-      {
-        renderer: {
-          link({ href, title, text }) {
-            const titleAttr = title ? ` title="${title}"` : ""
-            return `<a href="${href}"${titleAttr} class="external-link" target="_blank" rel="noopener noreferrer">${text}</a>`
-          },
-        },
-      },
-      markedKatex({
-        throwOnError: false,
-        nonStandard: true,
-      }),
-      markedShiki({
-        async highlight(code, lang) {
-          const highlighter = await getSharedHighlighter({
-            themes: ["OpenCode"],
-            langs: [],
-            preferredHighlighter: "shiki-wasm",
-          })
-          if (!(lang in bundledLanguages)) {
-            lang = "text"
-          }
-          if (!highlighter.getLoadedLanguages().includes(lang)) {
-            await highlighter.loadLanguage(lang as BundledLanguage)
-          }
-          return highlighter.codeToHtml(code, {
-            lang: lang || "text",
-            theme: "OpenCode",
-            tabindex: false,
-          })
-        },
-      }),
-    )
-
-    if (props.nativeParser) {
-      const nativeParser = props.nativeParser
-      return {
-        async parse(markdown: string): Promise<string> {
-          const html = await nativeParser(markdown)
-          const withMath = renderMathExpressions(html)
-          return highlightCodeBlocks(withMath)
-        },
-      }
-    }
-
-    return jsParser
-  },
+  init: (props: { nativeParser?: NativeMarkdownParser }) => createMarkdownParser(props),
 })

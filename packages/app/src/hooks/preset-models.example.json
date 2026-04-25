@@ -1,0 +1,29 @@
+[
+  {
+    "name": "GLM-4.7-flash",
+    "provider": "CXMT",
+    "url": "http://agi-gateway.cxmt.com/v1",
+    "limit": {
+      "context": 200000,
+      "output": 8192
+    }
+  },
+  {
+    "name": "GPT-4",
+    "provider": "OpenAI",
+    "url": "https://api.openai.com/v1",
+    "limit": {
+      "context": 128000,
+      "output": 4096
+    }
+  },
+  {
+    "name": "Claude-3-Opus",
+    "provider": "Anthropic",
+    "url": "https://api.anthropic.com/v1",
+    "limit": {
+      "context": 200000,
+      "output": 4096
+    }
+  }
+]

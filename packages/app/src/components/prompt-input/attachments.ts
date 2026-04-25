@@ -1,12 +1,16 @@
-import { onMount } from "solid-js"
-import { makeEventListener } from "@solid-primitives/event-listener"
+import { onCleanup, onMount } from "solid-js"
 import { showToast } from "@opencode-ai/ui/toast"
+import { getFilename } from "@opencode-ai/shared/util/path"
 import { usePrompt, type ContentPart, type ImageAttachmentPart } from "@/context/prompt"
 import { useLanguage } from "@/context/language"
+import { useServer } from "@/context/server"
+import { usePlatform } from "@/context/platform"
+import { useFile } from "@/context/file"
 import { uuid } from "@/utils/uuid"
 import { getCursorPosition } from "./editor-dom"
 import { attachmentMime } from "./files"
 import { normalizePaste, pasteMode } from "./paste"
+import { webFileTransferApi } from "@/utils/web-file-transfer"
 
 function dataUrl(file: File, mime: string) {
   return new Promise<string>((resolve) => {
@@ -32,11 +36,15 @@ type PromptAttachmentsInput = {
   focusEditor: () => void
   addPart: (part: ContentPart) => boolean
   readClipboardImage?: () => Promise<File | null>
+  sessionDirectory: string
 }
 
 export function createPromptAttachments(input: PromptAttachmentsInput) {
   const prompt = usePrompt()
   const language = useLanguage()
+  const server = useServer()
+  const platform = usePlatform()
+  const files = useFile()
 
   const warn = () => {
     showToast({
@@ -58,29 +66,94 @@ export function createPromptAttachments(input: PromptAttachmentsInput) {
     const url = await dataUrl(file, mime)
     if (!url) return false
 
-    const attachment: ImageAttachmentPart = {
-      type: "image",
-      id: uuid(),
-      filename: file.name,
-      mime,
-      dataUrl: url,
+    try {
+      // Web version: upload to server using /file-manager/upload endpoint
+      // Desktop version: use data URL directly
+      let serverPath: string | undefined
+
+      if (platform.platform === "web") {
+        const currentServer = server.current
+        if (!currentServer) {
+          if (toast) warn()
+          return false
+        }
+
+        const projectName = getFilename(input.sessionDirectory)
+        const uploadPath = `${projectName}/${file.name}`
+        const result = await webFileTransferApi.uploadFile(
+          currentServer.http.url,
+          file,
+          uploadPath,
+        )
+
+        if (!result.success || !result.path) {
+          if (toast) {
+            showToast({
+              title: language.t("webFileTransfer.upload.error"),
+              description: result.message || "Upload failed",
+            })
+          }
+          return false
+        }
+
+        serverPath = result.path
+
+        // Refresh file system after successful upload (web version only)
+        files.tree.refresh(input.sessionDirectory)
+      }
+
+      const attachment: ImageAttachmentPart = {
+        type: "image",
+        id: uuid(),
+        filename: file.name,
+        mime,
+        dataUrl: url,
+        serverPath,
+      }
+      const cursor = prompt.cursor() ?? getCursorPosition(editor)
+      prompt.set([...prompt.current(), attachment], cursor)
+
+      // Web version: Add @filename reference to message input
+      if (platform.platform === "web") {
+        const currentPrompt = prompt.current()
+        const textParts = currentPrompt.filter((part) => part.type === "text")
+        const existingText = textParts.map((part) => part.content).join("")
+
+        const fileReference = existingText.trim() ? `, @${file.name}` : `@${file.name}`
+
+        const filePart: any = {
+          type: "file",
+          path: file.name,
+          content: fileReference,
+          start: 0,
+          end: fileReference.length,
+        }
+        ;(filePart as any)._isUploadedReference = true
+
+        input.addPart(filePart)
+      }
+
+      return true
+    } catch (error) {
+      if (toast && platform.platform === "web") {
+        showToast({
+          title: language.t("webFileTransfer.upload.error"),
+          description: error instanceof Error ? error.message : "Upload failed",
+        })
+      }
+      return false
     }
-    const cursor = prompt.cursor() ?? getCursorPosition(editor)
-    prompt.set([...prompt.current(), attachment], cursor)
-    return true
   }
 
   const addAttachment = (file: File) => add(file)
 
-  const addAttachments = async (files: File[], toast = true) => {
+  const addAttachments = async (fileList: File[], toast = true) => {
     let found = false
-
-    for (const file of files) {
+    for (const file of fileList) {
       const ok = await add(file, false)
       if (ok) found = true
     }
-
-    if (!found && files.length > 0 && toast) warn()
+    if (!found && fileList.length > 0 && toast) warn()
     return found
   }
 
@@ -97,20 +170,23 @@ export function createPromptAttachments(input: PromptAttachmentsInput) {
     event.preventDefault()
     event.stopPropagation()
 
-    const files = Array.from(clipboardData.items).flatMap((item) => {
-      if (item.kind !== "file") return []
-      const file = item.getAsFile()
-      return file ? [file] : []
-    })
+    const items = Array.from(clipboardData.items)
+    const fileItems = items.filter((item) => item.kind === "file")
 
-    if (files.length > 0) {
-      await addAttachments(files)
+    if (fileItems.length > 0) {
+      let found = false
+      for (const item of fileItems) {
+        const file = item.getAsFile()
+        if (!file) continue
+        const ok = await add(file, false)
+        if (ok) found = true
+      }
+      if (!found) warn()
       return
     }
 
     const plainText = clipboardData.getData("text/plain") ?? ""
 
-    // Desktop: Browser clipboard has no images and no text, try platform's native clipboard for images
     if (input.readClipboardImage && !plainText) {
       const file = await input.readClipboardImage()
       if (file) {
@@ -178,13 +254,24 @@ export function createPromptAttachments(input: PromptAttachmentsInput) {
     const dropped = event.dataTransfer?.files
     if (!dropped) return
 
-    await addAttachments(Array.from(dropped))
+    let found = false
+    for (const file of Array.from(dropped)) {
+      const ok = await add(file, false)
+      if (ok) found = true
+    }
+    if (!found && dropped.length > 0) warn()
   }
 
   onMount(() => {
-    makeEventListener(document, "dragover", handleGlobalDragOver)
-    makeEventListener(document, "dragleave", handleGlobalDragLeave)
-    makeEventListener(document, "drop", handleGlobalDrop)
+    document.addEventListener("dragover", handleGlobalDragOver)
+    document.addEventListener("dragleave", handleGlobalDragLeave)
+    document.addEventListener("drop", handleGlobalDrop)
+  })
+
+  onCleanup(() => {
+    document.removeEventListener("dragover", handleGlobalDragOver)
+    document.removeEventListener("dragleave", handleGlobalDragLeave)
+    document.removeEventListener("drop", handleGlobalDrop)
   })
 
   return {

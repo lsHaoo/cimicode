@@ -131,6 +131,7 @@ const unsafeCSS = `
   );
 }
 
+/* Scrollbar styles - must override pierre/diffs base layer */
 [data-diff-header],
 [data-diff],
 [data-file] {
@@ -149,10 +150,42 @@ const unsafeCSS = `
   &[data-interactive-lines] [data-line] {
     cursor: auto !important;
   }
-  [data-code] {
-    overflow-x: auto !important;
-    overflow-y: clip !important;
-  }
+}
+
+/* Scrollbar - use more specific selectors to override pierre/diffs */
+[data-diff] [data-code]::-webkit-scrollbar,
+[data-file] [data-code]::-webkit-scrollbar {
+  height: 12px;
+  width: 0;
+}
+[data-diff] [data-code]::-webkit-scrollbar-track,
+[data-file] [data-code]::-webkit-scrollbar-track {
+  background: transparent;
+}
+[data-diff] [data-code]::-webkit-scrollbar-thumb,
+[data-file] [data-code]::-webkit-scrollbar-thumb {
+  background-color: rgba(120, 120, 120, 0.4);
+  border: none;
+  background-clip: padding-box;
+  border-radius: 6px;
+}
+[data-diff]:hover [data-code]::-webkit-scrollbar-thumb,
+[data-file]:hover [data-code]::-webkit-scrollbar-thumb {
+  background-color: rgba(120, 120, 120, 0.4);
+}
+[data-diff] [data-code]::-webkit-scrollbar-thumb:hover,
+[data-file] [data-code]::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(120, 120, 120, 0.4);
+}
+[data-diff] [data-code]::-webkit-scrollbar-corner,
+[data-file] [data-code]::-webkit-scrollbar-corner {
+  background: transparent;
+}
+/* Firefox scrollbar */
+[data-diff] [data-code],
+[data-file] [data-code] {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(120, 120, 120, 0.4) transparent;
 }
 
 ${lineCommentStyles}

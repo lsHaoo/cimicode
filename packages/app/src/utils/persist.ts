@@ -5,12 +5,7 @@ import { createResource, type Accessor } from "solid-js"
 import type { SetStoreFunction, Store } from "solid-js/store"
 
 type InitType = Promise<string> | string | null
-type PersistedWithReady<T> = [
-  Store<T>,
-  SetStoreFunction<T>,
-  InitType,
-  Accessor<boolean> & { promise: undefined | Promise<any> },
-]
+type PersistedWithReady<T> = [Store<T>, SetStoreFunction<T>, InitType, Accessor<boolean>]
 
 type PersistTarget = {
   storage?: string
@@ -20,8 +15,8 @@ type PersistTarget = {
 }
 
 const LEGACY_STORAGE = "default.dat"
-const GLOBAL_STORAGE = "opencode.global.dat"
-const LOCAL_PREFIX = "opencode."
+const GLOBAL_STORAGE = "cimicode.global.dat"
+const LOCAL_PREFIX = "cimicode."
 const fallback = new Map<string, boolean>()
 
 const CACHE_MAX_ENTRIES = 500
@@ -211,7 +206,7 @@ function normalize(defaults: unknown, raw: string, migrate?: (value: unknown) =>
 function workspaceStorage(dir: string) {
   const head = (dir.slice(0, 12) || "workspace").replace(/[^a-zA-Z0-9._-]/g, "-")
   const sum = checksum(dir) ?? "0"
-  return `opencode.workspace.${head}.${sum}.dat`
+  return `cimicode.workspace.${head}.${sum}.dat`
 }
 
 function localStorageWithPrefix(prefix: string): SyncStorage {
@@ -465,12 +460,5 @@ export function persisted<T>(
     { initialValue: !isAsync },
   )
 
-  return [
-    state,
-    setState,
-    init,
-    Object.assign(() => (ready.loading ? false : ready.latest === true), {
-      promise: init instanceof Promise ? init : undefined,
-    }),
-  ]
+  return [state, setState, init, () => ready() === true]
 }

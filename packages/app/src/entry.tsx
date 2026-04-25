@@ -6,6 +6,7 @@ import { type Platform, PlatformProvider } from "@/context/platform"
 import { dict as en } from "@/i18n/en"
 import { dict as zh } from "@/i18n/zh"
 import { handleNotificationClick } from "@/utils/notification-click"
+import { cimiBoot } from "@/utils/cimi"
 import pkg from "../package.json"
 import { ServerConnection } from "./context/server"
 
@@ -125,7 +126,25 @@ const platform: Platform = {
   setDefaultServer: writeDefaultServerUrl,
 }
 
+// 检查是否在本地环境
+const isLocalhost = location.hostname === "localhost" || location.hostname === "127.0.0.1" || location.hostname === ""
+
+// 简化版 iframe 检测：只允许在 iframe 中访问，localhost 除外
+const isInIframe = window !== window.parent
+if (!isInIframe && !isLocalhost) {
+  document.body.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:center;height:100vh;margin:0;background:#1a1a1a;color:#fff;font-family:system-ui,sans-serif;">
+      <div style="text-align:center;">
+        <h1 style="font-size:24px;margin-bottom:16px;">访问受限</h1>
+        <p style="color:#888;">此页面仅支持在智多鑫-CimiCode内访问</p>
+      </div>
+    </div>
+  `
+  throw new Error("Direct access blocked")
+}
+
 if (root instanceof HTMLElement) {
+  cimiBoot()
   const server: ServerConnection.Http = { type: "http", http: { url: getCurrentUrl() } }
   render(
     () => (

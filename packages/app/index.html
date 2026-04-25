@@ -2,8 +2,8 @@
 <html lang="en" style="background-color: var(--background-base)">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-content" />
-    <title>OpenCode</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CimiCode</title>
     <link rel="icon" type="image/png" href="/favicon-96x96-v3.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon-v3.svg" />
     <link rel="shortcut icon" href="/favicon-v3.ico" />
@@ -16,7 +16,12 @@
     <script id="oc-theme-preload-script" src="/oc-theme-preload.js"></script>
   </head>
   <body class="antialiased overscroll-none text-12-regular overflow-hidden">
-    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <noscript>
+      <div style="padding: 16px; color: #131010; background: #f8f7f7; font: 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
+        <div lang="en">JavaScript content is not supported here.</div>
+        <div lang="zh-CN" style="margin-top: 8px;">这里不支持 JavaScript 内容。</div>
+      </div>
+    </noscript>
     <div id="root" class="flex flex-col h-dvh p-px"></div>
     <script src="/src/entry.tsx" type="module"></script>
   </body>

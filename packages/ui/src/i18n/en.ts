@@ -1,7 +1,5 @@
 export const dict: Record<string, string> = {
   "ui.sessionReview.title": "Session changes",
-  "ui.sessionReview.title.git": "Git changes",
-  "ui.sessionReview.title.branch": "Branch changes",
   "ui.sessionReview.title.lastTurn": "Last turn changes",
   "ui.sessionReview.diffStyle.unified": "Unified",
   "ui.sessionReview.diffStyle.split": "Split",
@@ -28,6 +26,10 @@ export const dict: Record<string, string> = {
   "ui.fileMedia.binary.title": "Binary file",
   "ui.fileMedia.binary.description.path": "{{path}} is binary.",
   "ui.fileMedia.binary.description.default": "Binary content",
+  "ui.htmlPreview.mode.source": "Source",
+  "ui.htmlPreview.mode.preview": "Preview",
+  "ui.htmlPreview.restore": "Restore preview",
+  "ui.htmlPreview.openInBrowser": "Open in Browser",
 
   "ui.lineComment.label.prefix": "Comment on ",
   "ui.lineComment.label.suffix": "",
@@ -40,10 +42,6 @@ export const dict: Record<string, string> = {
   "ui.sessionTurn.steps.hide": "Hide steps",
   "ui.sessionTurn.summary.response": "Response",
   "ui.sessionTurn.diff.showMore": "Show more changes ({{count}})",
-  "ui.sessionTurn.diffs.changed": "Changed",
-  "ui.sessionTurn.diffs.showAll": "Show all",
-  "ui.sessionTurn.diffs.showLess": "Show less",
-  "ui.sessionTurn.diffs.more": "+{{count}} more files",
 
   "ui.sessionTurn.retry.retrying": "retrying",
   "ui.sessionTurn.retry.inSeconds": "in {{seconds}}s",

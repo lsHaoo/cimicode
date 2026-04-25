@@ -82,7 +82,7 @@ a {
   cursor: default;
 }
 
-#root:not([aria-hidden]) *[data-tauri-drag-region] {
+*[data-tauri-drag-region] {
   app-region: drag;
 }
 

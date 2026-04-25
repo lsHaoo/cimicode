@@ -31,10 +31,11 @@ Your app is ready to be deployed!
 
 ## E2E Testing
 
-Playwright starts the Vite dev server automatically via `webServer`, and UI tests expect an opencode backend at `localhost:4096` by default.
+Playwright starts the Vite dev server automatically via `webServer`, and UI tests need an opencode backend (defaults to `localhost:4096`).
+Use the local runner to create a temp sandbox, seed data, and run the tests.
 
 ```bash
-bunx playwright install chromium
+bunx playwright install
 bun run test:e2e:local
 bun run test:e2e:local -- --grep "settings"
 ```
@@ -48,3 +49,13 @@ Environment options:
 ## Deployment
 
 You can deploy the `dist` folder to any static host provider (netlify, surge, now, etc.)
+
+### iframe embedding
+
+If you embed the web build in an `iframe`, the Cimi skills marketplace now uses the same-origin `/api/agi/chat/...` proxy path.
+
+This means the host page can usually keep `connect-src 'self'` for marketplace requests.
+
+If your OpenCode server for `/skill` or `/skill-manager/*` is on a different origin from the iframe page, add that server origin to `connect-src` as well.
+
+The app build itself does not inject a relaxed CSP, so any required CSP response headers must still be configured by the host page or static server.

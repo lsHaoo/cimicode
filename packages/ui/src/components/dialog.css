@@ -179,3 +179,314 @@
     transform: scale(0.98);
   }
 }
+
+/* 全屏从右侧滑入的设置对话框 */
+.settings-fullscreen-wrapper {
+  width: 100vw;
+  height: 100vh;
+  background: var(--surface-raised-stronger-non-alpha);
+  display: flex;
+  flex-direction: column;
+  animation: slideInFromRight 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.skills-fullscreen-wrapper {
+  width: 100vw;
+  height: 100vh;
+  background: var(--surface-base);
+  display: flex;
+  flex-direction: column;
+  animation: slideInFromRight 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.settings-header {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  padding: 12px;
+}
+
+.settings-close-button {
+  size: 32px;
+  padding: 4px;
+  border-radius: 6px;
+  transition: background-color 150ms ease;
+}
+
+.settings-close-button:hover {
+  background-color: var(--surface-base-hover);
+}
+
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutToRight {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* 调整包含设置对话框的容器样式 */
+[data-component="dialog"] {
+  &:has(.settings-fullscreen-wrapper),
+  &:has(.skills-fullscreen-wrapper),
+  &:has(.file-transfer-fullscreen-wrapper) {
+    align-items: stretch;
+    justify-content: flex-end;
+    background: transparent;
+    pointer-events: none;
+
+    [data-slot="dialog-container"] {
+      width: 100vw;
+      height: 100vh;
+      max-width: 100vw;
+      max-height: 100vh;
+      pointer-events: none;
+    }
+
+    [data-slot="dialog-content"] {
+      width: 100vw;
+      height: 100vh;
+      max-width: 100vw;
+      max-height: 100vh;
+      border-radius: 0;
+      padding: 0;
+      background: transparent;
+      box-shadow: none;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .settings-fullscreen-wrapper,
+    .skills-fullscreen-wrapper,
+    .file-transfer-fullscreen-wrapper {
+      pointer-events: auto;
+    }
+
+    [data-slot="dialog-body"] {
+      flex: 1;
+      overflow: hidden;
+    }
+  }
+}
+
+.skills-header {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 24px 0;
+  background: var(--surface-base);
+}
+
+.skills-close-button {
+  flex-shrink: 0;
+  padding: 4px;
+  border-radius: 6px;
+  transition: background-color 150ms ease;
+}
+
+.skills-close-button:hover {
+  background-color: var(--surface-base-hover);
+}
+
+.skills-content {
+  flex: 1;
+  min-height: 0;
+  padding: 68px 24px 24px;
+}
+
+.skills-shell {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 16px;
+  height: 100%;
+  min-height: 0;
+}
+
+.skills-side,
+.skills-main {
+  min-height: 0;
+  border: 1px solid var(--border-weak-base);
+  border-radius: var(--radius-xl);
+  background: var(--surface-raised-stronger-non-alpha);
+  overflow: hidden;
+}
+
+.skills-list {
+  height: 100%;
+  min-height: 0;
+  overflow: auto;
+}
+
+.skills-item {
+  width: 100%;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: var(--radius-lg);
+  padding: 14px;
+  text-align: left;
+  background: var(--surface-base);
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    transform 150ms ease;
+}
+
+.skills-item:hover {
+  background: var(--surface-base-hover);
+  transform: translateY(-1px);
+}
+
+.skills-empty,
+.skills-detail-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  padding: 24px;
+  color: var(--text-weak);
+  text-align: center;
+}
+
+.skills-main-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px 24px 20px;
+  border-bottom: 1px solid var(--border-weak-base);
+}
+
+.skills-main-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.skills-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.skills-label {
+  color: var(--text-strong);
+  font-size: 16px;
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-large);
+}
+
+.skills-copy {
+  color: var(--text-base);
+  font-size: 14px;
+  line-height: 1.75;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+@media (max-width: 960px) {
+  .skills-content {
+    padding: 68px 16px 16px;
+  }
+
+  .skills-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .skills-side {
+    min-height: 260px;
+  }
+}
+
+/* 文件传输全屏从右侧滑入的对话框 */
+.file-transfer-fullscreen-wrapper {
+  width: 100vw;
+  height: 100vh;
+  background: var(--surface-raised-stronger-non-alpha);
+  display: flex;
+  flex-direction: column;
+  animation: slideInFromRight 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.file-transfer-header {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-weak-base);
+  background: var(--surface-raised-stronger-non-alpha);
+}
+
+.file-transfer-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-strong);
+  margin: 0;
+}
+
+.file-transfer-close-button {
+  size: 32px;
+  padding: 4px;
+  border-radius: 6px;
+  transition: background-color 150ms ease;
+}
+
+.file-transfer-close-button:hover {
+  background-color: var(--surface-base-hover);
+}
+
+.file-transfer-content {
+  padding-top: 57px;
+  height: 100%;
+  overflow: hidden;
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutToRight {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}

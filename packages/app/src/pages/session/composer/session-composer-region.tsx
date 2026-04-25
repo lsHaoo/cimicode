@@ -201,6 +201,7 @@ export function SessionComposerRegion(props: {
                 }}
                 style={{
                   "max-height": `${full() * value()}px`,
+                  "margin-bottom": "60px",
                 }}
               >
                 <div ref={(el) => setStore("body", el)}>

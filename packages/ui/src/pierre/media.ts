@@ -1,6 +1,6 @@
 import type { FileContent } from "@opencode-ai/sdk/v2"
 
-export type MediaKind = "image" | "audio" | "svg"
+export type MediaKind = "image" | "audio" | "svg" | "pdf" | "docx" | "xlsx" | "xls" | "pptx" | "ppt"
 
 const imageExtensions = new Set(["png", "jpg", "jpeg", "gif", "webp", "avif", "bmp", "ico", "tif", "tiff", "heic"])
 const audioExtensions = new Set(["mp3", "wav", "ogg", "m4a", "aac", "flac", "opus"])
@@ -38,6 +38,10 @@ export function mediaKindFromPath(path: string | undefined): MediaKind | undefin
   if (ext === "svg") return "svg"
   if (imageExtensions.has(ext)) return "image"
   if (audioExtensions.has(ext)) return "audio"
+  if (ext === "pdf") return "pdf"
+  if (ext === "docx") return "docx"
+  if (ext === "xlsx" || ext === "xls") return ext
+  if (ext === "pptx" || ext === "ppt") return ext
 }
 
 export function isBinaryContent(value: MediaValue) {
@@ -63,6 +67,15 @@ export function dataUrlFromMediaValue(value: MediaValue, kind: MediaKind) {
   if (!record) return
 
   if (typeof record.content !== "string") return
+
+  // For document types, return the base64 content directly
+  const documentKinds: MediaKind[] = ["pdf", "docx", "xlsx", "xls", "pptx", "ppt"]
+  if (documentKinds.includes(kind)) {
+    if (record.encoding === "base64") {
+      return record.content
+    }
+    return
+  }
 
   const mime = normalizeMimeType(typeof record.mimeType === "string" ? record.mimeType : undefined)
   if (!mime) return

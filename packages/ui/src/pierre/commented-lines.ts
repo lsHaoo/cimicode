@@ -1,5 +1,5 @@
 import { type SelectedLineRange } from "@pierre/diffs"
-import { diffLineIndex, diffRowIndex } from "./diff-selection"
+import { diffLineIndex, diffRowIndex, findDiffSide } from "./diff-selection"
 
 export type CommentSide = "additions" | "deletions"
 

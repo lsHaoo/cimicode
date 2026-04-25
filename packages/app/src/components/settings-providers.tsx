@@ -11,14 +11,15 @@ import { useGlobalSync } from "@/context/global-sync"
 import { DialogConnectProvider } from "./dialog-connect-provider"
 import { DialogSelectProvider } from "./dialog-select-provider"
 import { DialogCustomProvider } from "./dialog-custom-provider"
+import { DialogQuickSetupPreset } from "./dialog-quick-setup-preset"
 import { SettingsList } from "./settings-list"
 
 type ProviderSource = "env" | "api" | "config" | "custom"
 type ProviderItem = ReturnType<ReturnType<typeof useProviders>["connected"]>[number]
 
 const PROVIDER_NOTES = [
-  { match: (id: string) => id === "opencode", key: "dialog.provider.opencode.note" },
-  { match: (id: string) => id === "opencode-go", key: "dialog.provider.opencodeGo.tagline" },
+  { match: (id: string) => id === "opencode", key: "dialog.provider.cimi.note" },
+  { match: (id: string) => id === "opencode-go", key: "dialog.provider.cimigo.tagline" },
   { match: (id: string) => id === "anthropic", key: "dialog.provider.anthropic.note" },
   { match: (id: string) => id.startsWith("github-copilot"), key: "dialog.provider.copilot.note" },
   { match: (id: string) => id === "openai", key: "dialog.provider.openai.note" },
@@ -79,6 +80,17 @@ export const SettingsProviders: Component = () => {
     if (provider.npm !== "@ai-sdk/openai-compatible") return false
     if (!provider.models || Object.keys(provider.models).length === 0) return false
     return true
+  }
+
+  const edit = (providerID: string) => {
+    const provider = globalSync.data.config.provider?.[providerID]
+    const isCXMTCimi = provider?.name === "CXMT Cimi" || providerID === "cxmt-cimi"
+
+    if (isCXMTCimi) {
+      dialog.show(() => <DialogQuickSetupPreset providerID={providerID} />)
+    } else {
+      dialog.show(() => <DialogCustomProvider back="close" />)
+    }
   }
 
   const disableProvider = async (providerID: string, name: string) => {
@@ -162,9 +174,16 @@ export const SettingsProviders: Component = () => {
                         </span>
                       }
                     >
-                      <Button size="large" variant="ghost" onClick={() => void disconnect(item.id, item.name)}>
-                        {language.t("common.disconnect")}
-                      </Button>
+                      <div class="flex items-center gap-2">
+                        <Show when={isConfigCustom(item.id)}>
+                          <Button size="large" variant="ghost" onClick={() => edit(item.id)}>
+                            {language.t("common.edit")}
+                          </Button>
+                        </Show>
+                        <Button size="large" variant="ghost" onClick={() => void disconnect(item.id, item.name)}>
+                          {language.t("common.disconnect")}
+                        </Button>
+                      </div>
                     </Show>
                   </div>
                 )}
@@ -174,8 +193,33 @@ export const SettingsProviders: Component = () => {
         </div>
 
         <div class="flex flex-col gap-1">
-          <h3 class="text-14-medium text-text-strong pb-2">{language.t("settings.providers.section.popular")}</h3>
+          <h3 class="text-14-medium text-text-strong pb-2">推荐供应商</h3>
           <SettingsList>
+            <div
+              class="flex items-center justify-between gap-4 min-h-16 border-b border-border-weak-base last:border-none flex-wrap py-3"
+              data-component="cxmt-cimi-provider-section"
+            >
+              <div class="flex flex-col min-w-0">
+                <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+                  <ProviderIcon id="synthetic" class="size-5 shrink-0 icon-strong-base" />
+                  <span class="text-14-medium text-text-strong">CXMT Cimi</span>
+                  <Tag>推荐</Tag>
+                </div>
+                <span class="text-12-regular text-text-weak pl-8">
+                  CXMT 内置大模型服务
+                </span>
+              </div>
+              <Button
+                size="large"
+                variant="secondary"
+                icon="plus-small"
+                onClick={() => {
+                  dialog.show(() => <DialogQuickSetupPreset />)
+                }}
+              >
+                {language.t("common.connect")}
+              </Button>
+            </div>
             <For each={popular()}>
               {(item) => (
                 <div class="flex flex-wrap items-center justify-between gap-4 min-h-16 py-3 border-b border-border-weak-base last:border-none">

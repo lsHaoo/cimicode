@@ -27,6 +27,7 @@ import { Tabs } from "@opencode-ai/ui/tabs"
 import { createAutoScroll } from "@opencode-ai/ui/hooks"
 import { previewSelectedLines } from "@opencode-ai/ui/pierre/selection-bridge"
 import { Button } from "@opencode-ai/ui/button"
+import { Icon } from "@opencode-ai/ui/icon"
 import { showToast } from "@opencode-ai/ui/toast"
 import { checksum } from "@opencode-ai/shared/util/encode"
 import { useSearchParams } from "@solidjs/router"
@@ -1073,6 +1074,11 @@ export default function Page() {
 
   const empty = (text: string) => (
     <div class="h-full pb-64 -mt-4 flex flex-col items-center justify-center text-center gap-6">
+      <img
+        src="https://app.cxmt.com/s3/oa-public/fedt/agi/cimicode-none.svg"
+        alt="Cimi"
+        class="w-16 h-16 opacity-30"
+      />
       <div class="text-14-regular text-text-weak max-w-56">{text}</div>
     </div>
   )
@@ -1112,6 +1118,11 @@ export default function Page() {
 
     return (
       <div class={input.emptyClass}>
+        <img
+          src="https://app.cxmt.com/s3/oa-public/fedt/agi/cimicode-none.svg"
+          alt="Cimi"
+          class="w-16 h-16 opacity-30"
+        />
         <div class="text-14-regular text-text-weak max-w-56">{reviewEmptyText()}</div>
       </div>
     )
@@ -1833,6 +1844,21 @@ export default function Page() {
             width: sessionPanelWidth(),
           }}
         >
+          {/* Sidebar toggle button - floating at top-left */}
+          <Show when={isDesktop()}>
+            <div class="absolute top-3 left-3 z-50">
+              <Button
+                variant="ghost"
+                class="group/sidebar-toggle titlebar-icon w-8 h-6 p-0 box-border bg-background-base/90 backdrop-blur-sm shadow-sm rounded-md hover:bg-background-base"
+                onClick={() => layout.sidebar.toggle()}
+                aria-label={language.t("command.sidebar.toggle")}
+                aria-expanded={layout.sidebar.opened()}
+              >
+                <Icon size="small" name={layout.sidebar.opened() ? "sidebar-active" : "sidebar"} />
+              </Button>
+            </div>
+          </Show>
+
           <div class="flex-1 min-h-0 overflow-hidden">
             <Switch>
               <Match when={params.id}>

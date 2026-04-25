@@ -29,6 +29,9 @@ export const dict = {
   "ui.fileMedia.binary.title": "二進位檔案",
   "ui.fileMedia.binary.description.path": "無法顯示 {{path}}，因為它是二進位檔案。",
   "ui.fileMedia.binary.description.default": "無法顯示此檔案，因為它是二進位檔案。",
+  "ui.htmlPreview.mode.source": "原始碼",
+  "ui.htmlPreview.mode.preview": "預覽",
+  "ui.htmlPreview.restore": "恢復預覽",
 
   "ui.lineComment.label.prefix": "評論 ",
   "ui.lineComment.label.suffix": "",
