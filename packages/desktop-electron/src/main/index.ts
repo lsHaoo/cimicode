@@ -4,12 +4,9 @@ import { existsSync } from "node:fs"
 import { createServer } from "node:net"
 import { homedir } from "node:os"
 import { join } from "node:path"
-import type { Event } from "electron"
-import { app, BrowserWindow, dialog } from "electron"
+import { app, BrowserWindow, dialog, Menu } from "electron"
+import type { BrowserWindow as BrowserWindowType, Event } from "electron"
 import pkg from "electron-updater"
-
-import contextMenu from "electron-context-menu"
-contextMenu({ showSaveImageAs: true, showLookUpSelection: false, showSearchWithGoogle: false })
 
 // on macOS apps run in `/` which can cause issues with ripgrep
 try {
@@ -44,10 +41,10 @@ app.setPath("cache", cimiCachePath)
 app.setPath("logs", join(cimiDataPath, "log"))
 const { autoUpdater } = pkg
 
-import type { InitStep, ServerReadyData, SqliteMigrationProgress, WslConfig } from "../preload/types"
+import type { InitStep, ServerReadyData, WslConfig } from "../preload/types"
 import { checkAppExists, resolveAppPath, wslPath } from "./apps"
 import { CHANNEL, UPDATER_ENABLED } from "./constants"
-import { registerIpcHandlers, sendDeepLinks, sendMenuCommand, sendSqliteMigrationProgress } from "./ipc"
+import { registerIpcHandlers, sendDeepLinks, sendMenuCommand } from "./ipc"
 import { initLogging } from "./logging"
 import { parseMarkdown } from "./markdown"
 import { createMenu } from "./menu"
@@ -59,13 +56,12 @@ import {
   setBackgroundColor,
   setDockIcon,
 } from "./windows"
-import { drizzle } from "drizzle-orm/node-sqlite/driver"
 import type { Server } from "virtual:opencode-server"
 
 const initEmitter = new EventEmitter()
 let initStep: InitStep = { phase: "server_waiting" }
 
-let mainWindow: BrowserWindow | null = null
+let mainWindow: BrowserWindowType | null = null
 let server: Server.Listener | null = null
 const loadingComplete = defer<void>()
 
@@ -73,13 +69,39 @@ const pendingDeepLinks: string[] = []
 
 const serverReady = defer<ServerReadyData>()
 const logger = initLogging()
+const SERVER_USERNAME = "cimicode"
 
 logger.log("app starting", {
   version: app.getVersion(),
   packaged: app.isPackaged,
 })
 
+setupContextMenu()
 setupApp()
+
+function setupContextMenu() {
+  app.on("web-contents-created", (_event, contents) => {
+    contents.on("context-menu", (_event, params) => {
+      const window = BrowserWindow.fromWebContents(contents) ?? undefined
+      if (params.isEditable) {
+        Menu.buildFromTemplate([
+          { role: "cut", enabled: params.editFlags.canCut },
+          { role: "copy", enabled: params.editFlags.canCopy },
+          { role: "paste", enabled: params.editFlags.canPaste },
+          { type: "separator" },
+          { role: "selectAll", enabled: params.editFlags.canSelectAll },
+        ]).popup({ window })
+        return
+      }
+
+      Menu.buildFromTemplate(
+        params.selectionText
+          ? [{ role: "copy" }, { type: "separator" }, { role: "selectAll" }]
+          : [{ role: "selectAll" }],
+      ).popup({ window })
+    })
+  })
+}
 
 function setupApp() {
   ensureLoopbackNoProxy()
@@ -149,8 +171,7 @@ function setInitStep(step: InitStep) {
 
 async function initialize() {
   const needsMigration = !sqliteFileExists()
-  const sqliteDone = needsMigration ? defer<void>() : undefined
-  let overlay: BrowserWindow | null = null
+  let overlay: BrowserWindowType | null = null
 
   const port = await getSidecarPort()
   const hostname = "127.0.0.1"
@@ -158,30 +179,9 @@ async function initialize() {
   const password = randomUUID()
 
   const loadingTask = (async () => {
-    logger.log("sidecar connection started", { url })
-
-    initEmitter.on("sqlite", (progress: SqliteMigrationProgress) => {
+    if (needsMigration) {
       setInitStep({ phase: "sqlite_waiting" })
-      if (overlay) sendSqliteMigrationProgress(overlay, progress)
-      if (mainWindow) sendSqliteMigrationProgress(mainWindow, progress)
-      if (progress.type === "Done") sqliteDone?.resolve()
-    })
-
-    if (needsMigration) {
-      const { Database, JsonMigration } = await import("virtual:opencode-server")
-      await JsonMigration.run(drizzle({ client: Database.Client().$client }), {
-        progress: (event: { current: number; total: number }) => {
-          const percent = Math.round(event.current / event.total) * 100
-          initEmitter.emit("sqlite", { type: "InProgress", value: percent })
-        },
-      })
-      initEmitter.emit("sqlite", { type: "Done" })
-
-      sqliteDone?.resolve()
-    }
-
-    if (needsMigration) {
-      await sqliteDone?.promise
+      logger.log("sqlite file not found, migration will run in background when needed")
     }
 
     logger.log("spawning sidecar", { url })
@@ -189,7 +189,7 @@ async function initialize() {
     server = listener
     serverReady.resolve({
       url,
-      username: "opencode",
+      username: SERVER_USERNAME,
       password,
     })
 
@@ -205,12 +205,10 @@ async function initialize() {
     logger.log("loading task finished")
   })()
 
-  if (needsMigration) {
-    const show = await Promise.race([loadingTask.then(() => false), delay(1_000).then(() => true)])
-    if (show) {
-      overlay = createLoadingWindow()
-      await delay(1_000)
-    }
+  const show = await Promise.race([loadingTask.then(() => false), delay(1_000).then(() => true)])
+  if (show) {
+    overlay = createLoadingWindow()
+    await delay(1_000)
   }
 
   await loadingTask
@@ -246,16 +244,15 @@ registerIpcHandlers({
   killSidecar: () => killSidecar(),
   awaitInitialization: async (sendStep) => {
     sendStep(initStep)
-    const listener = (step: InitStep) => sendStep(step)
-    initEmitter.on("step", listener)
-    try {
-      logger.log("awaiting server ready")
-      const res = await serverReady.promise
-      logger.log("server ready", { url: res.url })
-      return res
-    } finally {
-      initEmitter.off("step", listener)
+    const listener = (step: InitStep) => {
+      sendStep(step)
+      if (step.phase === "done") initEmitter.off("step", listener)
     }
+    initEmitter.on("step", listener)
+    logger.log("awaiting server ready")
+    const res = await serverReady.promise
+    logger.log("server ready", { url: res.url })
+    return res
   },
   getWindowConfig: () => ({ updaterEnabled: UPDATER_ENABLED }),
   consumeInitialDeepLinks: () => pendingDeepLinks.splice(0),

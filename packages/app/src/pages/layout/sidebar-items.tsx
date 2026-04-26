@@ -18,10 +18,11 @@ import { sessionPermissionRequest } from "../session/composer/session-request-tr
 import { childSessionOnPath, hasProjectPermissions } from "./helpers"
 
 const OPENCODE_PROJECT_ID = "4b0ea68d7af9a6031a7ffda7ad66e0cb83315750"
+const LOGO_URL = "https://app.cxmt.com/s3/oa-public/fedt/agi/cimicode-icon_beta.svg"
 
 export function getProjectAvatarSource(id?: string, icon?: { color?: string; url?: string; override?: string }) {
   return id === OPENCODE_PROJECT_ID
-    ? "https://opencode.ai/favicon.svg"
+    ? LOGO_URL
     : icon?.color
       ? undefined
       : icon?.override || icon?.url

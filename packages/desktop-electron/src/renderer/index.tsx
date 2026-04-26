@@ -24,6 +24,8 @@ import { webviewZoom } from "./webview-zoom"
 import "./styles.css"
 import { useTheme } from "@opencode-ai/ui/theme"
 
+const LOGO_URL = "https://app.cxmt.com/s3/oa-public/fedt/agi/cimicode-icon_beta.svg"
+
 const root = document.getElementById("root")
 if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
   throw new Error(t("error.dev.rootNotFound"))
@@ -31,13 +33,13 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
 
 void initI18n()
 
-const deepLinkEvent = "cimi:deep-link"
+const deepLinkEvent = "opencode:deep-link"
 
 const emitDeepLinks = (urls: string[]) => {
   if (urls.length === 0) return
-  window.__CIMI__ ??= {}
-  const pending = window.__CIMI__.deepLinks ?? []
-  window.__CIMI__.deepLinks = [...pending, ...urls]
+  window.__OPENCODE__ ??= {}
+  const pending = window.__OPENCODE__.deepLinks ?? []
+  window.__OPENCODE__.deepLinks = [...pending, ...urls]
   window.dispatchEvent(new CustomEvent(deepLinkEvent, { detail: { urls } }))
 }
 
@@ -187,7 +189,7 @@ const createPlatform = (): Platform => {
 
       const notification = new Notification(title, {
         body: description ?? "",
-        icon: "https://cimicode.ai/favicon-96x96-v3.png",
+        icon: LOGO_URL,
       })
       notification.onclick = () => {
         void window.api.showWindow()

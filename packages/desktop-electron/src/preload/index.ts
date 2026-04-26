@@ -1,14 +1,20 @@
-import { contextBridge, ipcRenderer } from "electron"
+import electron from "electron"
 import type { ElectronAPI, InitStep, SqliteMigrationProgress } from "./types"
+
+const { contextBridge, ipcRenderer } = electron
 
 const api: ElectronAPI = {
   killSidecar: () => ipcRenderer.invoke("kill-sidecar"),
   installCli: () => ipcRenderer.invoke("install-cli"),
   awaitInitialization: (onStep) => {
-    const handler = (_: unknown, step: InitStep) => onStep(step)
+    const handler = (_: unknown, step: InitStep) => {
+      onStep(step)
+      if (step.phase === "done") ipcRenderer.removeListener("init-step", handler)
+    }
     ipcRenderer.on("init-step", handler)
-    return ipcRenderer.invoke("await-initialization").finally(() => {
+    return ipcRenderer.invoke("await-initialization").catch((err) => {
       ipcRenderer.removeListener("init-step", handler)
+      throw err
     })
   },
   getWindowConfig: () => ipcRenderer.invoke("get-window-config"),

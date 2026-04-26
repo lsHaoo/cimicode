@@ -1,6 +1,6 @@
 import { execFile } from "node:child_process"
 import { BrowserWindow, Notification, app, clipboard, dialog, ipcMain, shell } from "electron"
-import type { IpcMainEvent, IpcMainInvokeEvent } from "electron"
+import type { BrowserWindow as BrowserWindowType, IpcMainEvent, IpcMainInvokeEvent } from "electron"
 
 import type {
   InitStep,
@@ -191,14 +191,14 @@ export function registerIpcHandlers(deps: Deps) {
   })
 }
 
-export function sendSqliteMigrationProgress(win: BrowserWindow, progress: SqliteMigrationProgress) {
+export function sendSqliteMigrationProgress(win: BrowserWindowType, progress: SqliteMigrationProgress) {
   win.webContents.send("sqlite-migration-progress", progress)
 }
 
-export function sendMenuCommand(win: BrowserWindow, id: string) {
+export function sendMenuCommand(win: BrowserWindowType, id: string) {
   win.webContents.send("menu-command", id)
 }
 
-export function sendDeepLinks(win: BrowserWindow, urls: string[]) {
+export function sendDeepLinks(win: BrowserWindowType, urls: string[]) {
   win.webContents.send("deep-link", urls)
 }

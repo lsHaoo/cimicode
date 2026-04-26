@@ -10,6 +10,7 @@ import pkg from "../package.json"
 import { ServerConnection } from "./context/server"
 
 const DEFAULT_SERVER_URL_KEY = "opencode.settings.dat:defaultServerUrl"
+const LOGO_URL = "https://app.cxmt.com/s3/oa-public/fedt/agi/cimicode-icon_beta.svg"
 
 const getLocale = () => {
   if (typeof navigator !== "object") return "en" as const
@@ -67,7 +68,7 @@ const notify: Platform["notify"] = async (title, description, href) => {
 
   const notification = new Notification(title, {
     body: description ?? "",
-    icon: "https://opencode.ai/favicon-96x96-v3.png",
+    icon: LOGO_URL,
   })
 
   notification.onclick = () => {

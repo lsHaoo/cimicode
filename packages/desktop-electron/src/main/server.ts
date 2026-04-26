@@ -3,6 +3,8 @@ import { DEFAULT_SERVER_URL_KEY, WSL_ENABLED_KEY } from "./constants"
 import { getUserShell, loadShellEnv } from "./shell-env"
 import { getStore } from "./store"
 
+const SERVER_USERNAME = "cimicode"
+
 export type WslConfig = { enabled: boolean }
 
 export type HealthCheck = { wait: Promise<void> }
@@ -37,7 +39,7 @@ export async function spawnLocalServer(hostname: string, port: number, password:
   const listener = await Server.listen({
     port,
     hostname,
-    username: "cimi",
+    username: SERVER_USERNAME,
     password,
     cors: ["cimi://renderer"],
   })
@@ -71,7 +73,7 @@ function prepareServerEnv(password: string) {
     OPENCODE_EXPERIMENTAL_ICON_DISCOVERY: "true",
     OPENCODE_EXPERIMENTAL_FILEWATCHER: "true",
     OPENCODE_CLIENT: "desktop",
-    OPENCODE_SERVER_USERNAME: "cimi",
+    OPENCODE_SERVER_USERNAME: SERVER_USERNAME,
     OPENCODE_SERVER_PASSWORD: password,
     XDG_STATE_HOME: statePath,
   }
@@ -88,7 +90,7 @@ export async function checkHealth(url: string, password?: string | null): Promis
 
   const headers = new Headers()
   if (password) {
-    const auth = Buffer.from(`opencode:${password}`).toString("base64")
+    const auth = Buffer.from(`${SERVER_USERNAME}:${password}`).toString("base64")
     headers.set("authorization", `Basic ${auth}`)
   }
 

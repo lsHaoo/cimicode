@@ -1,5 +1,6 @@
 import windowState from "electron-window-state"
 import { app, BrowserWindow, net, nativeImage, nativeTheme, protocol } from "electron"
+import type { BrowserWindow as BrowserWindowType } from "electron"
 import { dirname, isAbsolute, join, relative, resolve } from "node:path"
 import { fileURLToPath, pathToFileURL } from "node:url"
 import type { TitlebarTheme } from "../preload/types"
@@ -52,7 +53,7 @@ function overlay(theme: Partial<TitlebarTheme> = {}) {
   }
 }
 
-export function setTitlebar(win: BrowserWindow, theme: Partial<TitlebarTheme> = {}) {
+export function setTitlebar(win: BrowserWindowType, theme: Partial<TitlebarTheme> = {}) {
   if (process.platform !== "win32") return
   win.setTitleBarOverlay(overlay(theme))
 }
@@ -174,7 +175,7 @@ export function registerRendererProtocol() {
   })
 }
 
-function loadWindow(win: BrowserWindow, html: string) {
+function loadWindow(win: BrowserWindowType, html: string) {
   const devUrl = process.env.ELECTRON_RENDERER_URL
   if (devUrl) {
     const url = new URL(html, devUrl)
@@ -184,7 +185,7 @@ function loadWindow(win: BrowserWindow, html: string) {
 
   void win.loadURL(`${rendererProtocol}://${rendererHost}/${html}`)
 }
-function wireZoom(win: BrowserWindow) {
+function wireZoom(win: BrowserWindowType) {
   win.webContents.setZoomFactor(1)
   win.webContents.on("zoom-changed", () => {
     win.webContents.setZoomFactor(1)
