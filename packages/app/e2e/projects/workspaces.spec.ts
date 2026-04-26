@@ -1,4 +1,4 @@
-import { base64Decode } from "@opencode-ai/shared/util/encode"
+import { base64Decode } from "@opencode-ai/core/util/encode"
 import fs from "node:fs/promises"
 import os from "node:os"
 import path from "node:path"

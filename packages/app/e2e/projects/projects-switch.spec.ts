@@ -1,4 +1,4 @@
-import { base64Decode } from "@opencode-ai/shared/util/encode"
+import { base64Decode } from "@opencode-ai/core/util/encode"
 import type { Page } from "@playwright/test"
 import { test, expect } from "../fixtures"
 import { defocus, createTestProject, cleanupTestProject, openSidebar, sessionIDFromUrl, waitSlug } from "../actions"
