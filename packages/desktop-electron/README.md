@@ -1,6 +1,6 @@
-# OpenCode Desktop
+# CimiCode Desktop
 
-Native OpenCode desktop app, built with Tauri v2.
+Native CimiCode desktop app, built with Electron.
 
 ## Development
 

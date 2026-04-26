@@ -3,6 +3,9 @@ import { createStore } from "solid-js/store"
 import { createMediaQuery } from "@solid-primitives/media"
 import { Tabs } from "@opencode-ai/ui/tabs"
 import { IconButton } from "@opencode-ai/ui/icon-button"
+import { Button } from "@opencode-ai/ui/button"
+import { Icon } from "@opencode-ai/ui/icon"
+import { Tooltip } from "@opencode-ai/ui/tooltip"
 import { TooltipKeybind } from "@opencode-ai/ui/tooltip"
 import { ResizeHandle } from "@opencode-ai/ui/resize-handle"
 import { Mark } from "@opencode-ai/ui/logo"
@@ -379,16 +382,27 @@ export function SessionSidePanel(props: {
                   class="h-full"
                   data-scope="filetree"
                 >
-                  <Tabs.List>
-                    <Tabs.Trigger value="changes" class="flex-1" classes={{ button: "w-full" }}>
+                  <Tabs.List class="gap-0 pr-3">
+                    <Tabs.Trigger value="changes" class="flex-1 min-w-0" classes={{ button: "w-full" }}>
                       {props.reviewCount()}{" "}
                       {language.t(
                         props.reviewCount() === 1 ? "session.review.change.one" : "session.review.change.other",
                       )}
                     </Tabs.Trigger>
-                    <Tabs.Trigger value="all" class="flex-1" classes={{ button: "w-full" }}>
+                    <Tabs.Trigger value="all" class="flex-1 min-w-0" classes={{ button: "w-full" }}>
                       {language.t("session.files.all")}
                     </Tabs.Trigger>
+                    <Tooltip placement="top" value={language.t("session.files.refresh")}>
+                      <Button
+                        variant="ghost"
+                        size="small"
+                        class="shrink-0 w-8 h-8 p-0 flex items-center justify-center"
+                        onClick={() => file.tree.refresh("")}
+                        aria-label={language.t("session.files.refresh")}
+                      >
+                        <Icon name="refresh" size="small" />
+                      </Button>
+                    </Tooltip>
                   </Tabs.List>
                   <Tabs.Content value="changes" class="bg-background-stronger px-3 py-0">
                     <Switch>

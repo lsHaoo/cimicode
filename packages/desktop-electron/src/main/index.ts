@@ -19,19 +19,27 @@ try {
 process.env.OPENCODE_DISABLE_EMBEDDED_WEB_UI = "true"
 
 const APP_NAMES: Record<string, string> = {
-  dev: "OpenCode Dev",
-  beta: "OpenCode Beta",
-  prod: "OpenCode",
+  dev: "Cimi Dev",
+  beta: "Cimi Beta",
+  prod: "Cimi",
 }
 const APP_IDS: Record<string, string> = {
-  dev: "ai.opencode.desktop.dev",
-  beta: "ai.opencode.desktop.beta",
-  prod: "ai.opencode.desktop",
+  dev: "ai.cimicode.desktop.dev",
+  beta: "ai.cimicode.desktop.beta",
+  prod: "ai.cimicode.desktop",
 }
-const appId = app.isPackaged ? APP_IDS[CHANNEL] : "ai.opencode.desktop.dev"
-app.setName(app.isPackaged ? APP_NAMES[CHANNEL] : "OpenCode Dev")
+const appId = app.isPackaged ? APP_IDS[CHANNEL] : "ai.cimicode.desktop.dev"
+app.setName(app.isPackaged ? APP_NAMES[CHANNEL] : "Cimi Dev")
 app.setAppUserModelId(appId)
-app.setPath("userData", join(app.getPath("appData"), appId))
+
+const cimiConfigPath = join(homedir(), ".cimi", "cimicode")
+const cimiDataPath = process.env.XDG_DATA_HOME || join(homedir(), ".local", "share", "cimicode")
+const cimiCachePath = process.env.XDG_CACHE_HOME || join(homedir(), ".cache", "cimicode")
+
+app.setPath("userData", cimiConfigPath)
+app.setPath("appData", cimiDataPath)
+app.setPath("cache", cimiCachePath)
+app.setPath("logs", join(cimiDataPath, "log"))
 const { autoUpdater } = pkg
 
 import type { InitStep, ServerReadyData, SqliteMigrationProgress, WslConfig } from "../preload/types"
@@ -81,7 +89,7 @@ function setupApp() {
   }
 
   app.on("second-instance", (_event: Event, argv: string[]) => {
-    const urls = argv.filter((arg: string) => arg.startsWith("opencode://"))
+    const urls = argv.filter((arg: string) => arg.startsWith("cimi://"))
     if (urls.length) {
       logger.log("deep link received via second-instance", { urls })
       emitDeepLinks(urls)
@@ -111,7 +119,7 @@ function setupApp() {
   }
 
   void app.whenReady().then(async () => {
-    app.setAsDefaultProtocolClient("opencode")
+    app.setAsDefaultProtocolClient("cimi")
     registerRendererProtocol()
     setDockIcon()
     setupAutoUpdater()
@@ -179,7 +187,7 @@ async function initialize() {
     server = listener
     serverReady.resolve({
       url,
-      username: "opencode",
+      username: "cimi",
       password,
     })
 
@@ -316,9 +324,8 @@ async function getSidecarPort() {
 }
 
 function sqliteFileExists() {
-  const xdg = process.env.XDG_DATA_HOME
-  const base = xdg && xdg.length > 0 ? xdg : join(homedir(), ".local", "share")
-  return existsSync(join(base, "opencode", "opencode.db"))
+  const dataBase = process.env.XDG_DATA_HOME || join(homedir(), ".local", "share", "cimicode")
+  return existsSync(join(dataBase, "cimicode.db"))
 }
 
 function setupAutoUpdater() {
