@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto"
 import { EventEmitter } from "node:events"
 import { existsSync } from "node:fs"
+import { createServer as createHttpServer } from "node:http"
 import { createServer } from "node:net"
 import { homedir } from "node:os"
 import { join } from "node:path"
@@ -123,6 +124,7 @@ function setupApp() {
     registerRendererProtocol()
     setDockIcon()
     setupAutoUpdater()
+    startSSOCallbackServer()
     await initialize()
   })
 }
@@ -278,6 +280,8 @@ function killSidecar() {
   if (!server) return
   server.stop()
   server = null
+  ssoCallbackServer?.close()
+  ssoCallbackServer = null
 }
 
 function ensureLoopbackNoProxy() {
@@ -456,4 +460,68 @@ function defer<T>() {
     reject = rej
   })
   return { promise, resolve, reject }
+}
+
+let ssoCallbackServer: ReturnType<typeof createHttpServer> | null = null
+
+const SSO_CALLBACK_HTML = `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SSO回调处理</title>
+  <style>
+    body { margin:0; padding:0; display:flex; align-items:center; justify-content:center; height:100vh; font-family:system-ui,-apple-system,sans-serif; background:#f8f7f7; }
+    .message { text-align:center; color:#666; }
+    .success { color:#52c41a; font-size:18px; font-weight:500; }
+    .error { color:#e74c3c; font-size:18px; font-weight:500; }
+    .warning { color:#faad14; font-size:16px; margin-top:10px; }
+  </style>
+</head>
+<body>
+  <div class="message">
+    <div id="content">处理登录中...</div>
+    <div id="error-detail" class="warning" style="display:none;margin-top:10px;"></div>
+  </div>
+  <script>
+  (function(){
+    var params=new URLSearchParams(window.location.search);
+    var el=document.getElementById('content');
+    var errEl=document.getElementById('error-detail');
+    if(params.has('error')){
+      var e=params.get('error'),d=params.get('error_description')||e;
+      el.className='error';el.textContent='登录失败';errEl.style.display='block';errEl.textContent='错误: '+d;
+      if(window.parent!==window)window.parent.postMessage({type:'sso-callback',url:window.location.href,error:true,errorMessage:d},'*');
+      return;
+    }
+    if(params.has('code')){
+      el.textContent='登录成功，正在进入应用...';el.className='success';
+      if(window.parent!==window){window.parent.postMessage({type:'sso-callback',url:window.location.href,success:true},'*');
+        setTimeout(function(){errEl.style.display='block';errEl.textContent='如果页面没有自动关闭，请手动关闭此窗口';},2000);
+      }
+    }else{el.textContent='SSO回调页面';errEl.style.display='block';errEl.textContent='请通过SSO登录流程访问此页面';}
+  })();
+  </script>
+</body>
+</html>`
+
+function startSSOCallbackServer() {
+  const port = 3000
+
+  ssoCallbackServer = createHttpServer((_req: IncomingMessage, res: ServerResponse) => {
+    res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" })
+    res.end(SSO_CALLBACK_HTML)
+  })
+
+  ssoCallbackServer.listen(port, "127.0.0.1", () => {
+    logger.log("SSO callback server started", { port })
+  })
+
+  ssoCallbackServer.on("error", (err: NodeJS.ErrnoException) => {
+    if (err.code === "EADDRINUSE") {
+      logger.log("SSO callback server port 3000 in use, skipping")
+      return
+    }
+    logger.error("SSO callback server error", err)
+  })
 }

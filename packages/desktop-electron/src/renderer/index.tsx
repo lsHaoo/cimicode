@@ -21,6 +21,7 @@ import { render } from "solid-js/web"
 import pkg from "../../package.json"
 import { initI18n, t } from "./i18n"
 import { webviewZoom } from "./webview-zoom"
+import { SSOGate } from "./sso/SSOGate"
 import "./styles.css"
 import { useTheme } from "@opencode-ai/ui/theme"
 
@@ -327,27 +328,28 @@ render(() => {
     })
   })
 
+  const appReady = () =>
+    !defaultServer.loading &&
+    !sidecar.loading &&
+    !windowConfig.loading &&
+    !windowCount.loading &&
+    !locale.loading
+
   return (
     <PlatformProvider value={platform}>
       <AppBaseProviders locale={locale.latest}>
-        <Show
-          when={
-            !defaultServer.loading &&
-            !sidecar.loading &&
-            !windowConfig.loading &&
-            !windowCount.loading &&
-            !locale.loading
-          }
-        >
+        <Show when={appReady()}>
           {(_) => {
             return (
-              <AppInterface
-                defaultServer={defaultServer.latest ?? ServerConnection.Key.make("sidecar")}
-                servers={servers()}
-                router={MemoryRouter}
-              >
-                <Inner />
-              </AppInterface>
+              <SSOGate ready={true}>
+                <AppInterface
+                  defaultServer={defaultServer.latest ?? ServerConnection.Key.make("sidecar")}
+                  servers={servers()}
+                  router={MemoryRouter}
+                >
+                  <Inner />
+                </AppInterface>
+              </SSOGate>
             )
           }}
         </Show>
