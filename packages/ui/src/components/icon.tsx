@@ -116,7 +116,6 @@ export interface IconProps extends ComponentProps<"svg"> {
 
 export function Icon(props: IconProps) {
   const [local, others] = splitProps(props, ["name", "size", "class", "classList"])
-<<<<<<< HEAD
   const box = {
     flash: "0 0 1024 1024",
     "magnifying-glass": "0 0 16 16",
