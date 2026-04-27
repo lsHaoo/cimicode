@@ -867,7 +867,7 @@ export function MessageTimeline(props: {
                                 >
                                   <DropdownMenu.ItemLabel>{language.t("common.rename")}</DropdownMenu.ItemLabel>
                                 </DropdownMenu.Item>
-                                <Show when={shareEnabled()}>
+                                {/* <Show when={shareEnabled()}>
                                   <DropdownMenu.Item
                                     onSelect={() => {
                                       setTitle({ pendingShare: true, menuOpen: false })
@@ -877,11 +877,11 @@ export function MessageTimeline(props: {
                                       {language.t("session.share.action.share")}
                                     </DropdownMenu.ItemLabel>
                                   </DropdownMenu.Item>
-                                </Show>
-                                <DropdownMenu.Item onSelect={() => void archiveSession(id)}>
+                                </Show> */}
+                                {/* <DropdownMenu.Item onSelect={() => void archiveSession(id)}>
                                   <DropdownMenu.ItemLabel>{language.t("common.archive")}</DropdownMenu.ItemLabel>
                                 </DropdownMenu.Item>
-                                <DropdownMenu.Separator />
+                                <DropdownMenu.Separator /> */}
                                 <DropdownMenu.Item
                                   onSelect={() => dialog.show(() => <DialogDeleteSession sessionID={id} />)}
                                 >

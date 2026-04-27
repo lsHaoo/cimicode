@@ -24,6 +24,12 @@ const PROVIDER_PRIORITY: Record<string, number> = {
   google: 5,
 }
 
+export function providerDisplayName(provider: { id: string; name: string }) {
+  if (provider.id === "opencode") return "CimiCode"
+  if (provider.id === "opencode-go") return "CimiCode Go"
+  return provider.name
+}
+
 export function createDialogProviderOptions() {
   const sync = useSync()
   const dialog = useDialog()
@@ -39,7 +45,7 @@ export function createDialogProviderOptions() {
         const connected = sync.data.provider_next.connected.includes(provider.id)
 
         return {
-          title: provider.name,
+          title: providerDisplayName(provider),
           value: provider.id,
           description: {
             opencode: "(Recommended)",
@@ -270,22 +276,22 @@ function ApiMethod(props: ApiMethodProps) {
           opencode: (
             <box gap={1}>
               <text fg={theme.textMuted}>
-                OpenCode Zen gives you access to all the best coding models at the cheapest prices with a single API
+                CimiCode Zen gives you access to all the best coding models at the cheapest prices with a single API
                 key.
               </text>
               <text fg={theme.text}>
-                Go to <span style={{ fg: theme.primary }}>https://opencode.ai/zen</span> to get a key
+                Go to <span style={{ fg: theme.primary }}>https://cimicode.ai/zen</span> to get a key
               </text>
             </box>
           ),
           "opencode-go": (
             <box gap={1}>
               <text fg={theme.textMuted}>
-                OpenCode Go is a $10 per month subscription that provides reliable access to popular open coding models
+                CimiCode Go is a $10 per month subscription that provides reliable access to popular open coding models
                 with generous usage limits.
               </text>
               <text fg={theme.text}>
-                Go to <span style={{ fg: theme.primary }}>https://opencode.ai/zen</span> and enable OpenCode Go
+                Go to <span style={{ fg: theme.primary }}>https://cimicode.ai/zen</span> and enable CimiCode Go
               </text>
             </box>
           ),

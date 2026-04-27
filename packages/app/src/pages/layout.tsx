@@ -80,6 +80,7 @@ import {
   drainPendingDeepLinks,
 } from "./layout/deep-links"
 import { createInlineEditorController } from "./layout/inline-editor"
+import { sessionTitle } from "@/utils/session-title"
 import {
   LocalWorkspace,
   SortableWorkspace,
@@ -1801,6 +1802,33 @@ export default function Layout(props: ParentProps) {
     )
   }
 
+  function DialogArchiveSession(props: { session: Session }) {
+    const handleArchive = () => {
+      dialog.close()
+      void archiveSession(props.session)
+    }
+
+    return (
+      <Dialog title={language.t("session.delete.title")} fit>
+        <div class="flex flex-col gap-4 pl-6 pr-2.5 pb-3">
+          <div class="flex flex-col gap-1">
+            <span class="text-14-regular text-text-strong">
+              {language.t("session.delete.confirm", { name: sessionTitle(props.session.title) })}
+            </span>
+          </div>
+          <div class="flex justify-end gap-2">
+            <Button variant="ghost" size="large" onClick={() => dialog.close()}>
+              {language.t("common.cancel")}
+            </Button>
+            <Button variant="primary" size="large" onClick={handleArchive}>
+              {language.t("session.delete.button")}
+            </Button>
+          </div>
+        </div>
+      </Dialog>
+    )
+  }
+
   const activeRoute = {
     session: "",
     sessionProject: "",
@@ -2020,6 +2048,7 @@ export default function Layout(props: ParentProps) {
     clearHoverProjectSoon,
     prefetchSession,
     archiveSession,
+    showArchiveDialog: (session) => dialog.show(() => <DialogArchiveSession session={session} />),
     workspaceName,
     renameWorkspace,
     editorOpen,
@@ -2127,7 +2156,7 @@ export default function Layout(props: ParentProps) {
           "max-w-full overflow-hidden": panelProps.mobile,
         }}
         style={{
-          width: panelProps.mobile ? undefined : `${panel()}px`,
+          width: panelProps.mobile ? undefined : '100%',
         }}
       >
         <Show
@@ -2347,16 +2376,14 @@ export default function Layout(props: ParentProps) {
         <div
           class="shrink-0 px-3 py-3"
           classList={{
-            hidden: store.gettingStartedDismissed || !(providers.all().length > 0 && providers.paid().length === 0),
+            hidden:
+              store.gettingStartedDismissed || !(providers.all().length > 0 && providers.connected().length === 0),
           }}
         >
           <div class="rounded-xl bg-background-base shadow-xs-border-base" data-component="getting-started">
             <div class="p-3 flex flex-col gap-6">
               <div class="flex flex-col gap-2">
                 <div class="text-14-medium text-text-strong">{language.t("sidebar.gettingStarted.title")}</div>
-                <div class="text-14-regular text-text-base" style={{ "line-height": "var(--line-height-normal)" }}>
-                  {language.t("sidebar.gettingStarted.line1")}
-                </div>
                 <div class="text-14-regular text-text-base" style={{ "line-height": "var(--line-height-normal)" }}>
                   {language.t("sidebar.gettingStarted.line2")}
                 </div>

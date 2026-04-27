@@ -22,7 +22,7 @@ const FALLBACK_DATA: PresetModels = [
   },
   {
     "provider": "CXMT Cimi",
-    "name": "GLM-4.7-flash",
+    "name": "qwen3.6-35b-a3b",
     "url": "http://agi-gateway.cxmt.com/v1",
     "limit": { "context": 200000, "output": 8192 }
   }
