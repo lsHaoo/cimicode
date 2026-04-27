@@ -50,6 +50,7 @@ export const ProviderRoutes = lazy(() =>
             mapValues(filtered, (x) => Provider.fromModelsDevProvider(x)),
             connected,
           )
+          Provider.removeFreeModels(providers)
           return {
             all: Object.values(providers),
             default: Provider.defaultModelIDs(providers),

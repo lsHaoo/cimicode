@@ -922,6 +922,19 @@ export function defaultModelIDs<T extends { models: Record<string, { id: string 
   return mapValues(providers, (item) => sort(Object.values(item.models))[0].id)
 }
 
+export function removeFreeModels<T extends { id: string; models: Record<string, { cost?: { input?: number } }> }>(
+  providers: Record<string, T>,
+) {
+  for (const [providerID, provider] of Object.entries(providers)) {
+    if (providerID !== ProviderID.opencode && provider.id !== ProviderID.opencode) continue
+    for (const [modelID, model] of Object.entries(provider.models)) {
+      if (!model.cost || model.cost.input === 0) delete provider.models[modelID]
+    }
+    if (Object.keys(provider.models).length === 0) delete providers[providerID]
+  }
+  return providers
+}
+
 export interface Interface {
   readonly list: () => Effect.Effect<Record<ProviderID, Info>>
   readonly getProvider: (providerID: ProviderID) => Effect.Effect<Info>
@@ -1370,6 +1383,8 @@ const layer: Layer.Layer<
 
           log.info("found", { providerID })
         }
+
+        removeFreeModels(providers)
 
         return {
           models: languages,

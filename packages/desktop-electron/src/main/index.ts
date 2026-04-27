@@ -1,10 +1,10 @@
 import { randomUUID } from "node:crypto"
 import { EventEmitter } from "node:events"
 import { existsSync } from "node:fs"
-import { createServer as createHttpServer } from "node:http"
+import { createServer as createHttpServer, type IncomingMessage, type ServerResponse } from "node:http"
 import { createServer } from "node:net"
 import { homedir } from "node:os"
-import { join } from "node:path"
+import { dirname, join } from "node:path"
 import type { Event } from "electron"
 import { app, BrowserWindow, dialog } from "electron"
 import pkg from "electron-updater"
@@ -148,7 +148,8 @@ function setInitStep(step: InitStep) {
 }
 
 async function initialize() {
-  const needsMigration = !sqliteFileExists()
+  const { Database, JsonMigration } = await import("virtual:opencode-server")
+  const needsMigration = sqliteNeedsMigration(Database.Path)
   const sqliteDone = needsMigration ? defer<void>() : undefined
   let overlay: BrowserWindow | null = null
 
@@ -168,10 +169,9 @@ async function initialize() {
     })
 
     if (needsMigration) {
-      const { Database, JsonMigration } = await import("virtual:opencode-server")
       await JsonMigration.run(drizzle({ client: Database.Client().$client }), {
         progress: (event: { current: number; total: number }) => {
-          const percent = Math.round(event.current / event.total) * 100
+          const percent = Math.round((event.current / event.total) * 100)
           initEmitter.emit("sqlite", { type: "InProgress", value: percent })
         },
       })
@@ -327,9 +327,8 @@ async function getSidecarPort() {
   })
 }
 
-function sqliteFileExists() {
-  const dataBase = process.env.XDG_DATA_HOME || join(homedir(), ".local", "share", "cimicode")
-  return existsSync(join(dataBase, "cimicode.db"))
+function sqliteNeedsMigration(databasePath: string) {
+  return !existsSync(databasePath) && existsSync(join(dirname(databasePath), "storage"))
 }
 
 function setupAutoUpdater() {
