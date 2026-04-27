@@ -1,0 +1,3046 @@
+bun install v1.3.13 (bf2e2cec)
+Workspace package "packages/opencode" has added 0 dependencies, removed 0 dependencies, and updated 2 dependencies
+   - "@opencode-ai/app": "packages/app" - @opencode-ai/app@workspace:packages\app
+   - "@opencode-ai/console-app": "packages/console/app" - @opencode-ai/console-app@workspace:packages\console\app
+   - "@opencode-ai/console-core": "packages/console/core" - @opencode-ai/console-core@workspace:packages\console\core
+   - "@opencode-ai/console-function": "packages/console/function" - @opencode-ai/console-function@workspace:packages\console\function
+   - "@opencode-ai/console-mail": "packages/console/mail" - @opencode-ai/console-mail@workspace:packages\console\mail
+   - "@opencode-ai/console-resource": "packages/console/resource" - @opencode-ai/console-resource@workspace:packages\console\resource
+   - "@opencode-ai/desktop": "packages/desktop" - @opencode-ai/desktop@workspace:packages\desktop
+   - "@opencode-ai/desktop-electron": "packages/desktop-electron" - @opencode-ai/desktop-electron@workspace:packages\desktop-electron
+   - "@opencode-ai/enterprise": "packages/enterprise" - @opencode-ai/enterprise@workspace:packages\enterprise
+   - "@opencode-ai/function": "packages/function" - @opencode-ai/function@workspace:packages\function
+   - "@opencode-ai/plugin": "packages/plugin" - @opencode-ai/plugin@workspace:packages\plugin
+   - "@opencode-ai/script": "packages/script" - @opencode-ai/script@workspace:packages\script
+   - "@opencode-ai/sdk": "packages/sdk/js" - @opencode-ai/sdk@workspace:packages\sdk\js
+   - "@opencode-ai/shared": "packages/shared" - @opencode-ai/shared@workspace:packages\shared
+   - "@opencode-ai/slack": "packages/slack" - @opencode-ai/slack@workspace:packages\slack
+   - "@opencode-ai/storybook": "packages/storybook" - @opencode-ai/storybook@workspace:packages\storybook
+   - "@opencode-ai/ui": "packages/ui" - @opencode-ai/ui@workspace:packages\ui
+   - "@opencode-ai/web": "packages/web" - @opencode-ai/web@workspace:packages\web
+   - "opencode": "packages/opencode" - opencode@workspace:packages\opencode
+Enqueue package manifest for download: @tauri-apps/cli
+Enqueue package manifest for download: typescript
+Enqueue package manifest for download: @tauri-apps/api
+Enqueue package manifest for download: @tauri-apps/plugin-clipboard-manager
+Enqueue package manifest for download: @tauri-apps/plugin-deep-link
+Enqueue package manifest for download: @tauri-apps/plugin-dialog
+Enqueue package manifest for download: @tauri-apps/plugin-http
+Enqueue package manifest for download: @tauri-apps/plugin-notification
+Enqueue package manifest for download: @tauri-apps/plugin-opener
+Enqueue package manifest for download: @tauri-apps/plugin-os
+Enqueue package manifest for download: @tauri-apps/plugin-process
+Enqueue package manifest for download: @tauri-apps/plugin-shell
+Enqueue package manifest for download: @tauri-apps/plugin-store
+Enqueue package manifest for download: @tauri-apps/plugin-updater
+Enqueue package manifest for download: @tauri-apps/plugin-window-state
+Enqueue package manifest for download: electron-builder
+Enqueue package manifest for download: electron-vite
+Enqueue package manifest for download: electron-log
+Enqueue package manifest for download: electron-store
+Enqueue package manifest for download: electron-updater
+Enqueue package manifest for download: electron-window-state
+Enqueue package manifest for download: marked
+Enqueue package manifest for download: aws4fetch
+Enqueue package manifest for download: @types/semver
+Enqueue package manifest for download: semver
+Enqueue package manifest for download: @slack/bolt
+Enqueue package manifest for download: @storybook/addon-a11y
+Enqueue package manifest for download: @storybook/addon-docs
+Enqueue package manifest for download: @storybook/addon-links
+Enqueue package manifest for download: @storybook/addon-onboarding
+Enqueue package manifest for download: @storybook/addon-vitest
+Enqueue package manifest for download: storybook
+Enqueue package manifest for download: storybook-solidjs-vite
+Resolving dependencies
+> HTTP/1.1 GET https://api.github.com/repos/anomalyco/ghostty-web/tarball/main
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Accept: */*
+> Host: api.github.com
+> Accept-Encoding: gzip, deflate, br, zstd
+
+< 302 Found
+< Date: Mon, 27 Apr 2026 01:22:02 GMT
+< Content-Type: text/html;charset=utf-8
+< Content-Length: 0
+< Cache-Control: public, must-revalidate, max-age=0
+< expires: Mon, 27 Apr 2026 01:22:02 GMT
+< Location: https://codeload.github.com/anomalyco/ghostty-web/legacy.tar.gz/refs/heads/main
+< x-github-api-version-selected: 2022-11-28
+< X-RateLimit-Limit: 60
+< X-RateLimit-Remaining: 60
+< X-RateLimit-Reset: 1777256522
+< X-RateLimit-Used: 0
+< X-RateLimit-Resource: core
+< Access-Control-Expose-Headers: ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset
+< Access-Control-Allow-Origin: *
+< Strict-Transport-Security: max-age=31536000; includeSubdomains; preload
+< X-Frame-Options: deny
+< X-Content-Type-Options: nosniff
+< X-XSS-Protection: 0
+< Referrer-Policy: origin-when-cross-origin, strict-origin-when-cross-origin
+< Content-Security-Policy: default-src 'none'
+< Vary: Accept-Encoding, Accept, X-Requested-With
+< Server: github.com
+< X-GitHub-Request-Id: C767:1E8AF7:4E1C675:524AA93:69EEBA3A
+
+> HTTP/1.1 GET https://registry.npmjs.org/@storybook%2faddon-vitest
+> If-None-Match: W/"6db905e8b4c886e619e9f022f5608713"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/storybook
+> If-None-Match: W/"0b761c2ddf051e8d3ae402636826a2d9"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/@storybook%2faddon-onboarding
+> If-None-Match: W/"f97adbe12758633d89a07e95083a37f1"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/@storybook%2faddon-links
+> If-None-Match: W/"69b178154e1b7b8327b2a9cb0c28a6fb"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/storybook-solidjs-vite
+> If-None-Match: W/"bdff38f2b54be9b42b55eec1f1333dc3"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/@storybook%2faddon-docs
+> If-None-Match: W/"6098dcc5adfe5671dbaa257c0d7af579"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/@storybook%2faddon-a11y
+> If-None-Match: W/"3ae68a6219ba6adf86c26a3e2b8f24f4"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/@types%2fsemver
+> If-None-Match: W/"8ed3e00ad3a2123c819546585c86f26a"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/@slack%2fbolt
+> If-None-Match: W/"d8a1d5d22f30ca3ed89a9c88490101a5"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/semver
+> If-None-Match: W/"55efefd626cc325cce8bd5a4e6cf8da8"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/marked
+> If-None-Match: W/"e938eea1164b717b7f5a994f40f45c37"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/electron-window-state
+> If-None-Match: W/"b46b16abd7cfea7bf0c2881f11173be8"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/aws4fetch
+> If-None-Match: W/"69e143df2f8a94ff265e1e27c9d4f2ac"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/electron-updater
+> If-None-Match: W/"8d388c6f535c7a7db35d742deb1b97f2"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/electron-log
+> If-None-Match: W/"12f04fcc78e22a3ab07c38f183fc41af"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/electron-vite
+> If-None-Match: W/"efeef182b8eb9de68221c617c04d63c1"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/@tauri-apps%2fplugin-updater
+> If-None-Match: W/"6168858dd3f736e3ae9f4040c1cfc96f"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/@tauri-apps%2fplugin-window-state
+> If-None-Match: W/"74456ca894b27f98f51bf8b7a8ce7732"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/electron-store
+> If-None-Match: W/"caf372ddcda9a04ebd9e7f7b3c041502"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/@tauri-apps%2fplugin-store
+> If-None-Match: W/"f5affe9eeba9097716c2f737363a325f"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/@tauri-apps%2fplugin-shell
+> If-None-Match: W/"ef3967f6733371b74ad0a87dfc6af7c4"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://codeload.github.com/anomalyco/ghostty-web/legacy.tar.gz/refs/heads/main
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Accept: */*
+> Host: codeload.github.com
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/electron-builder
+> If-None-Match: W/"f7e85af258c4522a58016299430db3e8"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/@tauri-apps%2fplugin-process
+> If-None-Match: W/"fac44eea35ad32eba9d2d10217640894"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/@tauri-apps%2fplugin-opener
+> If-None-Match: W/"01177ab81c18477946c1ea8b09ec794c"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/@tauri-apps%2fplugin-os
+> If-None-Match: W/"3f61837db6e9de5bac3757031c99cbad"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/@tauri-apps%2fplugin-notification
+> If-None-Match: W/"c4e89f035f81a311b8a032ea9b411118"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/@tauri-apps%2fplugin-http
+> If-None-Match: W/"2ec9a0a5747c856b5379f75868b59f4a"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/@tauri-apps%2fplugin-dialog
+> If-None-Match: W/"6f0a3935c9e3f56014a6af974dfd7175"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/@tauri-apps%2fplugin-deep-link
+> If-None-Match: W/"a752d6deb479cfd2e26d15523207f3bc"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/@tauri-apps%2fplugin-clipboard-manager
+> If-None-Match: W/"9b7951103c5feebf8679fe5225a897d6"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/@tauri-apps%2fapi
+> If-None-Match: W/"56d6ab99de5c353332c1bebfea1e47b1"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/typescript
+> If-None-Match: W/"a8ca9dabb4eab614985b166e9a3dd91e"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmjs.org/@tauri-apps%2fcli
+> If-None-Match: "9d392bfff3ca60b12e4b1d83e1f447dd"
+> Accept: application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Host: registry.npmjs.org
+> Accept-Encoding: gzip, deflate, br, zstd
+
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:02 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=sE5HUJ0CyWg3315B8go4Wg4wjxomxO7DDFJD7Extjv4-1777252922.907846-1.0.1.1-AXvrXBTIjnJB6FZO82OsixBZNrV3dPkcDmdR6jWQjo0; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a03902a299802-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Age: 107
+< Cache-Control: public, max-age=300
+< ETag: "0b761c2ddf051e8d3ae402636826a2d9"
+< Last-Modified: Fri, 24 Apr 2026 13:23:51 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 34 tasks
+    [848.17ms]
+Downloaded storybook versions
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:02 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=Fa6vIcQRhniSrPY2TGq0KxUZOj5QoV0KoNceP6Ctp5s-1777252922.9080682-1.0.1.1-jfbcQUIwSGZXtYf8imVVMSs7YXLWOmLT9caXwh6ECmM; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a03902a06e053-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Age: 84
+< Cache-Control: public, max-age=300
+< ETag: "6db905e8b4c886e619e9f022f5608713"
+< Last-Modified: Fri, 24 Apr 2026 13:23:44 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 33 tasks
+    [871.67ms]
+Downloaded @storybook/addon-vitest versions
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:02 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=YEey.iBG9l7vLB.NCShY0SIRELbMhjHvtftpMYuqOAQ-1777252922.921307-1.0.1.1-m3X9KuusB7w6.mxZoqPlgTwfjTLG96HZQwSk63.ElLA; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a039048fad771-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Age: 55
+< Cache-Control: public, max-age=300
+< ETag: "f97adbe12758633d89a07e95083a37f1"
+< Last-Modified: Fri, 24 Apr 2026 13:23:39 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 32 tasks
+    [872.42ms]
+Downloaded @storybook/addon-onboarding versions
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:02 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=93uqunbg2xrVuCeojKx_6mH1MYt0g2YGFt.TDSAHtAE-1777252922.9237652-1.0.1.1-AY.R3nX6LHz7kWloel3lbPjgubWo7K4ybuWEbxzJ0BE; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a03904f0fc738-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Age: 182
+< Cache-Control: public, max-age=300
+< ETag: "69b178154e1b7b8327b2a9cb0c28a6fb"
+< Last-Modified: Fri, 24 Apr 2026 13:23:39 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 31 tasks
+    [878.94ms]
+Downloaded @storybook/addon-links versions
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:02 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=YHwwvU8C9xhH4UrJ6zW2bw69NWhdbYmLcFQJ._siGLY-1777252922.9416645-1.0.1.1-4yQ42ElHl8SMdl13SzxeeAGZHpgfDSGXAdqIOHYuZgY; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a03906e6d8b0e-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Age: 176
+< Cache-Control: public, max-age=300
+< ETag: "e938eea1164b717b7f5a994f40f45c37"
+< Last-Modified: Sat, 18 Apr 2026 13:12:27 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 30 tasks
+    [881.07ms]
+Downloaded marked versions
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:02 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=i7P5lNwC.Wwc6o6Xw0WAHtXfV82.kBFnvGpubVFZukY-1777252922.9268343-1.0.1.1-2nasV.f1xaS4uJPN0n77BlxaRVsWo5v6hkDuBPjxMv8; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a03904ca7260d-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Age: 108
+< Cache-Control: public, max-age=300
+< ETag: "3ae68a6219ba6adf86c26a3e2b8f24f4"
+< Last-Modified: Fri, 24 Apr 2026 13:23:35 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 29 tasks
+    [881.96ms]
+Downloaded @storybook/addon-a11y versions
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:02 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=lHI0Ttvan2lpL1iTSwi7amnAYMDu2PKQT5QXbfOwSgk-1777252922.925978-1.0.1.1-gD7SHvpK7izdWK5dNiaIsa7_BHq22EfizoF69yyr.Dg; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a03904dc025ec-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Age: 137
+< Cache-Control: public, max-age=300
+< ETag: "6098dcc5adfe5671dbaa257c0d7af579"
+< Last-Modified: Fri, 24 Apr 2026 13:23:36 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 28 tasks
+    [884.68ms]
+Downloaded @storybook/addon-docs versions
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:02 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=Y2F6ZMC74.__qirVQSKqXKoiWowYhGmZvC3Qhpz0SGc-1777252922.9435322-1.0.1.1-Z1BvXBUr44QowKUN.1C9UoPg45Cp.CU96DXxKOeAdmY; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a03906a92c713-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Age: 178
+< Cache-Control: public, max-age=300
+< ETag: "55efefd626cc325cce8bd5a4e6cf8da8"
+< Last-Modified: Wed, 22 Apr 2026 19:42:43 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 27 tasks
+    [890.04ms]
+Downloaded semver versions
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:02 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=9xx9mjDQxkFAg7T.Og_G56vco3.cSKf1dQXEj0zvpiE-1777252922.9532835-1.0.1.1-Clh5fkXXP3rq0KL3iW03naunz7TB4qF8E_04T1TLNus; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a03907f22ac71-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Age: 134
+< Cache-Control: public, max-age=300
+< ETag: "8d388c6f535c7a7db35d742deb1b97f2"
+< Last-Modified: Tue, 14 Apr 2026 01:11:52 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 26 tasks
+    [893.07ms]
+Downloaded electron-updater versions
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:02 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=epEqIykvBJuWRpF8dXm2z_TbGEQFmrOEUYlNn9hLjP0-1777252922.9479008-1.0.1.1-y1DRx67UaY1RfkwH4MLzpQHtbKhMi4VcEwjKJG9y3Nc; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a03906aed3c02-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Age: 197
+< Cache-Control: public, max-age=300
+< ETag: "b46b16abd7cfea7bf0c2881f11173be8"
+< Last-Modified: Thu, 16 Jun 2022 08:15:02 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 25 tasks
+    [893.30ms]
+Downloaded electron-window-state versions
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:02 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=iXRWkMrHsmqKripe1CjdGdwK5wX.SOvCGf7nO7.O9lo-1777252922.9568622-1.0.1.1-XedQ1VU2kS0FdTDpf4K4rC25NEWvQgDtKxIMkcEvwaM; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a03907c852641-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Age: 141
+< Cache-Control: public, max-age=300
+< ETag: "efeef182b8eb9de68221c617c04d63c1"
+< Last-Modified: Sun, 12 Apr 2026 08:39:21 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 24 tasks
+    [900.04ms]
+Downloaded electron-vite versions
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:02 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=H6d.bV_AUzz70vN3yQkTOH37sO9Gznbs2wzTwlKzURE-1777252922.9553888-1.0.1.1-fVNVCurDNVp27nzKD6jBWjVLLcevkgfcHAAQG0wW9yc; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a0390796cd530-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Age: 197
+< Cache-Control: public, max-age=300
+< ETag: "12f04fcc78e22a3ab07c38f183fc41af"
+< Last-Modified: Mon, 18 Aug 2025 11:55:19 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 23 tasks
+    [903.27ms]
+Downloaded electron-log versions
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:02 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=WDZSTd03pOxILjPqbbOy_XDDcXxQyXJRm9qDnxiK1Zg-1777252922.9411886-1.0.1.1-7WRPlM76lOZcjJQTbhvQYyY9V0PDWf3WzZd2Lpd9i7Y; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a03905be2ebf9-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Age: 42
+< Cache-Control: public, max-age=300
+< ETag: "d8a1d5d22f30ca3ed89a9c88490101a5"
+< Last-Modified: Wed, 22 Apr 2026 18:45:25 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 22 tasks
+    [908.40ms]
+Downloaded @slack/bolt versions
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:03 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=AKGGgiAf.Zy9zSEtg90Pzce.w2b4uj5yXRoZ7Q4vcPY-1777252923.00062-1.0.1.1-GH2ubEUvIWdYRWBstcjdPtZHUISlRt_.0gPWDTOE_lk; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a0390baa0b26f-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Age: 125
+< Cache-Control: public, max-age=300
+< ETag: "a8ca9dabb4eab614985b166e9a3dd91e"
+< Last-Modified: Thu, 16 Apr 2026 23:38:30 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 21 tasks
+    [938.83ms]
+Downloaded typescript versions
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:03 GMT
+< Connection: keep-alive
+< CF-Ray: 9f2a03909dd60772-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Age: 251
+< Cache-Control: public, max-age=300
+< ETag: "f7e85af258c4522a58016299430db3e8"
+< Last-Modified: Tue, 14 Apr 2026 01:12:07 GMT
+< Vary: Accept-Encoding
+< Set-Cookie: _cfuvid=RnmUkUzRkBGrf60BsiYAO4Tl3n9pGt3A.PQyQs38KgQ-1777252923033-0.0.1.1-604800000; path=/; domain=.npmjs.org; HttpOnly; Secure; SameSite=None
+< Server: cloudflare
+
+[PackageManager] waiting for 20 tasks
+    [964.10ms]
+Downloaded electron-builder versions
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:03 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=Pc3Oo22u8I5mFYqMmSEHxo_Xl2r68zzIwsOc_zMA3KE-1777252922.9229553-1.0.1.1-jSrJens72f.7tunwHE8gNeCBOPcZ8U3cSYZt1ve73lo; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a03904b5eb9dd-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Cache-Control: public, max-age=300
+< ETag: "bdff38f2b54be9b42b55eec1f1333dc3"
+< Last-Modified: Fri, 03 Apr 2026 13:23:29 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 19 tasks
+    [964.67ms]
+Downloaded storybook-solidjs-vite versions
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:03 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=bx0S9UtmU5BEvNm6mddhJSTS.1gxndjbEuSGaOtF7h8-1777252922.9336743-1.0.1.1-bLFVT4rAg00A8Loi8rfV9CVxNcgyVKVUWHxw8999yEI; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a03905f3ec738-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Cache-Control: public, max-age=300
+< ETag: "8ed3e00ad3a2123c819546585c86f26a"
+< Last-Modified: Wed, 03 Sep 2025 15:02:42 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 18 tasks
+    [975.36ms]
+Downloaded @types/semver versions
+< 200 OK
+< Access-Control-Allow-Origin: https://render.githubusercontent.com
+< content-disposition: attachment; filename=anomalyco-ghostty-web-20bd361.tar.gz
+< Content-Length: 822316
+< Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'; sandbox
+< Content-Type: application/x-gzip
+< cross-origin-resource-policy: cross-origin
+< ETag: W/"bf7a907449fc7a86a80d04fd588f01e0c02e352cbeef0dfb925edbc3fbb59bb4"
+< Strict-Transport-Security: max-age=31536000
+< Vary: Authorization,Accept-Encoding
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: deny
+< X-XSS-Protection: 1; mode=block
+< Date: Mon, 27 Apr 2026 01:22:03 GMT
+< X-GitHub-Request-Id: C768:1F7256:1A1989:621BB0:69EEBA3A
+
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:03 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=g7Hjx0k0SCURxMKEC407weQQHg1VSlk4VsA0ryoIFSA-1777252922.9681325-1.0.1.1-D.adBzF7ajnofNqxKMA6OBU55h0aP1RDFml8AhI_Vdo; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a03908a6bd5f9-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Cache-Control: public, max-age=300
+< ETag: "caf372ddcda9a04ebd9e7f7b3c041502"
+< Last-Modified: Fri, 24 Apr 2026 23:30:48 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 17 tasks
+    [1024.96ms]
+Downloaded electron-store versions
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:03 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=79Q7NCP_v02tLM5TrmHrN8_UnsX7ZsLGkFtRIlHdR1w-1777252922.9773152-1.0.1.1-v4UGauPjSW2KvsARgLHOqHeOcgjGUmVaDwdHnb1dlmc; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a0390985a25d7-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Cache-Control: public, max-age=300
+< ETag: "fac44eea35ad32eba9d2d10217640894"
+< Last-Modified: Mon, 02 Feb 2026 17:43:05 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 16 tasks
+    [1120.47ms]
+Downloaded @tauri-apps/plugin-process versions
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:03 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=7PuKj.EfM.GP2Wx5oZun6Fo0b8geZZb6TcU.4qLQiYk-1777252922.9944534-1.0.1.1-CAwh8qkVwNqyDH01uYKj..d8uufrjmPjwE2v.aFEdZc; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a0390be0ddff9-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Cache-Control: public, max-age=300
+< ETag: "a752d6deb479cfd2e26d15523207f3bc"
+< Last-Modified: Sat, 04 Apr 2026 16:48:31 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 15 tasks
+    [1154.14ms]
+Downloaded @tauri-apps/plugin-deep-link versions
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:03 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=t0Zs6em.sM_e8L5wFdvuh6KD3gpd9l4ZODbhXyiLrtY-1777252922.9510195-1.0.1.1-wX3lomNDwBc747NGlD0dGpZjcc.6NTf0Edqh.9o35b8; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a039078fbd5c8-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Cache-Control: public, max-age=300
+< ETag: "69e143df2f8a94ff265e1e27c9d4f2ac"
+< Last-Modified: Wed, 28 Aug 2024 07:29:55 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 14 tasks
+    [1169.96ms]
+Downloaded aws4fetch versions
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:03 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=TuYKeh8a9zgIQLoEqrONSufbPyPutj5WiNB2.OF.mLA-1777252922.974794-1.0.1.1-uZWc6.IqTxHcqIAbAzyjclPV0NrIDZQtUaIuA67z6ZM; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a03909f2ce391-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Cache-Control: public, max-age=300
+< ETag: "ef3967f6733371b74ad0a87dfc6af7c4"
+< Last-Modified: Tue, 03 Feb 2026 11:19:52 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 13 tasks
+    [1308.19ms]
+Downloaded @tauri-apps/plugin-shell versions
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:03 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=hlAv.1ePdtSjqGe6gGFBEA4nv.xgbnnGKdY8WXUWk5I-1777252922.9909139-1.0.1.1-0h9npGfT3tMzjm2XISCUlJD43A6wcagNzSNQneI87E8; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a0390ac9f6c77-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Cache-Control: public, max-age=300
+< ETag: "6f0a3935c9e3f56014a6af974dfd7175"
+< Last-Modified: Sat, 04 Apr 2026 16:48:53 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 12 tasks
+    [1320.68ms]
+Downloaded @tauri-apps/plugin-dialog versions
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:03 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=JHJt79fLATn81fANeVi851kIMgL8Rjf6nEKeVrEm_6c-1777252923.004992-1.0.1.1-38rbqNAWVW13Ys7IeZrgL5AjAaw19yR2cCpgnizwqmQ; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a0390c95857c0-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Cache-Control: public, max-age=300
+< ETag: "9d392bfff3ca60b12e4b1d83e1f447dd"
+< Last-Modified: Wed, 04 Mar 2026 11:15:37 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 11 tasks
+    [1333.09ms]
+Downloaded @tauri-apps/cli versions
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:03 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=Ke1RAaHxpFPDLcefks8WbQVoewg3Rop.azy2wp0EohE-1777252922.9686854-1.0.1.1-TXRxOzT0ajeUoEdKdgWqPv0OWjUpv53dJEH7qJVTduU; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a03908a2857b5-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Cache-Control: public, max-age=300
+< ETag: "f5affe9eeba9097716c2f737363a325f"
+< Last-Modified: Mon, 02 Feb 2026 17:43:08 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 10 tasks
+    [1349.23ms]
+Downloaded @tauri-apps/plugin-store versions
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:03 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=cQxSbtPYm_OqoDemYJMm7ERZrQogakJiR2BESoCCJyY-1777252922.9973462-1.0.1.1-VWt_T43NCfT73M9qLb0nUTft6TO7kFFP20E_.GXSAKo; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a0390be55e029-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Cache-Control: public, max-age=300
+< ETag: "56d6ab99de5c353332c1bebfea1e47b1"
+< Last-Modified: Tue, 03 Feb 2026 00:17:28 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 9 tasks
+    [1353.46ms]
+Downloaded @tauri-apps/api versions
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:03 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=6H.6NWObhhEThdEBOqY5Z4deEA7_bpfgUoDjjqdBwY0-1777252922.9685194-1.0.1.1-UTg6P6H_o9RFzCc58OH3Qmi.5e2yX6qsxk3xlwyLzDo; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a03908a518145-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Cache-Control: public, max-age=300
+< ETag: "74456ca894b27f98f51bf8b7a8ce7732"
+< Last-Modified: Mon, 02 Feb 2026 17:43:12 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 8 tasks
+    [1366.08ms]
+Downloaded @tauri-apps/plugin-window-state versions
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:03 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=EYVTs_2ApEvRzvqUfv2JjYF3.vuUv6m2RQWXF2po6Lk-1777252922.9594321-1.0.1.1-1S1QN.5X4tUWLE7JgEcSd1Upn6lE_Twu2HrUvtOCdvU; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a03907f970d54-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Cache-Control: public, max-age=300
+< ETag: "6168858dd3f736e3ae9f4040c1cfc96f"
+< Last-Modified: Sat, 04 Apr 2026 16:49:42 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 7 tasks
+    [1369.57ms]
+Downloaded @tauri-apps/plugin-updater versions
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:03 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=CKpiAH1zjj68arlFhPJNZSXwQxNh8rCJcElaM2tO7hY-1777252922.986869-1.0.1.1-UdsPZJG61NvmBFYbnRvvHbqcBsKNko2Y2g6_zuHvpGM; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a0390a840d759-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Cache-Control: public, max-age=300
+< ETag: "2ec9a0a5747c856b5379f75868b59f4a"
+< Last-Modified: Sat, 04 Apr 2026 16:49:03 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 6 tasks
+    [1372.76ms]
+Downloaded @tauri-apps/plugin-http versions
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:03 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=wpKjSHhjRO1avbsdFeQU54m5WFiNkUuODLWvZWv7QqY-1777252922.9961965-1.0.1.1-45yVMs1G02eKNq.2KdiVPjKNO6kVPaveR6r1sP4F1gA; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a0390bc3bd4ff-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Cache-Control: public, max-age=300
+< ETag: "9b7951103c5feebf8679fe5225a897d6"
+< Last-Modified: Mon, 02 Feb 2026 17:48:28 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 5 tasks
+    [1397.84ms]
+Downloaded @tauri-apps/plugin-clipboard-manager versions
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:03 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=RQggqsA_IVwzSsQ4Uvu8WnNqoSEJJxQN5bjczlzH5pk-1777252922.985023-1.0.1.1-WdpaTjhZbRuie_PSMIDr75lJAltyd2qgQqoL5dqNdGY; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a0390afe87d99-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Cache-Control: public, max-age=300
+< ETag: "c4e89f035f81a311b8a032ea9b411118"
+< Last-Modified: Mon, 02 Feb 2026 17:43:03 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 4 tasks
+    [1414.98ms]
+Downloaded @tauri-apps/plugin-notification versions
+[PackageManager] waiting for 3 tasks
+    [2.31s] Downloaded ghostty-web tarball
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:03 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=DiBBoBRFedg5yWclf6b9aFDxI7bggt2tJ6zLkpWzSt4-1777252922.9761724-1.0.1.1-J.gKVcKHvTa.MriiwwVMHFpeOJAfZw26tazmxNpgWPc; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a03909837915d-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Cache-Control: public, max-age=300
+< ETag: "01177ab81c18477946c1ea8b09ec794c"
+< Last-Modified: Mon, 02 Feb 2026 17:48:32 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 3 tasks
+    [1.54s]
+Downloaded @tauri-apps/plugin-opener versions
+< 304 Not Modified
+< Date: Mon, 27 Apr 2026 01:22:03 GMT
+< Connection: keep-alive
+< set-cookie: _cfuvid=xemJ1WhgZ8GRUOtotT_qHC7N4dN.CNDkglLMmaPm9yk-1777252922.98186-1.0.1.1-Lrs1KDvno.ScHCU.5yuh1.cVHcaJTMRk2AMom9FkC7Y; HttpOnly; SameSite=None; Secure; Path=/; Domain=npmjs.org
+< CF-Ray: 9f2a0390ae1b97de-NRT
+< CF-Cache-Status: HIT
+< Access-Control-Allow-Origin: *
+< Cache-Control: public, max-age=300
+< ETag: "3f61837db6e9de5bac3757031c99cbad"
+< Last-Modified: Mon, 02 Feb 2026 17:43:04 GMT
+< Server: cloudflare
+< Vary: Accept-Encoding
+
+[PackageManager] waiting for 2 tasks
+    [1.54s]
+Downloaded @tauri-apps/plugin-os versions
+ .github
+ .github\actions
+ .github\actions\setup-zig
+ .github\actions\setup-zig\action.yml
+ .github\workflows
+ .github\workflows\ci.yml
+ .github\workflows\publish.yml
+ .gitignore
+ .gitmodules
+ .npmignore
+ .prettierignore
+ .prettierrc
+ AGENTS.md
+ LICENSE
+ README.md
+ bench
+ bench\versus.ts
+ biome.json
+ bun.lock
+ bunfig.toml
+ demo
+ demo\README.md
+ demo\bin
+ demo\bin\demo.js
+ demo\bun.lock
+ demo\colors-demo.html
+ demo\index.html
+ demo\package.json
+ demo\scrollbar-test.html
+ demo\showcase.sh
+ dist
+ dist\__vite-browser-external-2447137e.js
+ dist\ghostty-vt.wasm
+ dist\ghostty-web.js
+ dist\ghostty-web.umd.cjs
+ dist\index.d.ts
+ flake.lock
+ flake.nix
+ ghostty
+ ghostty-vt.wasm
+ happydom.ts
+ lib
+ lib\addons
+ lib\addons\fit.test.ts
+ lib\addons\fit.ts
+ lib\buffer.test.ts
+ lib\buffer.ts
+ lib\event-emitter.ts
+ lib\ghostty.ts
+ lib\index.ts
+ lib\input-handler.test.ts
+ lib\input-handler.ts
+ lib\interfaces.ts
+ lib\iris-repro-final.test.ts
+ lib\iris-repro-fix-verify.test.ts
+ lib\link-detector.ts
+ lib\providers
+ lib\providers\osc8-link-provider.ts
+ lib\providers\url-regex-provider.ts
+ lib\renderer.test.ts
+ lib\renderer.ts
+ lib\scrolling.test.ts
+ lib\selection-manager.test.ts
+ lib\selection-manager.ts
+ lib\terminal.test.ts
+ lib\terminal.ts
+ lib\test-helpers.ts
+ lib\types.ts
+ lib\url-detection.test.ts
+ lib\viewport-corruption.test.ts
+ lib\viewport-row-merge.test.ts
+ package.json
+ patches
+ patches\ghostty-wasm-api.patch
+ scripts
+ scripts\build-wasm.sh
+ tsconfig.json
+ vite.config.js
+[ghostty-web] Extract .bcfab2b7febfb373-00000001.ghostty-web (decompressed 0.82 MB tgz file in 16ms)
+[ghostty-web] Extracted to .bcfab2b7febfb373-00000001.ghostty-web (688ms)
+[PackageManager] waiting for 1 tasks
+Resolved, downloaded and extracted [38]
+Clean lockfile: 2699 packages - 2698 packages in 19.8ms
+Skip installing fsevents - os mismatch
+Skip installing lightningcss-darwin-arm64 - cpu & os mismatch
+Skip installing lightningcss-darwin-x64 - os mismatch
+Skip installing lightningcss-freebsd-x64 - os mismatch
+Skip installing lightningcss-linux-arm-gnueabihf - cpu & os mismatch
+Skip installing lightningcss-linux-arm64-gnu - cpu & os mismatch
+Skip installing lightningcss-linux-arm64-musl - cpu & os mismatch
+Skip installing lightningcss-linux-x64-gnu - os mismatch
+Skip installing lightningcss-linux-x64-musl - os mismatch
+Skip installing lightningcss-win32-arm64-msvc - cpu mismatch
+Skip installing @tailwindcss/oxide-android-arm64 - cpu & os mismatch
+Skip installing @tailwindcss/oxide-darwin-arm64 - cpu & os mismatch
+Skip installing @tailwindcss/oxide-darwin-x64 - os mismatch
+Skip installing @tailwindcss/oxide-freebsd-x64 - os mismatch
+Skip installing @tailwindcss/oxide-linux-arm-gnueabihf - cpu & os mismatch
+Skip installing @tailwindcss/oxide-linux-arm64-gnu - cpu & os mismatch
+Skip installing @tailwindcss/oxide-linux-arm64-musl - cpu & os mismatch
+Skip installing @tailwindcss/oxide-linux-x64-gnu - os mismatch
+Skip installing @tailwindcss/oxide-linux-x64-musl - os mismatch
+Skip installing @tailwindcss/oxide-wasm32-wasi - cpu mismatch
+Skip installing @tailwindcss/oxide-win32-arm64-msvc - cpu mismatch
+Skip installing fsevents - os mismatch
+Skip installing @esbuild/aix-ppc64 - cpu & os mismatch
+Skip installing @esbuild/android-arm - cpu & os mismatch
+Skip installing @esbuild/android-arm64 - cpu & os mismatch
+Skip installing @esbuild/android-x64 - os mismatch
+Skip installing @esbuild/darwin-arm64 - cpu & os mismatch
+Skip installing @esbuild/darwin-x64 - os mismatch
+Skip installing @esbuild/freebsd-arm64 - cpu & os mismatch
+Skip installing @esbuild/freebsd-x64 - os mismatch
+Skip installing @esbuild/linux-arm - cpu & os mismatch
+Skip installing @esbuild/linux-arm64 - cpu & os mismatch
+Skip installing @esbuild/linux-ia32 - cpu & os mismatch
+Skip installing @esbuild/linux-loong64 - cpu & os mismatch
+Skip installing @esbuild/linux-mips64el - cpu & os mismatch
+Skip installing @esbuild/linux-ppc64 - cpu & os mismatch
+Skip installing @esbuild/linux-riscv64 - cpu & os mismatch
+Skip installing @esbuild/linux-s390x - cpu & os mismatch
+Skip installing @esbuild/linux-x64 - os mismatch
+Skip installing @esbuild/netbsd-arm64 - cpu & os mismatch
+Skip installing @esbuild/netbsd-x64 - os mismatch
+Skip installing @esbuild/openbsd-arm64 - cpu & os mismatch
+Skip installing @esbuild/openbsd-x64 - os mismatch
+Skip installing @esbuild/openharmony-arm64 - cpu & os mismatch
+Skip installing @esbuild/sunos-x64 - os mismatch
+Skip installing @esbuild/win32-arm64 - cpu mismatch
+Skip installing @esbuild/win32-ia32 - cpu mismatch
+Skip installing @rollup/rollup-android-arm-eabi - cpu & os mismatch
+Skip installing @rollup/rollup-android-arm64 - cpu & os mismatch
+Skip installing @rollup/rollup-darwin-arm64 - cpu & os mismatch
+Skip installing @rollup/rollup-darwin-x64 - os mismatch
+Skip installing @rollup/rollup-freebsd-arm64 - cpu & os mismatch
+Skip installing @rollup/rollup-freebsd-x64 - os mismatch
+Skip installing @rollup/rollup-linux-arm-gnueabihf - cpu & os mismatch
+Skip installing @rollup/rollup-linux-arm-musleabihf - cpu & os mismatch
+Skip installing @rollup/rollup-linux-arm64-gnu - cpu & os mismatch
+Skip installing @rollup/rollup-linux-arm64-musl - cpu & os mismatch
+Skip installing @rollup/rollup-linux-loong64-gnu - cpu & os mismatch
+Skip installing @rollup/rollup-linux-loong64-musl - cpu & os mismatch
+Skip installing @rollup/rollup-linux-ppc64-gnu - cpu & os mismatch
+Skip installing @rollup/rollup-linux-ppc64-musl - cpu & os mismatch
+Skip installing @rollup/rollup-linux-riscv64-gnu - cpu & os mismatch
+Skip installing @rollup/rollup-linux-riscv64-musl - cpu & os mismatch
+Skip installing @rollup/rollup-linux-s390x-gnu - cpu & os mismatch
+Skip installing @rollup/rollup-linux-x64-gnu - os mismatch
+Skip installing @rollup/rollup-linux-x64-musl - os mismatch
+Skip installing @rollup/rollup-openbsd-x64 - os mismatch
+Skip installing @rollup/rollup-openharmony-arm64 - cpu & os mismatch
+Skip installing @rollup/rollup-win32-arm64-msvc - cpu mismatch
+Skip installing @rollup/rollup-win32-ia32-msvc - cpu mismatch
+Skip installing fsevents - os mismatch
+Skip installing @typescript/native-preview-darwin-arm64 - cpu & os mismatch
+Skip installing @typescript/native-preview-darwin-x64 - os mismatch
+Skip installing @typescript/native-preview-linux-arm - cpu & os mismatch
+Skip installing @typescript/native-preview-linux-arm64 - cpu & os mismatch
+Skip installing @typescript/native-preview-linux-x64 - os mismatch
+Skip installing @typescript/native-preview-win32-arm64 - cpu mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing @msgpackr-extract/msgpackr-extract-darwin-arm64 - cpu & os mismatch
+Skip installing @msgpackr-extract/msgpackr-extract-darwin-x64 - os mismatch
+Skip installing @msgpackr-extract/msgpackr-extract-linux-arm - cpu & os mismatch
+Skip installing @msgpackr-extract/msgpackr-extract-linux-arm64 - cpu & os mismatch
+Skip installing @msgpackr-extract/msgpackr-extract-linux-x64 - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing @cloudflare/workerd-darwin-64 - os mismatch
+Skip installing @cloudflare/workerd-darwin-arm64 - cpu & os mismatch
+Skip installing @cloudflare/workerd-linux-64 - os mismatch
+Skip installing @cloudflare/workerd-linux-arm64 - cpu & os mismatch
+Skip installing @esbuild/aix-ppc64 - cpu & os mismatch
+Skip installing @esbuild/android-arm - cpu & os mismatch
+Skip installing @esbuild/android-arm64 - cpu & os mismatch
+Skip installing @esbuild/android-x64 - os mismatch
+Skip installing @esbuild/darwin-arm64 - cpu & os mismatch
+Skip installing @esbuild/darwin-x64 - os mismatch
+Skip installing @esbuild/freebsd-arm64 - cpu & os mismatch
+Skip installing @esbuild/freebsd-x64 - os mismatch
+Skip installing @esbuild/linux-arm - cpu & os mismatch
+Skip installing @esbuild/linux-arm64 - cpu & os mismatch
+Skip installing @esbuild/linux-ia32 - cpu & os mismatch
+Skip installing @esbuild/linux-loong64 - cpu & os mismatch
+Skip installing @esbuild/linux-mips64el - cpu & os mismatch
+Skip installing @esbuild/linux-ppc64 - cpu & os mismatch
+Skip installing @esbuild/linux-riscv64 - cpu & os mismatch
+Skip installing @esbuild/linux-s390x - cpu & os mismatch
+Skip installing @esbuild/linux-x64 - os mismatch
+Skip installing @esbuild/netbsd-arm64 - cpu & os mismatch
+Skip installing @esbuild/netbsd-x64 - os mismatch
+Skip installing @esbuild/openbsd-arm64 - cpu & os mismatch
+Skip installing @esbuild/openbsd-x64 - os mismatch
+Skip installing @esbuild/sunos-x64 - os mismatch
+Skip installing @esbuild/win32-arm64 - cpu mismatch
+Skip installing @esbuild/win32-ia32 - cpu mismatch
+Skip installing @img/sharp-darwin-arm64 - cpu & os mismatch
+Skip installing @img/sharp-darwin-x64 - os mismatch
+Skip installing @img/sharp-libvips-darwin-arm64 - cpu & os mismatch
+Skip installing @img/sharp-libvips-darwin-x64 - os mismatch
+Skip installing @img/sharp-libvips-linux-arm - cpu & os mismatch
+Skip installing @img/sharp-libvips-linux-arm64 - cpu & os mismatch
+Skip installing @img/sharp-libvips-linux-s390x - cpu & os mismatch
+Skip installing @img/sharp-libvips-linux-x64 - os mismatch
+Skip installing @img/sharp-libvips-linuxmusl-arm64 - cpu & os mismatch
+Skip installing @img/sharp-libvips-linuxmusl-x64 - os mismatch
+Skip installing @img/sharp-linux-arm - cpu & os mismatch
+Skip installing @img/sharp-linux-arm64 - cpu & os mismatch
+Skip installing @img/sharp-linux-s390x - cpu & os mismatch
+Skip installing @img/sharp-linux-x64 - os mismatch
+Skip installing @img/sharp-linuxmusl-arm64 - cpu & os mismatch
+Skip installing @img/sharp-linuxmusl-x64 - os mismatch
+Skip installing @img/sharp-wasm32 - cpu mismatch
+Skip installing @img/sharp-win32-ia32 - cpu mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing @oxc-minify/binding-android-arm64 - cpu & os mismatch
+Skip installing @oxc-minify/binding-darwin-arm64 - cpu & os mismatch
+Skip installing @oxc-minify/binding-darwin-x64 - os mismatch
+Skip installing @oxc-minify/binding-freebsd-x64 - os mismatch
+Skip installing @oxc-minify/binding-linux-arm-gnueabihf - cpu & os mismatch
+Skip installing @oxc-minify/binding-linux-arm-musleabihf - cpu & os mismatch
+Skip installing @oxc-minify/binding-linux-arm64-gnu - cpu & os mismatch
+Skip installing @oxc-minify/binding-linux-arm64-musl - cpu & os mismatch
+Skip installing @oxc-minify/binding-linux-riscv64-gnu - cpu & os mismatch
+Skip installing @oxc-minify/binding-linux-s390x-gnu - cpu & os mismatch
+Skip installing @oxc-minify/binding-linux-x64-gnu - os mismatch
+Skip installing @oxc-minify/binding-linux-x64-musl - os mismatch
+Skip installing @oxc-minify/binding-wasm32-wasi - cpu mismatch
+Skip installing @oxc-minify/binding-win32-arm64-msvc - cpu mismatch
+Skip installing @oxc-transform/binding-android-arm64 - cpu & os mismatch
+Skip installing @oxc-transform/binding-darwin-arm64 - cpu & os mismatch
+Skip installing @oxc-transform/binding-darwin-x64 - os mismatch
+Skip installing @oxc-transform/binding-freebsd-x64 - os mismatch
+Skip installing @oxc-transform/binding-linux-arm-gnueabihf - cpu & os mismatch
+Skip installing @oxc-transform/binding-linux-arm-musleabihf - cpu & os mismatch
+Skip installing @oxc-transform/binding-linux-arm64-gnu - cpu & os mismatch
+Skip installing @oxc-transform/binding-linux-arm64-musl - cpu & os mismatch
+Skip installing @oxc-transform/binding-linux-riscv64-gnu - cpu & os mismatch
+Skip installing @oxc-transform/binding-linux-s390x-gnu - cpu & os mismatch
+Skip installing @oxc-transform/binding-linux-x64-gnu - os mismatch
+Skip installing @oxc-transform/binding-linux-x64-musl - os mismatch
+Skip installing @oxc-transform/binding-wasm32-wasi - cpu mismatch
+Skip installing @oxc-transform/binding-win32-arm64-msvc - cpu mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing @esbuild/android-arm - cpu & os mismatch
+Skip installing @esbuild/android-arm64 - cpu & os mismatch
+Skip installing @esbuild/android-x64 - os mismatch
+Skip installing @esbuild/darwin-arm64 - cpu & os mismatch
+Skip installing @esbuild/darwin-x64 - os mismatch
+Skip installing @esbuild/freebsd-arm64 - cpu & os mismatch
+Skip installing @esbuild/freebsd-x64 - os mismatch
+Skip installing @esbuild/linux-arm - cpu & os mismatch
+Skip installing @esbuild/linux-arm64 - cpu & os mismatch
+Skip installing @esbuild/linux-ia32 - cpu & os mismatch
+Skip installing @esbuild/linux-loong64 - cpu & os mismatch
+Skip installing @esbuild/linux-mips64el - cpu & os mismatch
+Skip installing @esbuild/linux-ppc64 - cpu & os mismatch
+Skip installing @esbuild/linux-riscv64 - cpu & os mismatch
+Skip installing @esbuild/linux-s390x - cpu & os mismatch
+Skip installing @esbuild/linux-x64 - os mismatch
+Skip installing @esbuild/netbsd-x64 - os mismatch
+Skip installing @esbuild/openbsd-x64 - os mismatch
+Skip installing @esbuild/sunos-x64 - os mismatch
+Skip installing @esbuild/win32-arm64 - cpu mismatch
+Skip installing @esbuild/win32-ia32 - cpu mismatch
+Skip installing fsevents - os mismatch
+Skip installing @esbuild/aix-ppc64 - cpu & os mismatch
+Skip installing @esbuild/android-arm - cpu & os mismatch
+Skip installing @esbuild/android-arm64 - cpu & os mismatch
+Skip installing @esbuild/android-x64 - os mismatch
+Skip installing @esbuild/darwin-arm64 - cpu & os mismatch
+Skip installing @esbuild/darwin-x64 - os mismatch
+Skip installing @esbuild/freebsd-arm64 - cpu & os mismatch
+Skip installing @esbuild/freebsd-x64 - os mismatch
+Skip installing @esbuild/linux-arm - cpu & os mismatch
+Skip installing @esbuild/linux-arm64 - cpu & os mismatch
+Skip installing @esbuild/linux-ia32 - cpu & os mismatch
+Skip installing @esbuild/linux-loong64 - cpu & os mismatch
+Skip installing @esbuild/linux-mips64el - cpu & os mismatch
+Skip installing @esbuild/linux-ppc64 - cpu & os mismatch
+Skip installing @esbuild/linux-riscv64 - cpu & os mismatch
+Skip installing @esbuild/linux-s390x - cpu & os mismatch
+Skip installing @esbuild/linux-x64 - os mismatch
+Skip installing @esbuild/netbsd-x64 - os mismatch
+Skip installing @esbuild/openbsd-x64 - os mismatch
+Skip installing @esbuild/sunos-x64 - os mismatch
+Skip installing @esbuild/win32-arm64 - cpu mismatch
+Skip installing @esbuild/win32-ia32 - cpu mismatch
+Skip installing fsevents - os mismatch
+Skip installing @tauri-apps/cli-darwin-arm64 - cpu & os mismatch
+Skip installing @tauri-apps/cli-darwin-x64 - os mismatch
+Skip installing @tauri-apps/cli-linux-arm-gnueabihf - cpu & os mismatch
+Skip installing @tauri-apps/cli-linux-arm64-gnu - cpu & os mismatch
+Skip installing @tauri-apps/cli-linux-arm64-musl - cpu & os mismatch
+Skip installing @tauri-apps/cli-linux-riscv64-gnu - cpu & os mismatch
+Skip installing @tauri-apps/cli-linux-x64-gnu - os mismatch
+Skip installing @tauri-apps/cli-linux-x64-musl - os mismatch
+Skip installing @tauri-apps/cli-win32-arm64-msvc - cpu mismatch
+Skip installing @tauri-apps/cli-win32-ia32-msvc - cpu mismatch
+Skip installing fsevents - os mismatch
+Skip installing @lydell/node-pty-darwin-arm64 - cpu & os mismatch
+Skip installing @lydell/node-pty-darwin-x64 - os mismatch
+Skip installing @lydell/node-pty-linux-arm64 - cpu & os mismatch
+Skip installing @lydell/node-pty-linux-x64 - os mismatch
+Skip installing @lydell/node-pty-win32-arm64 - cpu mismatch
+Skip installing @lydell/node-pty-darwin-arm64 - cpu & os mismatch
+Skip installing @lydell/node-pty-darwin-x64 - os mismatch
+Skip installing @lydell/node-pty-linux-arm64 - cpu & os mismatch
+Skip installing @lydell/node-pty-linux-x64 - os mismatch
+Skip installing @lydell/node-pty-win32-arm64 - cpu mismatch
+Skip installing dmg-license - os mismatch
+Skip installing dmg-license - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing @img/sharp-darwin-arm64 - cpu & os mismatch
+Skip installing @img/sharp-darwin-x64 - os mismatch
+Skip installing @img/sharp-libvips-darwin-arm64 - cpu & os mismatch
+Skip installing @img/sharp-libvips-darwin-x64 - os mismatch
+Skip installing @img/sharp-libvips-linux-arm - cpu & os mismatch
+Skip installing @img/sharp-libvips-linux-arm64 - cpu & os mismatch
+Skip installing @img/sharp-libvips-linux-ppc64 - cpu & os mismatch
+Skip installing @img/sharp-libvips-linux-riscv64 - cpu & os mismatch
+Skip installing @img/sharp-libvips-linux-s390x - cpu & os mismatch
+Skip installing @img/sharp-libvips-linux-x64 - os mismatch
+Skip installing @img/sharp-libvips-linuxmusl-arm64 - cpu & os mismatch
+Skip installing @img/sharp-libvips-linuxmusl-x64 - os mismatch
+Skip installing @img/sharp-linux-arm - cpu & os mismatch
+Skip installing @img/sharp-linux-arm64 - cpu & os mismatch
+Skip installing @img/sharp-linux-ppc64 - cpu & os mismatch
+Skip installing @img/sharp-linux-riscv64 - cpu & os mismatch
+Skip installing @img/sharp-linux-s390x - cpu & os mismatch
+Skip installing @img/sharp-linux-x64 - os mismatch
+Skip installing @img/sharp-linuxmusl-arm64 - cpu & os mismatch
+Skip installing @img/sharp-linuxmusl-x64 - os mismatch
+Skip installing @img/sharp-wasm32 - cpu mismatch
+Skip installing @img/sharp-win32-arm64 - cpu mismatch
+Skip installing @img/sharp-win32-ia32 - cpu mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing @oxc-minify/binding-android-arm64 - cpu & os mismatch
+Skip installing @oxc-minify/binding-darwin-arm64 - cpu & os mismatch
+Skip installing @oxc-minify/binding-darwin-x64 - os mismatch
+Skip installing @oxc-minify/binding-freebsd-x64 - os mismatch
+Skip installing @oxc-minify/binding-linux-arm-gnueabihf - cpu & os mismatch
+Skip installing @oxc-minify/binding-linux-arm-musleabihf - cpu & os mismatch
+Skip installing @oxc-minify/binding-linux-arm64-gnu - cpu & os mismatch
+Skip installing @oxc-minify/binding-linux-arm64-musl - cpu & os mismatch
+Skip installing @oxc-minify/binding-linux-riscv64-gnu - cpu & os mismatch
+Skip installing @oxc-minify/binding-linux-s390x-gnu - cpu & os mismatch
+Skip installing @oxc-minify/binding-linux-x64-gnu - os mismatch
+Skip installing @oxc-minify/binding-linux-x64-musl - os mismatch
+Skip installing @oxc-minify/binding-wasm32-wasi - cpu mismatch
+Skip installing @oxc-minify/binding-win32-arm64-msvc - cpu mismatch
+Skip installing @oxc-transform/binding-android-arm64 - cpu & os mismatch
+Skip installing @oxc-transform/binding-darwin-arm64 - cpu & os mismatch
+Skip installing @oxc-transform/binding-darwin-x64 - os mismatch
+Skip installing @oxc-transform/binding-freebsd-x64 - os mismatch
+Skip installing @oxc-transform/binding-linux-arm-gnueabihf - cpu & os mismatch
+Skip installing @oxc-transform/binding-linux-arm-musleabihf - cpu & os mismatch
+Skip installing @oxc-transform/binding-linux-arm64-gnu - cpu & os mismatch
+Skip installing @oxc-transform/binding-linux-arm64-musl - cpu & os mismatch
+Skip installing @oxc-transform/binding-linux-riscv64-gnu - cpu & os mismatch
+Skip installing @oxc-transform/binding-linux-s390x-gnu - cpu & os mismatch
+Skip installing @oxc-transform/binding-linux-x64-gnu - os mismatch
+Skip installing @oxc-transform/binding-linux-x64-musl - os mismatch
+Skip installing @oxc-transform/binding-wasm32-wasi - cpu mismatch
+Skip installing @oxc-transform/binding-win32-arm64-msvc - cpu mismatch
+Skip installing fsevents - os mismatch
+Skip installing @opentui/core-darwin-arm64 - cpu & os mismatch
+Skip installing @opentui/core-darwin-x64 - os mismatch
+Skip installing @opentui/core-linux-arm64 - cpu & os mismatch
+Skip installing @opentui/core-linux-x64 - os mismatch
+Skip installing @opentui/core-win32-arm64 - cpu mismatch
+Skip installing bun-webgpu-darwin-arm64 - cpu & os mismatch
+Skip installing bun-webgpu-darwin-x64 - os mismatch
+Skip installing bun-webgpu-linux-x64 - os mismatch
+Skip installing @opentui/core-darwin-arm64 - cpu & os mismatch
+Skip installing @opentui/core-darwin-x64 - os mismatch
+Skip installing @opentui/core-linux-arm64 - cpu & os mismatch
+Skip installing @opentui/core-linux-x64 - os mismatch
+Skip installing @opentui/core-win32-arm64 - cpu mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing @pagefind/darwin-arm64 - cpu & os mismatch
+Skip installing @pagefind/darwin-x64 - os mismatch
+Skip installing @pagefind/freebsd-x64 - os mismatch
+Skip installing @pagefind/linux-arm64 - cpu & os mismatch
+Skip installing @pagefind/linux-x64 - os mismatch
+Skip installing @pagefind/windows-arm64 - cpu mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing fsevents - os mismatch
+Skip installing @parcel/watcher-darwin-arm64 - cpu & os mismatch
+Skip installing @parcel/watcher-darwin-x64 - os mismatch
+Skip installing @parcel/watcher-linux-arm64-glibc - cpu & os mismatch
+Skip installing @parcel/watcher-linux-arm64-musl - cpu & os mismatch
+Skip installing @parcel/watcher-linux-x64-glibc - os mismatch
+Skip installing @parcel/watcher-linux-x64-musl - os mismatch
+Skip installing @parcel/watcher-win32-arm64 - cpu mismatch
+Skip installing @opentui/core-darwin-arm64 - cpu & os mismatch
+Skip installing @opentui/core-darwin-x64 - os mismatch
+Skip installing @opentui/core-linux-arm64 - cpu & os mismatch
+Skip installing @opentui/core-linux-x64 - os mismatch
+Skip installing @opentui/core-win32-arm64 - cpu mismatch
+Skip installing @opentui/core-darwin-arm64 - cpu & os mismatch
+Skip installing @opentui/core-darwin-x64 - os mismatch
+Skip installing @opentui/core-linux-arm64 - cpu & os mismatch
+Skip installing @opentui/core-linux-x64 - os mismatch
+Skip installing @opentui/core-win32-arm64 - cpu mismatch
+Skip installing @parcel/watcher-android-arm64 - cpu & os mismatch
+Skip installing @parcel/watcher-darwin-arm64 - cpu & os mismatch
+Skip installing @parcel/watcher-darwin-x64 - os mismatch
+Skip installing @parcel/watcher-freebsd-x64 - os mismatch
+Skip installing @parcel/watcher-linux-arm-glibc - cpu & os mismatch
+Skip installing @parcel/watcher-linux-arm-musl - cpu & os mismatch
+Skip installing @parcel/watcher-linux-arm64-glibc - cpu & os mismatch
+Skip installing @parcel/watcher-linux-arm64-musl - cpu & os mismatch
+Skip installing @parcel/watcher-linux-x64-glibc - os mismatch
+Skip installing @parcel/watcher-linux-x64-musl - os mismatch
+Skip installing @parcel/watcher-win32-arm64 - cpu mismatch
+Skip installing @parcel/watcher-win32-ia32 - cpu mismatch
+Skip installing @opentui/core-darwin-arm64 - cpu & os mismatch
+Skip installing @opentui/core-darwin-x64 - os mismatch
+Skip installing @opentui/core-linux-arm64 - cpu & os mismatch
+Skip installing @opentui/core-linux-x64 - os mismatch
+Skip installing @opentui/core-win32-arm64 - cpu mismatch
+Skip installing @opentui/core-darwin-arm64 - cpu & os mismatch
+Skip installing @opentui/core-darwin-x64 - os mismatch
+Skip installing @opentui/core-linux-arm64 - cpu & os mismatch
+Skip installing @opentui/core-linux-x64 - os mismatch
+Skip installing @opentui/core-win32-arm64 - cpu mismatch
+Skip installing @oxlint/binding-android-arm-eabi - cpu & os mismatch
+Skip installing @oxlint/binding-android-arm64 - cpu & os mismatch
+Skip installing @oxlint/binding-darwin-arm64 - cpu & os mismatch
+Skip installing @oxlint/binding-darwin-x64 - os mismatch
+Skip installing @oxlint/binding-freebsd-x64 - os mismatch
+Skip installing @oxlint/binding-linux-arm-gnueabihf - cpu & os mismatch
+Skip installing @oxlint/binding-linux-arm-musleabihf - cpu & os mismatch
+Skip installing @oxlint/binding-linux-arm64-gnu - cpu & os mismatch
+Skip installing @oxlint/binding-linux-arm64-musl - cpu & os mismatch
+Skip installing @oxlint/binding-linux-ppc64-gnu - cpu & os mismatch
+Skip installing @oxlint/binding-linux-riscv64-gnu - cpu & os mismatch
+Skip installing @oxlint/binding-linux-riscv64-musl - cpu & os mismatch
+Skip installing @oxlint/binding-linux-s390x-gnu - cpu & os mismatch
+Skip installing @oxlint/binding-linux-x64-gnu - os mismatch
+Skip installing @oxlint/binding-linux-x64-musl - os mismatch
+Skip installing @oxlint/binding-openharmony-arm64 - cpu & os mismatch
+Skip installing @oxlint/binding-win32-arm64-msvc - cpu mismatch
+Skip installing @oxlint/binding-win32-ia32-msvc - cpu mismatch
+Skip installing @oxlint-tsgolint/darwin-arm64 - cpu & os mismatch
+Skip installing @oxlint-tsgolint/darwin-x64 - os mismatch
+Skip installing @oxlint-tsgolint/linux-arm64 - cpu & os mismatch
+Skip installing @oxlint-tsgolint/linux-x64 - os mismatch
+Skip installing @oxlint-tsgolint/win32-arm64 - cpu mismatch
+Skip installing sst-darwin-arm64Hardlinking \\?\C:\Users\shihao1.liu\.bun\install\cache\remeda@2.26.0@@@1 to node_modules\.bun\remeda@2.26.0\node_modules\remeda
+> HTTP/1.1 GET https://registry.npmmirror.com/solid-js/-/solid-js-1.9.10.tgz
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Accept: */*
+> Host: registry.npmmirror.com
+> Accept-Encoding: gzip, deflate, br, zstd
+
+< 302 Moved Temporarily
+< Server: Tengine
+< Content-Type: text/html; charset=utf-8
+< Content-Length: 86
+< Connection: keep-alive
+< Strict-Transport-Security: max-age=5184000
+< Date: Mon, 27 Apr 2026 01:22:04 GMT
+< Vary: Origin
+< request-id: f55b7bca-5e25-441c-b531-2496b778a0bb
+< Location: https://cdn.npmmirror.com/packages/solid-js/1.9.10/solid-js-1.9.10.tgz
+< x-frame-options: SAMEORIGIN
+< x-xss-protection: 1; mode=block
+< x-download-options: noopen
+< x-readtime: 0.4
+< Via: cn8963.l1, kunlun8.cn8963, l2ea120-5.l2, cache70.l2ea120-5, izuf693b8e9ijm4o957vvnz, cache70.l2ea120-5[9,9,302-0,M], cache69.l2ea120-5[11,0], kunlun8.cn8963[19,18,302-0,M], kunlun4.cn8963[21,0]
+< Ali-Swift-Global-Savetime: 1777252924
+< X-Cache: MISS TCP_MISS dirn:-2:-2
+< X-Swift-SaveTime: Mon, 27 Apr 2026 01:22:04 GMT
+< X-Swift-CacheTime: 0
+< Timing-Allow-Origin: *
+< EagleId: 7084dd1817772529248777189e
+
+> HTTP/1.1 GET https://cdn.npmmirror.com/packages/solid-js/1.9.10/solid-js-1.9.10.tgz
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Accept: */*
+> Host: cdn.npmmirror.com
+> Accept-Encoding: gzip, deflate, br, zstd
+
+< 200 OK
+< Server: Tengine
+< Content-Type: application/octet-stream
+< Content-Length: 210967
+< Connection: keep-alive
+< Strict-Transport-Security: max-age=5184000
+< Date: Mon, 27 Apr 2026 00:27:18 GMT
+< x-oss-request-id: 69EEAD666BF28E3338C1D8B1
+< x-oss-cdn-auth: success
+< Accept-Ranges: bytes
+< x-oss-object-type: Normal
+< x-oss-storage-class: Standard
+< Cache-Control: max-age=86400
+< Content-MD5: IBEjWvWmt3RU7Y3s+PWZNw==
+< x-oss-server-time: 20
+< Via: cache10.l2cn1811[0,0,304-0,H], cache7.l2cn1811[1,0], ens-cache5.cn9337[8,39,200-0,H], ens-cache5.cn9337[41,0]
+< ETag: "2011235AF5A6B77454ED8DECF8F59937"
+< Last-Modified: Mon, 27 Oct 2025 21:30:22 GMT
+< x-oss-hash-crc64ecma: 18310438048830964939
+< Age: 3287
+< Ali-Swift-Global-Savetime: 1777249638
+< X-Cache: HIT TCP_REFRESH_HIT dirn:7:240080843
+< X-Swift-SaveTime: Mon, 27 Apr 2026 01:22:05 GMT
+< X-Swift-CacheTime: 83113
+< Timing-Allow-Origin: *
+< EagleId: 3df1b31917772529249772956e
+
+> HTTP/1.1 GET https://registry.npmmirror.com/postcss/-/postcss-8.5.9.tgz
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Accept: */*
+> Host: registry.npmmirror.com
+> Accept-Encoding: gzip, deflate, br, zstd
+
+< 302 Moved Temporarily
+< Server: Tengine
+< Content-Type: text/html; charset=utf-8
+< Content-Length: 82
+< Connection: keep-alive
+< Strict-Transport-Security: max-age=5184000
+< Date: Mon, 27 Apr 2026 01:22:05 GMT
+< Vary: Origin
+< request-id: 13273f54-7415-4385-a8c6-e9a9b2b198df
+< Location: https://cdn.npmmirror.com/packages/postcss/8.5.9/postcss-8.5.9.tgz
+< x-frame-options: SAMEORIGIN
+< x-xss-protection: 1; mode=block
+< x-download-options: noopen
+< x-readtime: 0.454
+< Via: cn8963.l1, kunlun8.cn8963, l2ea120-5.l2, cache34.l2ea120-5, npmmirror-x86-20220823001, cache34.l2ea120-5[9,8,302-0,M], cache69.l2ea120-5[10,0], kunlun8.cn8963[19,18,302-0,M], kunlun4.cn8963[21,0]
+< Ali-Swift-Global-Savetime: 1777252925
+< X-Cache: MISS TCP_MISS dirn:-2:-2
+< X-Swift-SaveTime: Mon, 27 Apr 2026 01:22:05 GMT
+< X-Swift-CacheTime: 0
+< Timing-Allow-Origin: *
+< EagleId: 7084dd1817772529250937405e
+
+> HTTP/1.1 GET https://cdn.npmmirror.com/packages/postcss/8.5.9/postcss-8.5.9.tgz
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Accept: */*
+> Host: cdn.npmmirror.com
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmmirror.com/rollup/-/rollup-4.60.1.tgz
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Accept: */*
+> Host: registry.npmmirror.com
+> Accept-Encoding: gzip, deflate, br, zstd
+
+< 200 OK
+< Server: Tengine
+< Content-Type: application/octet-stream
+< Content-Length: 47787
+< Connection: keep-alive
+< Strict-Transport-Security: max-age=5184000
+< Date: Sun, 26 Apr 2026 23:54:25 GMT
+< x-oss-request-id: 69EEA5B1DC97B3343725768A
+< x-oss-cdn-auth: success
+< Accept-Ranges: bytes
+< x-oss-object-type: Normal
+< x-oss-storage-class: Standard
+< Cache-Control: max-age=86400
+< Content-MD5: eXFKPa3gEE9Foknmh503/Q==
+< x-oss-server-time: 9
+< Via: cache12.l2cn1811[0,0,304-0,H], cache31.l2cn1811[0,0], ens-cache11.cn9337[7,7,200-0,H], ens-cache5.cn9337[9,0]
+< ETag: "79714A3DADE0104F45A249E6879D37FD"
+< Last-Modified: Tue, 07 Apr 2026 22:22:35 GMT
+< x-oss-hash-crc64ecma: 16451048892935250204
+< Age: 5260
+< Ali-Swift-Global-Savetime: 1777247665
+< X-Cache: HIT TCP_REFRESH_HIT dirn:11:401823473
+< X-Swift-SaveTime: Mon, 27 Apr 2026 01:22:05 GMT
+< X-Swift-CacheTime: 81140
+< Timing-Allow-Origin: *
+< EagleId: 3df1b31917772529251323490e
+
+< 302 Moved Temporarily
+< Server: Tengine
+< Content-Type: text/html; charset=utf-8
+< Content-Length: 82
+< Connection: keep-alive
+< Strict-Transport-Security: max-age=5184000
+< Date: Mon, 27 Apr 2026 01:22:05 GMT
+< Vary: Origin
+< request-id: b6290fd3-6212-4eb3-8f8f-27e23dfca99c
+< Location: https://cdn.npmmirror.com/packages/rollup/4.60.1/rollup-4.60.1.tgz
+< x-frame-options: SAMEORIGIN
+< x-xss-protection: 1; mode=block
+< x-download-options: noopen
+< x-readtime: 0.414
+< Via: cn8963.l1, kunlun6.cn8963, l2ea120-5.l2, cache70.l2ea120-5, registry.npmmirror.com-06, cache70.l2ea120-5[9,8,302-0,M], cache37.l2ea120-5[10,0], kunlun6.cn8963[20,20,302-0,M], kunlun8.cn8963[22,0]
+< Ali-Swift-Global-Savetime: 1777252925
+< X-Cache: MISS TCP_MISS dirn:-2:-2
+< X-Swift-SaveTime: Mon, 27 Apr 2026 01:22:05 GMT
+< X-Swift-CacheTime: 0
+< Timing-Allow-Origin: *
+< EagleId: 7084dd1c17772529251381385e
+
+> HTTP/1.1 GET https://cdn.npmmirror.com/packages/rollup/4.60.1/rollup-4.60.1.tgz
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Accept: */*
+> Host: cdn.npmmirror.com
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmmirror.com/get-tsconfig/-/get-tsconfig-4.13.8.tgz
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Accept: */*
+> Host: registry.npmmirror.com
+> Accept-Encoding: gzip, deflate, br, zstd
+
+< 200 OK
+< Server: Tengine
+< Content-Type: application/octet-stream
+< Content-Length: 570319
+< Connection: keep-alive
+< Strict-Transport-Security: max-age=5184000
+< Date: Sun, 26 Apr 2026 05:09:09 GMT
+< x-oss-request-id: 69ED9DF53A503C37305BB37D
+< x-oss-cdn-auth: success
+< Accept-Ranges: bytes
+< x-oss-object-type: Normal
+< x-oss-storage-class: Standard
+< Cache-Control: max-age=86400
+< Content-MD5: DmrK2GRoEu3AfYc7e53Jsw==
+< x-oss-server-time: 8
+< Via: cache16.l2cn1811[0,0,304-0,H], cache45.l2cn1811[2,0], ens-cache8.cn9337[0,0,200-0,H], ens-cache5.cn9337[2,0]
+< ETag: "0E6ACAD8646812EDC07D873B7B9DC9B3"
+< Last-Modified: Mon, 30 Mar 2026 04:34:29 GMT
+< x-oss-hash-crc64ecma: 7070800515842986401
+< Age: 72776
+< Ali-Swift-Global-Savetime: 1777180149
+< X-Cache: HIT TCP_MEM_HIT dirn:-2:-2
+< X-Swift-SaveTime: Sun, 26 Apr 2026 22:05:18 GMT
+< X-Swift-CacheTime: 25431
+< Timing-Allow-Origin: *
+< EagleId: 3df1b31917772529251793643e
+
+> HTTP/1.1 GET https://registry.npmmirror.com/@standard-community/standard-openapi/-/standard-openapi-0.2.9.tgz
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Accept: */*
+> Host: registry.npmmirror.com
+> Accept-Encoding: gzip, deflate, br, zstd
+
+< 302 Moved Temporarily
+< Server: Tengine
+< Content-Type: text/html; charset=utf-8
+< Content-Length: 94
+< Connection: keep-alive
+< Strict-Transport-Security: max-age=5184000
+< Date: Mon, 27 Apr 2026 01:22:05 GMT
+< Vary: Origin
+< request-id: 0c12f03a-c25c-44e0-9038-7cc23b1a576c
+< Location: https://cdn.npmmirror.com/packages/get-tsconfig/4.13.8/get-tsconfig-4.13.8.tgz
+< x-frame-options: SAMEORIGIN
+< x-xss-protection: 1; mode=block
+< x-download-options: noopen
+< x-readtime: 0.378
+< Via: cn8963.l1, kunlun7.cn8963, l2ea120-5.l2, cache34.l2ea120-5, npmmirror-x86-2022012802003, cache34.l2ea120-5[8,7,302-0,M], cache25.l2ea120-5[9,0], kunlun7.cn8963[19,18,302-0,M], kunlun4.cn8963[20,0]
+< Ali-Swift-Global-Savetime: 1777252925
+< X-Cache: MISS TCP_MISS dirn:-2:-2
+< X-Swift-SaveTime: Mon, 27 Apr 2026 01:22:05 GMT
+< X-Swift-CacheTime: 0
+< Timing-Allow-Origin: *
+< EagleId: 7084dd1817772529251957506e
+
+< 302 Moved Temporarily
+< Server: Tengine
+< Content-Type: text/html; charset=utf-8
+< Content-Length: 122
+< Connection: keep-alive
+< Strict-Transport-Security: max-age=5184000
+< Date: Mon, 27 Apr 2026 01:22:05 GMT
+< Vary: Origin
+< request-id: d7d8eb96-d2e9-4521-a13e-88dbfa5a36ae
+< Location: https://cdn.npmmirror.com/packages/%40standard-community/standard-openapi/0.2.9/standard-openapi-0.2.9.tgz
+< x-frame-options: SAMEORIGIN
+< x-xss-protection: 1; mode=block
+< x-download-options: noopen
+< x-readtime: 0.575
+< Via: cn8963.l1, kunlun4.cn8963, l2ea120-5.l2, cache28.l2ea120-5, izuf693b8e9ijm4o957vvnz, cache28.l2ea120-5[8,8,302-0,M], cache19.l2ea120-5[9,0], kunlun4.cn8963[18,18,302-0,M], kunlun8.cn8963[20,0]
+< Ali-Swift-Global-Savetime: 1777252925
+< X-Cache: MISS TCP_MISS dirn:-2:-2
+< X-Swift-SaveTime: Mon, 27 Apr 2026 01:22:05 GMT
+< X-Swift-CacheTime: 0
+< Timing-Allow-Origin: *
+< EagleId: 7084dd1c17772529252231469e
+
+> HTTP/1.1 GET https://cdn.npmmirror.com/packages/%40standard-community/standard-openapi/0.2.9/standard-openapi-0.2.9.tgz
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Accept: */*
+> Host: cdn.npmmirror.com
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://cdn.npmmirror.com/packages/get-tsconfig/4.13.8/get-tsconfig-4.13.8.tgz
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Accept: */*
+> Host: cdn.npmmirror.com
+> Accept-Encoding: gzip, deflate, br, zstd
+
+< 200 OK
+< Server: Tengine
+< Content-Type: application/octet-stream
+< Content-Length: 5333
+< Connection: keep-alive
+< Strict-Transport-Security: max-age=5184000
+< Date: Sun, 26 Apr 2026 04:33:04 GMT
+< x-oss-request-id: 69ED9580A1E8F83536131E1B
+< x-oss-cdn-auth: success
+< Accept-Ranges: bytes
+< x-oss-object-type: Normal
+< x-oss-storage-class: Standard
+< Cache-Control: max-age=86400
+< ETag: "0DC2E5992899C72AF2719C456FFC8417"
+< Last-Modified: Sat, 22 Nov 2025 04:45:13 GMT
+< x-oss-hash-crc64ecma: 17885175861706128100
+< Content-MD5: DcLlmSiZxyrycZxFb/yEFw==
+< x-oss-server-time: 6
+< Via: cache19.l2cn1811[0,0,200-0,H], cache11.l2cn1811[1,0], ens-cache8.cn9337[11,11,200-0,M], ens-cache5.cn9337[15,0]
+< Age: 74941
+< Ali-Swift-Global-Savetime: 1777177984
+< X-Cache: MISS TCP_MISS dirn:-2:-2
+< X-Swift-SaveTime: Mon, 27 Apr 2026 01:22:05 GMT
+< X-Swift-CacheTime: 11459
+< Timing-Allow-Origin: *
+< EagleId: 3df1b31917772529252633944e
+
+< 200 OK
+< Server: Tengine
+< Content-Type: application/octet-stream
+< Content-Length: 47302
+< Connection: keep-alive
+< Strict-Transport-Security: max-age=5184000
+< Date: Sun, 26 Apr 2026 10:50:52 GMT
+< x-oss-request-id: 69EDEE0C2BFAFA3638EE00BC
+< x-oss-cdn-auth: success
+< Accept-Ranges: bytes
+< x-oss-object-type: Normal
+< x-oss-storage-class: Standard
+< Cache-Control: max-age=86400
+< ETag: "79F377E03BD3C62DF61E2E0E67A7EE7F"
+< Last-Modified: Tue, 14 Apr 2026 23:28:59 GMT
+< x-oss-hash-crc64ecma: 11580607119586694717
+< Content-MD5: efN34DvTxi32Hi4OZ6fufw==
+< x-oss-server-time: 9
+< Via: cache75.l2cn1811[0,0,200-0,H], cache58.l2cn1811[1,0], ens-cache12.cn9337[8,8,200-0,M], ens-cache9.cn9337[10,0]
+< Age: 52273
+< Ali-Swift-Global-Savetime: 1777200652
+< X-Cache: MISS TCP_MISS dirn:-2:-2
+< X-Swift-SaveTime: Mon, 27 Apr 2026 01:22:05 GMT
+< X-Swift-CacheTime: 34127
+< Timing-Allow-Origin: *
+< EagleId: 3df1b31d17772529252778910e
+
+> HTTP/1.1 GET https://registry.npmmirror.com/eventsource-parser/-/eventsource-parser-3.0.6.tgz
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Accept: */*
+> Host: registry.npmmirror.com
+> Accept-Encoding: gzip, deflate, br, zstd
+
+> HTTP/1.1 GET https://registry.npmmirror.com/hono/-/hono-4.12.12.tgz
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Accept: */*
+> Host: registry.npmmirror.com
+> Accept-Encoding: gzip, deflate, br, zstd
+
+< 302 Moved Temporarily
+< Server: Tengine
+< Content-Type: text/html; charset=utf-8
+< Content-Length: 104
+< Connection: keep-alive
+< Strict-Transport-Security: max-age=5184000
+< Date: Mon, 27 Apr 2026 01:22:05 GMT
+< Vary: Origin
+< request-id: 9f942798-846a-43f5-8c95-3d66b1458210
+< Location: https://cdn.npmmirror.com/packages/eventsource-parser/3.0.6/eventsource-parser-3.0.6.tgz
+< x-frame-options: SAMEORIGIN
+< x-xss-protection: 1; mode=block
+< x-download-options: noopen
+< x-readtime: 0.389
+< Via: cn8963.l1, kunlun4.cn8963, l2ea120-5.l2, cache74.l2ea120-5, registry.npmmirror.com-06, cache74.l2ea120-5[12,11,302-0,M], cache19.l2ea120-5[13,0], kunlun4.cn8963[22,22,302-0,M], kunlun4.cn8963[23,0]
+< Ali-Swift-Global-Savetime: 1777252925
+< X-Cache: MISS TCP_MISS dirn:-2:-2
+< X-Swift-SaveTime: Mon, 27 Apr 2026 01:22:05 GMT
+< X-Swift-CacheTime: 0
+< Timing-Allow-Origin: *
+< EagleId: 7084dd1817772529254487746e
+
+> HTTP/1.1 GET https://cdn.npmmirror.com/packages/eventsource-parser/3.0.6/eventsource-parser-3.0.6.tgz
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Accept: */*
+> Host: cdn.npmmirror.com
+> Accept-Encoding: gzip, deflate, br, zstd
+
+< 302 Moved Temporarily
+< Server: Tengine
+< Content-Type: text/html; charset=utf-8
+< Content-Length: 80
+< Connection: keep-alive
+< Strict-Transport-Security: max-age=5184000
+< Date: Mon, 27 Apr 2026 01:22:05 GMT
+< Vary: Origin
+< request-id: 4b1f5cc2-bd2d-45c6-9876-70c1cf9f28fc
+< Location: https://cdn.npmmirror.com/packages/hono/4.12.12/hono-4.12.12.tgz
+< x-frame-options: SAMEORIGIN
+< x-xss-protection: 1; mode=block
+< x-download-options: noopen
+< x-readtime: 0.625
+< Via: cn8963.l1, kunlun5.cn8963, l2ea120-5.l2, cache41.l2ea120-5, izuf693b8e9ijm4o957vvnz, cache41.l2ea120-5[8,8,302-0,M], cache32.l2ea120-5[10,0], kunlun5.cn8963[20,19,302-0,M], kunlun8.cn8963[21,0]
+< Ali-Swift-Global-Savetime: 1777252925
+< X-Cache: MISS TCP_MISS dirn:-2:-2
+< X-Swift-SaveTime: Mon, 27 Apr 2026 01:22:05 GMT
+< X-Swift-CacheTime: 0
+< Timing-Allow-Origin: *
+< EagleId: 7084dd1c17772529254521658e
+
+> HTTP/1.1 GET https://cdn.npmmirror.com/packages/hono/4.12.12/hono-4.12.12.tgz
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Accept: */*
+> Host: cdn.npmmirror.com
+> Accept-Encoding: gzip, deflate, br, zstd
+
+< 200 OK
+< Server: Tengine
+< Content-Type: application/octet-stream
+< Content-Length: 13838
+< Connection: keep-alive
+< Strict-Transport-Security: max-age=5184000
+< Date: Sun, 26 Apr 2026 01:31:33 GMT
+< x-oss-request-id: 69ED6AF58D81BD323738AC45
+< x-oss-cdn-auth: success
+< Accept-Ranges: bytes
+< x-oss-object-type: Normal
+< x-oss-storage-class: Standard
+< Cache-Control: max-age=86400
+< Content-MD5: IoXG8IkWzahR8xMAmeg1lQ==
+< x-oss-server-time: 26
+< Via: cache62.l2cn1811[0,0,304-0,H], cache43.l2cn1811[1,0], ens-cache7.cn9337[0,0,200-0,H], ens-cache5.cn9337[1,0]
+< ETag: "2285C6F08916CDA851F3130099E83595"
+< Last-Modified: Fri, 29 Aug 2025 16:19:27 GMT
+< x-oss-hash-crc64ecma: 3549083407441261601
+< Age: 85832
+< Ali-Swift-Global-Savetime: 1777167093
+< X-Cache: HIT TCP_HIT dirn:11:478712803
+< X-Swift-SaveTime: Sun, 26 Apr 2026 17:51:21 GMT
+< X-Swift-CacheTime: 27612
+< Timing-Allow-Origin: *
+< EagleId: 3df1b31917772529254904730e
+
+< 200 OK
+< Server: Tengine
+< Content-Type: application/octet-stream
+< Content-Length: 245886
+< Connection: keep-alive
+< Strict-Transport-Security: max-age=5184000
+< Date: Sun, 26 Apr 2026 04:56:27 GMT
+< x-oss-request-id: 69ED9AFB10827E343126DE7F
+< x-oss-cdn-auth: success
+< Accept-Ranges: bytes
+< x-oss-object-type: Normal
+< x-oss-storage-class: Standard
+< Cache-Control: max-age=86400
+< Content-MD5: SoTSqIFBXF7g3P8mnOi8MA==
+< x-oss-server-time: 6
+< Via: cache9.l2cn1811[0,0,304-0,H], cache70.l2cn1811[0,0], ens-cache6.cn9337[9,11,200-0,H], ens-cache9.cn9337[13,0]
+< ETag: "4A84D2A881415C5EE0DCFF269CE8BC30"
+< Last-Modified: Tue, 07 Apr 2026 04:13:17 GMT
+< x-oss-hash-crc64ecma: 3247159069571794432
+< Age: 73538
+< Ali-Swift-Global-Savetime: 1777179387
+< X-Cache: HIT TCP_REFRESH_HIT dirn:11:584384167
+< X-Swift-SaveTime: Mon, 27 Apr 2026 01:22:05 GMT
+< X-Swift-CacheTime: 12862
+< Timing-Allow-Origin: *
+< EagleId: 3df1b31d17772529254921678e
+
+> HTTP/1.1 GET https://registry.npmmirror.com/fast-xml-parser/-/fast-xml-parser-5.5.12.tgz
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Accept: */*
+> Host: registry.npmmirror.com
+> Accept-Encoding: gzip, deflate, br, zstd
+
+< 302 Moved Temporarily
+< Server: Tengine
+< Content-Type: text/html; charset=utf-8
+< Content-Length: 100
+< Connection: keep-alive
+< Strict-Transport-Security: max-age=5184000
+< Date: Mon, 27 Apr 2026 01:22:05 GMT
+< Vary: Origin
+< request-id: 00d3d27d-54c1-4be7-883b-044d7891c419
+< Location: https://cdn.npmmirror.com/packages/fast-xml-parser/5.5.12/fast-xml-parser-5.5.12.tgz
+< x-frame-options: SAMEORIGIN
+< x-xss-protection: 1; mode=block
+< x-download-options: noopen
+< x-readtime: 0.429
+< Via: cn8963.l1, kunlun8.cn8963, l2ea120-5.l2, cache10.l2ea120-5, izuf693b8e9ijm4o957vvnz, cache10.l2ea120-5[7,7,302-0,M], cache76.l2ea120-5[8,0], kunlun8.cn8963[17,16,302-0,M], kunlun4.cn8963[19,0]
+< Ali-Swift-Global-Savetime: 1777252925
+< X-Cache: MISS TCP_MISS dirn:-2:-2
+< X-Swift-SaveTime: Mon, 27 Apr 2026 01:22:05 GMT
+< X-Swift-CacheTime: 0
+< Timing-Allow-Origin: *
+< EagleId: 7084dd1817772529259738201e
+
+> HTTP/1.1 GET https://cdn.npmmirror.com/packages/fast-xml-parser/5.5.12/fast-xml-parser-5.5.12.tgz
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Accept: */*
+> Host: cdn.npmmirror.com
+> Accept-Encoding: gzip, deflate, br, zstd
+
+< 200 OK
+< Server: Tengine
+< Content-Type: application/octet-stream
+< Content-Length: 237574
+< Connection: keep-alive
+< Strict-Transport-Security: max-age=5184000
+< Date: Sun, 26 Apr 2026 03:03:23 GMT
+< x-oss-request-id: 69ED807B76ADAE3231BD4745
+< x-oss-cdn-auth: success
+< Accept-Ranges: bytes
+< x-oss-object-type: Normal
+< x-oss-storage-class: Standard
+< Cache-Control: max-age=86400
+< Content-MD5: n/4UN6QUlw5EU4dRKkB91g==
+< x-oss-server-time: 6
+< Via: cache43.l2cn1811[0,0,304-0,H], cache69.l2cn1811[1,0], ens-cache11.cn9337[8,17,200-0,H], ens-cache5.cn9337[19,0]
+< ETag: "9FFE1437A414970E445387512A407DD6"
+< Last-Modified: Mon, 13 Apr 2026 03:31:09 GMT
+< x-oss-hash-crc64ecma: 9265793512314343560
+< Age: 80323
+< Ali-Swift-Global-Savetime: 1777172603
+< X-Cache: HIT TCP_REFRESH_HIT dirn:9:393394285
+< X-Swift-SaveTime: Mon, 27 Apr 2026 01:22:06 GMT
+< X-Swift-CacheTime: 6077
+< Timing-Allow-Origin: *
+< EagleId: 3df1b31917772529260126670e
+
+> HTTP/1.1 GET https://registry.npmmirror.com/electron-to-chromium/-/electron-to-chromium-1.5.336.tgz
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Accept: */*
+> Host: registry.npmmirror.com
+> Accept-Encoding: gzip, deflate, br, zstd
+
+< 302 Moved Temporarily
+< Server: Tengine
+< Content-Type: text/html; charset=utf-8
+< Content-Length: 112
+< Connection: keep-alive
+< Strict-Transport-Security: max-age=5184000
+< Date: Mon, 27 Apr 2026 01:22:06 GMT
+< Vary: Origin
+< request-id: eeece763-3fda-4019-946d-69ef36a92859
+< Location: https://cdn.npmmirror.com/packages/electron-to-chromium/1.5.336/electron-to-chromium-1.5.336.tgz
+< x-frame-options: SAMEORIGIN
+< x-xss-protection: 1; mode=block
+< x-download-options: noopen
+< x-readtime: 0.5
+< Via: cn8963.l1, kunlun8.cn8963, l2ea120-5.l2, cache76.l2ea120-5, npmmirror-x86-20220823001, cache76.l2ea120-5[8,7,302-0,M], cache76.l2ea120-5[9,0], kunlun8.cn8963[18,18,302-0,M], kunlun4.cn8963[19,0]
+< Ali-Swift-Global-Savetime: 1777252926
+< X-Cache: MISS TCP_MISS dirn:-2:-2
+< X-Swift-SaveTime: Mon, 27 Apr 2026 01:22:06 GMT
+< X-Swift-CacheTime: 0
+< Timing-Allow-Origin: *
+< EagleId: 7084dd1817772529261048340e
+
+> HTTP/1.1 GET https://cdn.npmmirror.com/packages/electron-to-chromium/1.5.336/electron-to-chromium-1.5.336.tgz
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Accept: */*
+> Host: cdn.npmmirror.com
+> Accept-Encoding: gzip, deflate, br, zstd
+
+< 200 OK
+< Server: Tengine
+< Content-Type: application/octet-stream
+< Content-Length: 32882
+< Connection: keep-alive
+< Strict-Transport-Security: max-age=5184000
+< Date: Sun, 26 Apr 2026 01:39:34 GMT
+< x-oss-request-id: 69ED6CD66D612F363472ABF7
+< x-oss-cdn-auth: success
+< Accept-Ranges: bytes
+< x-oss-object-type: Normal
+< x-oss-storage-class: Standard
+< Cache-Control: max-age=86400
+< Content-MD5: TE5U16OPXdaF2xBUinsCnA==
+< x-oss-server-time: 9
+< Via: cache6.l2cn1811[0,0,304-0,H], cache52.l2cn1811[1,0], ens-cache10.cn9337[12,12,200-0,H], ens-cache5.cn9337[14,0]
+< ETag: "4C4E54D7A38F5DD685DB10548A7B029C"
+< Last-Modified: Mon, 13 Apr 2026 22:02:59 GMT
+< x-oss-hash-crc64ecma: 13267209383035270477
+< Age: 85352
+< Ali-Swift-Global-Savetime: 1777167574
+< X-Cache: HIT TCP_REFRESH_HIT dirn:11:292654335
+< X-Swift-SaveTime: Mon, 27 Apr 2026 01:22:06 GMT
+< X-Swift-CacheTime: 1048
+< Timing-Allow-Origin: *
+< EagleId: 3df1b31917772529261427112e
+
+> HTTP/1.1 GET https://registry.npmmirror.com/@npmcli/agent/-/agent-4.0.0.tgz
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Accept: */*
+> Host: registry.npmmirror.com
+> Accept-Encoding: gzip, deflate, br, zstd
+
+< 302 Moved Temporarily
+< Server: Tengine
+< Content-Type: text/html; charset=utf-8
+< Content-Length: 88
+< Connection: keep-alive
+< Strict-Transport-Security: max-age=5184000
+< Date: Mon, 27 Apr 2026 01:22:06 GMT
+< Vary: Origin
+< request-id: 08c40dbe-058b-46b4-885c-5686ecb37e3c
+< Location: https://cdn.npmmirror.com/packages/%40npmcli/agent/4.0.0/agent-4.0.0.tgz
+< x-frame-options: SAMEORIGIN
+< x-xss-protection: 1; mode=block
+< x-download-options: noopen
+< x-readtime: 0.477
+< Via: cn8963.l1, kunlun7.cn8963, l2ea120-5.l2, cache72.l2ea120-5, registry.npmmirror.com-07, cache72.l2ea120-5[10,10,302-0,M], cache25.l2ea120-5[12,0], kunlun7.cn8963[21,21,302-0,M], kunlun4.cn8963[23,0]
+< Ali-Swift-Global-Savetime: 1777252926
+< X-Cache: MISS TCP_MISS dirn:-2:-2
+< X-Swift-SaveTime: Mon, 27 Apr 2026 01:22:06 GMT
+< X-Swift-CacheTime: 0
+< Timing-Allow-Origin: *
+< EagleId: 7084dd1817772529262588506e
+
+> HTTP/1.1 GET https://cdn.npmmirror.com/packages/%40npmcli/agent/4.0.0/agent-4.0.0.tgz
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Accept: */*
+> Host: cdn.npmmirror.com
+> Accept-Encoding: gzip, deflate, br, zstd
+
+< 200 OK
+< Server: Tengine
+< Content-Type: application/octet-stream
+< Content-Length: 6043
+< Connection: keep-alive
+< Strict-Transport-Security: max-age=5184000
+< Date: Sun, 26 Apr 2026 03:29:53 GMT
+< x-oss-request-id: 69ED86B1B6DF4E3835DE8CB0
+< x-oss-cdn-auth: success
+< Accept-Ranges: bytes
+< x-oss-object-type: Normal
+< x-oss-storage-class: Standard
+< Cache-Control: max-age=86400
+< Content-MD5: AqolrkbB7+edlG1CKdhrqQ==
+< x-oss-server-time: 15
+< Via: cache4.l2cn1811[0,0,304-0,H], cache48.l2cn1811[0,0], ens-cache5.cn9337[7,7,200-0,H], ens-cache5.cn9337[10,0]
+< ETag: "02AA25AE46C1EFE79D946D4229D86BA9"
+< Last-Modified: Thu, 18 Sep 2025 16:21:58 GMT
+< x-oss-hash-crc64ecma: 13755907003261696849
+< Age: 78733
+< Ali-Swift-Global-Savetime: 1777174193
+< X-Cache: HIT TCP_REFRESH_HIT dirn:11:169918236
+< X-Swift-SaveTime: Mon, 27 Apr 2026 01:22:06 GMT
+< X-Swift-CacheTime: 7667
+< Timing-Allow-Origin: *
+< EagleId: 3df1b31917772529263007701e
+
+> HTTP/1.1 GET https://registry.npmmirror.com/safe-array-concat/-/safe-array-concat-1.1.3.tgz
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Accept: */*
+> Host: registry.npmmirror.com
+> Accept-Encoding: gzip, deflate, br, zstd
+
+< 302 Moved Temporarily
+< Server: Tengine
+< Content-Type: text/html; charset=utf-8
+< Content-Length: 102
+< Connection: keep-alive
+< Strict-Transport-Security: max-age=5184000
+< Date: Mon, 27 Apr 2026 01:22:06 GMT
+< Vary: Origin
+< request-id: e17376af-7bfb-4580-adeb-a64ffca4ce14
+< Location: https://cdn.npmmirror.com/packages/safe-array-concat/1.1.3/safe-array-concat-1.1.3.tgz
+< x-frame-options: SAMEORIGIN
+< x-xss-protection: 1; mode=block
+< x-download-options: noopen
+< x-readtime: 0.596
+< Via: cn8963.l1, kunlun5.cn8963, l2ea120-5.l2, cache16.l2ea120-5, registry.npmmirror.com-07, cache16.l2ea120-5[10,10,302-0,M], cache34.l2ea120-5[11,0], kunlun5.cn8963[21,20,302-0,M], kunlun4.cn8963[23,0]
+< Ali-Swift-Global-Savetime: 1777252926
+< X-Cache: MISS TCP_MISS dirn:-2:-2
+< X-Swift-SaveTime: Mon, 27 Apr 2026 01:22:06 GMT
+< X-Swift-CacheTime: 0
+< Timing-Allow-Origin: *
+< EagleId: 7084dd1817772529263648589e
+
+> HTTP/1.1 GET https://cdn.npmmirror.com/packages/safe-array-concat/1.1.3/safe-array-concat-1.1.3.tgz
+> Connection: keep-alive
+> User-Agent: Bun/1.3.13
+> Accept: */*
+> Host: cdn.npmmirror.com
+> Accept-Encoding: gzip, deflate, br, zstd
+
+< 200 OK
+< Server: Tengine
+< Content-Type: application/octet-stream
+< Content-Length: 6542
+< Connection: keep-alive
+< Strict-Transport-Security: max-age=5184000
+< Date: Sun, 26 Apr 2026 13:51:15 GMT
+< x-oss-request-id: 69EE1853F7D6923836442B32
+< x-oss-cdn-auth: success
+< Accept-Ranges: bytes
+< x-oss-object-type: Normal
+< x-oss-storage-class: Standard
+< Cache-Control: max-age=86400
+< Content-MD5: fhflJVXnM3+svwic6JCvHg==
+< x-oss-server-time: 14
+< Via: cache48.l2cn1811[0,0,304-0,H], cache44.l2cn1811[1,0], ens-cache12.cn9337[0,0,200-0,H], ens-cache5.cn9337[2,0]
+< ETag: "7E17E52555E7337FACBF089CE890AF1E"
+< Last-Modified: Thu, 12 Dec 2024 03:41:00 GMT
+< x-oss-hash-crc64ecma: 3691673059588314983
+< Age: 41451
+< Ali-Swift-Global-Savetime: 1777211475
+< X-Cache: HIT TCP_HIT dirn:11:400442976
+< X-Swift-SaveTime: Sun, 26 Apr 2026 17:51:19 GMT
+< X-Swift-CacheTime: 71996
+< Timing-Allow-Origin: *
+< EagleId: 3df1b31917772529264058167e
+
+ - cpu & os mismatch
+Skip installing sst-darwin-x64 - os mismatch
+Skip installing sst-linux-arm64 - cpu & os mismatch
+Skip installing sst-linux-x64 - os mismatch
+Skip installing sst-linux-x86 - cpu & os mismatch
+Skip installing sst-win32-arm64 - cpu mismatch
+Skip installing sst-win32-x86 - cpu mismatch
+Skip installing turbo-darwin-64 - os mismatch
+Skip installing turbo-darwin-arm64 - cpu & os mismatch
+Skip installing turbo-linux-64 - os mismatch
+Skip installing turbo-linux-arm64 - cpu & os mismatch
+Skip installing turbo-windows-arm64 - cpu mismatch
+Resolved peers [5.8ms]
+Created store [3.9ms]
+    [269.35ms] Downloaded solid-js tarball
+    [69.23ms] Downloaded postcss tarball
+    [4.78s] Downloaded rollup tarball
+    [72.60ms] Downloaded @standard-community/standard-openapi tarball
+    [133.75ms] Downloaded get-tsconfig tarball
+    [5.10s] Downloaded eventsource-parser tarball
+    [5.13s] Downloaded hono tarball
+    [5.64s] Downloaded fast-xml-parser tarball
+    [5.76s] Downloaded electron-to-chromium tarball
+    [71.29ms] Downloaded @npmcli/agent tarball
+    [6.02s] Downloaded safe-array-concat tarball
+ dist\dev.cjs
+ store\dist\dev.cjs
+ universal\dist\dev.cjs
+ web\dist\dev.cjs
+ h\dist\h.cjs
+ html\dist\html.cjs
+ h\jsx-runtime\dist\jsx.cjs
+ dist\server.cjs
+ store\dist\server.cjs
+ web\dist\server.cjs
+ dist\solid.cjs
+ web\storage\dist\storage.cjs
+ store\dist\store.cjs
+ universal\dist\universal.cjs
+ web\dist\web.cjs
+ dist\dev.js
+ store\dist\dev.js
+ universal\dist\dev.js
+ web\dist\dev.js
+ h\dist\h.js
+ html\dist\html.js
+ h\jsx-runtime\dist\jsx.js
+ dist\server.js
+ store\dist\server.js
+ web\dist\server.js
+ dist\solid.js
+ web\storage\dist\storage.js
+ store\dist\store.js
+ universal\dist\universal.js
+ web\dist\web.js
+ h\jsx-dev-runtime\package.json
+ h\jsx-runtime\package.json
+ h\package.json
+ html\package.json
+ package.json
+ store\package.json
+ universal\package.json
+ web\package.json
+ web\storage\package.json
+ README.md
+ types\reactive\array.d.ts
+ web\types\client.d.ts
+ types\render\component.d.ts
+ web\types\core.d.ts
+ types\render\flow.d.ts
+ types\render\hydration.d.ts
+ h\types\hyperscript.d.ts
+ h\jsx-runtime\types\index.d.ts
+ h\types\index.d.ts
+ html\types\index.d.ts
+ store\types\index.d.ts
+ types\index.d.ts
+ types\render\index.d.ts
+ types\server\index.d.ts
+ universal\types\index.d.ts
+ web\storage\types\index.d.ts
+ web\types\index.d.ts
+ jsx-runtime.d.ts
+ h\jsx-runtime\types\jsx.d.ts
+ types\jsx.d.ts
+ web\types\jsx.d.ts
+ html\types\lit.d.ts
+ store\types\modifiers.d.ts
+ store\types\mutable.d.ts
+ types\reactive\observable.d.ts
+ types\server\reactive.d.ts
+ types\server\rendering.d.ts
+ types\reactive\scheduler.d.ts
+ web\types\server-mock.d.ts
+ store\types\server.d.ts
+ web\types\server.d.ts
+ types\reactive\signal.d.ts
+ store\types\store.d.ts
+ types\render\Suspense.d.ts
+ universal\types\universal.d.ts
+ LICENSE
+[solid-js] Extract .dbfb13bf9fbadf99-00000002.solid-js (decompressed 210.97 KB tgz file in 0ns)
+[solid-js] Extracted to .dbfb13bf9fbadf99-00000002.solid-js (671ms)
+ LICENSE
+ lib\at-rule.js
+ lib\comment.js
+ lib\container.js
+ lib\css-syntax-error.js
+ lib\declaration.js
+ lib\document.js
+ lib\fromJSON.js
+ lib\input.js
+ lib\lazy-result.js
+ lib\list.js
+ lib\map-generator.js
+ lib\no-work-result.js
+ lib\node.js
+ lib\parse.js
+ lib\parser.js
+ lib\postcss.js
+ lib\previous-map.js
+ lib\processor.js
+ lib\result.js
+ lib\root.js
+ lib\rule.js
+ lib\stringifier.js
+ lib\stringify.js
+ lib\symbols.js
+ lib\terminal-highlight.js
+ lib\tokenize.js
+ lib\warn-once.js
+ lib\warning.js
+ package.json
+ README.md
+ lib\postcss.mjs
+ lib\postcss.d.mts
+ lib\at-rule.d.ts
+ lib\comment.d.ts
+ lib\container.d.ts
+ lib\css-syntax-error.d.ts
+ lib\declaration.d.ts
+ lib\document.d.ts
+ lib\fromJSON.d.ts
+ lib\input.d.ts
+ lib\lazy-result.d.ts
+ lib\list.d.ts
+ lib\no-work-result.d.ts
+ lib\node.d.ts
+ lib\parse.d.ts
+ lib\postcss.d.ts
+ lib\previous-map.d.ts
+ lib\processor.d.ts
+ lib\result.d.ts
+ lib\root.d.ts
+ lib\rule.d.ts
+ lib\stringifier.d.ts
+ lib\stringify.d.ts
+ lib\warning.d.ts
+[postcss] Extract .78ef9e33cb9ddbca-00000003.postcss (decompressed 47.79 KB tgz file in 0ns)
+[postcss] Extracted to .78ef9e33cb9ddbca-00000003.postcss (344ms)
+ dist\bin\rollup
+ dist\shared\fsevents-importer.js
+ dist\es\getLogFilter.js
+ dist\getLogFilter.js
+ dist\shared\index.js
+ dist\loadConfigFile.js
+ dist\shared\loadConfigFile.js
+ dist\native.js
+ dist\es\shared\node-entry.js
+ dist\es\parseAst.js
+ dist\es\shared\parseAst.js
+ dist\parseAst.js
+ dist\shared\parseAst.js
+ dist\es\rollup.js
+ dist\rollup.js
+ dist\shared\rollup.js
+ dist\shared\watch-cli.js
+ dist\es\shared\watch.js
+ dist\shared\watch.js
+ dist\es\package.json
+ package.json
+ LICENSE.md
+ README.md
+ dist\getLogFilter.d.ts
+ dist\loadConfigFile.d.ts
+ dist\parseAst.d.ts
+ dist\rollup.d.ts
+[rollup] Extract .5eaffb72f86fdd58-00000005.rollup (decompressed 0.57 MB tgz file in 0ns)
+[rollup] Extracted to .5eaffb72f86fdd58-00000005.rollup (344ms)
+ dist\vendors\convert.cjs
+ dist\default-DyJyARWC.cjs
+ dist\index-CzVFvajF.cjs
+ dist\index.cjs
+ dist\valibot-sgPHXFKJ.cjs
+ dist\zod-DrFzROei.cjs
+ dist\vendors\convert.d.cts
+ dist\index.d.cts
+ dist\vendors\convert.js
+ dist\default-u_dwuiYb.js
+ dist\index-DZEfthgZ.js
+ dist\index.js
+ dist\valibot-D_HTw1Gn.js
+ dist\zod-DSgpEGAE.js
+ package.json
+ README.md
+ dist\vendors\convert.d.ts
+ dist\index.d.ts
+ dist\utils-D4f8cMSa.d.ts
+[@standard-community/standard-openapi] Extract .fcee9377f7f7bdbe-00000006.standard-openapi (decompressed 5.33 KB tgz file in 0ns)
+[@standard-community/standard-openapi] Extracted to .fcee9377f7f7bdbe-00000006.standard-openapi (109ms)
+ LICENSE
+ dist\index.cjs
+ dist\index.d.cts
+ package.json
+ README.md
+ dist\index.mjs
+ dist\index.d.mts
+[get-tsconfig] Extract .bbbe1a73fef7dfa7-00000007.get-tsconfig (decompressed 47.30 KB tgz file in 0ns)
+[get-tsconfig] Extracted to .bbbe1a73fef7dfa7-00000007.get-tsconfig (63ms)
+ LICENSE
+ dist\index.cjs
+ dist\stream.cjs
+ dist\index.d.cts
+ dist\stream.d.cts
+ dist\index.js
+ dist\stream.js
+ stream.js
+ package.json
+ dist\index.cjs.map
+ dist\index.js.map
+ dist\stream.cjs.map
+ dist\stream.js.map
+ README.md
+ src\errors.ts
+ dist\index.d.ts
+ src\index.ts
+ src\parse.ts
+ dist\stream.d.ts
+ src\stream.ts
+ src\types.ts
+[eventsource-parser] Extract .f8ef9273a2ff8dbd-00000008.eventsource-parser (decompressed 13.84 KB tgz file in 0ns)
+[eventsource-parser] Extracted to .f8ef9273a2ff8dbd-00000008.eventsource-parser (140ms)
+ LICENSE
+ dist\cjs\utils\accept.js
+ dist\utils\accept.js
+ dist\cjs\helper\accepts\accepts.js
+ dist\helper\accepts\accepts.js
+ dist\cjs\jsx\base.js
+ dist\jsx\base.js
+ dist\cjs\utils\basic-auth.js
+ dist\utils\basic-auth.js
+ dist\cjs\utils\body.js
+ dist\utils\body.js
+ dist\cjs\utils\buffer.js
+ dist\utils\buffer.js
+ dist\cjs\jsx\children.js
+ dist\jsx\children.js
+ dist\cjs\client\client.js
+ dist\cjs\jsx\dom\client.js
+ dist\client\client.js
+ dist\jsx\dom\client.js
+ dist\cjs\utils\color.js
+ dist\utils\color.js
+ dist\cjs\helper\css\common.js
+ dist\cjs\jsx\intrinsic-element\common.js
+ dist\helper\css\common.js
+ dist\jsx\intrinsic-element\common.js
+ dist\cjs\jsx\components.js
+ dist\cjs\jsx\dom\components.js
+ dist\cjs\jsx\dom\intrinsic-element\components.js
+ dist\cjs\jsx\intrinsic-element\components.js
+ dist\jsx\components.js
+ dist\jsx\dom\components.js
+ dist\jsx\dom\intrinsic-element\components.js
+ dist\jsx\intrinsic-element\components.js
+ dist\cjs\compose.js
+ dist\compose.js
+ dist\cjs\utils\compress.js
+ dist\utils\compress.js
+ dist\cjs\utils\concurrent.js
+ dist\utils\concurrent.js
+ dist\adapter\aws-lambda\conninfo.js
+ dist\adapter\bun\conninfo.js
+ dist\adapter\cloudflare-pages\conninfo.js
+ dist\adapter\cloudflare-workers\conninfo.js
+ dist\adapter\deno\conninfo.js
+ dist\adapter\lambda-edge\conninfo.js
+ dist\adapter\netlify\conninfo.js
+ dist\adapter\vercel\conninfo.js
+ dist\cjs\adapter\aws-lambda\conninfo.js
+ dist\cjs\adapter\bun\conninfo.js
+ dist\cjs\adapter\cloudflare-pages\conninfo.js
+ dist\cjs\adapter\cloudflare-workers\conninfo.js
+ dist\cjs\adapter\deno\conninfo.js
+ dist\cjs\adapter\lambda-edge\conninfo.js
+ dist\cjs\adapter\netlify\conninfo.js
+ dist\cjs\adapter\vercel\conninfo.js
+ dist\cjs\jsx\constants.js
+ dist\cjs\request\constants.js
+ dist\cjs\utils\constants.js
+ dist\jsx\constants.js
+ dist\request\constants.js
+ dist\utils\constants.js
+ dist\cjs\context.js
+ dist\cjs\jsx\context.js
+ dist\cjs\jsx\dom\context.js
+ dist\context.js
+ dist\jsx\context.js
+ dist\jsx\dom\context.js
+ dist\cjs\utils\cookie.js
+ dist\utils\cookie.js
+ dist\cjs\utils\crypto.js
+ dist\utils\crypto.js
+ dist\cjs\jsx\dom\css.js
+ dist\jsx\dom\css.js
+ dist\adapter\deno\deno.d.js
+ dist\cjs\adapter\deno\deno.d.js
+ dist\cjs\middleware\etag\digest.js
+ dist\middleware\etag\digest.js
+ dist\cjs\utils\encode.js
+ dist\utils\encode.js
+ dist\cjs\client\fetch-result-please.js
+ dist\client\fetch-result-please.js
+ dist\cjs\utils\filepath.js
+ dist\utils\filepath.js
+ dist\adapter\aws-lambda\handler.js
+ dist\adapter\cloudflare-pages\handler.js
+ dist\adapter\lambda-edge\handler.js
+ dist\adapter\netlify\handler.js
+ dist\adapter\service-worker\handler.js
+ dist\adapter\vercel\handler.js
+ dist\cjs\adapter\aws-lambda\handler.js
+ dist\cjs\adapter\cloudflare-pages\handler.js
+ dist\cjs\adapter\lambda-edge\handler.js
+ dist\cjs\adapter\netlify\handler.js
+ dist\cjs\adapter\service-worker\handler.js
+ dist\cjs\adapter\vercel\handler.js
+ dist\cjs\utils\handler.js
+ dist\utils\handler.js
+ dist\cjs\utils\headers.js
+ dist\utils\headers.js
+ dist\cjs\hono-base.js
+ dist\hono-base.js
+ dist\cjs\hono.js
+ dist\hono.js
+ dist\cjs\utils\html.js
+ dist\utils\html.js
+ dist\cjs\http-exception.js
+ dist\http-exception.js
+ dist\cjs\utils\http-status.js
+ dist\utils\http-status.js
+ dist\adapter\aws-lambda\index.js
+ dist\adapter\bun\index.js
+ dist\adapter\cloudflare-pages\index.js
+ dist\adapter\cloudflare-workers\index.js
+ dist\adapter\deno\index.js
+ dist\adapter\lambda-edge\index.js
+ dist\adapter\netlify\index.js
+ dist\adapter\service-worker\index.js
+ dist\adapter\vercel\index.js
+ dist\cjs\adapter\aws-lambda\index.js
+ dist\cjs\adapter\bun\index.js
+ dist\cjs\adapter\cloudflare-pages\index.js
+ dist\cjs\adapter\cloudflare-workers\index.js
+ dist\cjs\adapter\deno\index.js
+ dist\cjs\adapter\lambda-edge\index.js
+ dist\cjs\adapter\netlify\index.js
+ dist\cjs\adapter\service-worker\index.js
+ dist\cjs\adapter\vercel\index.js
+ dist\cjs\client\index.js
+ dist\cjs\helper\accepts\index.js
+ dist\cjs\helper\adapter\index.js
+ dist\cjs\helper\conninfo\index.js
+ dist\cjs\helper\cookie\index.js
+ dist\cjs\helper\css\index.js
+ dist\cjs\helper\dev\index.js
+ dist\cjs\helper\factory\index.js
+ dist\cjs\helper\html\index.js
+ dist\cjs\helper\proxy\index.js
+ dist\cjs\helper\route\index.js
+ dist\cjs\helper\ssg\index.js
+ dist\cjs\helper\streaming\index.js
+ dist\cjs\helper\testing\index.js
+ dist\cjs\helper\websocket\index.js
+ dist\cjs\index.js
+ dist\cjs\jsx\dom\hooks\index.js
+ dist\cjs\jsx\dom\index.js
+ dist\cjs\jsx\hooks\index.js
+ dist\cjs\jsx\index.js
+ dist\cjs\middleware\basic-auth\index.js
+ dist\cjs\middleware\bearer-auth\index.js
+ dist\cjs\middleware\body-limit\index.js
+ dist\cjs\middleware\cache\index.js
+ dist\cjs\middleware\combine\index.js
+ dist\cjs\middleware\compress\index.js
+ dist\cjs\middleware\context-storage\index.js
+ dist\cjs\middleware\cors\index.js
+ dist\cjs\middleware\csrf\index.js
+ dist\cjs\middleware\etag\index.js
+ dist\cjs\middleware\ip-restriction\index.js
+ dist\cjs\middleware\jsx-renderer\index.js
+ dist\cjs\middleware\jwk\index.js
+ dist\cjs\middleware\jwt\index.js
+ dist\cjs\middleware\language\index.js
+ dist\cjs\middleware\logger\index.js
+ dist\cjs\middleware\method-override\index.js
+ dist\cjs\middleware\powered-by\index.js
+ dist\cjs\middleware\pretty-json\index.js
+ dist\cjs\middleware\request-id\index.js
+ dist\cjs\middleware\secure-headers\index.js
+ dist\cjs\middleware\serve-static\index.js
+ dist\cjs\middleware\timeout\index.js
+ dist\cjs\middleware\timing\index.js
+ dist\cjs\middleware\trailing-slash\index.js
+ dist\cjs\router\linear-router\index.js
+ dist\cjs\router\pattern-router\index.js
+ dist\cjs\router\reg-exp-router\index.js
+ dist\cjs\router\smart-router\index.js
+ dist\cjs\router\trie-router\index.js
+ dist\cjs\utils\jwt\index.js
+ dist\cjs\validator\index.js
+ dist\client\index.js
+ dist\helper\accepts\index.js
+ dist\helper\adapter\index.js
+ dist\helper\conninfo\index.js
+ dist\helper\cookie\index.js
+ dist\helper\css\index.js
+ dist\helper\dev\index.js
+ dist\helper\factory\index.js
+ dist\helper\html\index.js
+ dist\helper\proxy\index.js
+ dist\helper\route\index.js
+ dist\helper\ssg\index.js
+ dist\helper\streaming\index.js
+ dist\helper\testing\index.js
+ dist\helper\websocket\index.js
+ dist\index.js
+ dist\jsx\dom\hooks\index.js
+ dist\jsx\dom\index.js
+ dist\jsx\hooks\index.js
+ dist\jsx\index.js
+ dist\middleware\basic-auth\index.js
+ dist\middleware\bearer-auth\index.js
+ dist\middleware\body-limit\index.js
+ dist\middleware\cache\index.js
+ dist\middleware\combine\index.js
+ dist\middleware\compress\index.js
+ dist\middleware\context-storage\index.js
+ dist\middleware\cors\index.js
+ dist\middleware\csrf\index.js
+ dist\middleware\etag\index.js
+ dist\middleware\ip-restriction\index.js
+ dist\middleware\jsx-renderer\index.js
+ dist\middleware\jwk\index.js
+ dist\middleware\jwt\index.js
+ dist\middleware\language\index.js
+ dist\middleware\logger\index.js
+ dist\middleware\method-override\index.js
+ dist\middleware\powered-by\index.js
+ dist\middleware\pretty-json\index.js
+ dist\middleware\request-id\index.js
+ dist\middleware\secure-headers\index.js
+ dist\middleware\serve-static\index.js
+ dist\middleware\timeout\index.js
+ dist\middleware\timing\index.js
+ dist\middleware\trailing-slash\index.js
+ dist\router\linear-router\index.js
+ dist\router\pattern-router\index.js
+ dist\router\reg-exp-router\index.js
+ dist\router\smart-router\index.js
+ dist\router\trie-router\index.js
+ dist\utils\jwt\index.js
+ dist\validator\index.js
+ dist\cjs\jsx\intrinsic-elements.js
+ dist\jsx\intrinsic-elements.js
+ dist\cjs\utils\ipaddr.js
+ dist\utils\ipaddr.js
+ dist\cjs\jsx\dom\jsx-dev-runtime.js
+ dist\cjs\jsx\jsx-dev-runtime.js
+ dist\jsx\dom\jsx-dev-runtime.js
+ dist\jsx\jsx-dev-runtime.js
+ dist\cjs\jsx\dom\jsx-runtime.js
+ dist\cjs\jsx\jsx-runtime.js
+ dist\jsx\dom\jsx-runtime.js
+ dist\jsx\jsx-runtime.js
+ dist\cjs\utils\jwt\jwa.js
+ dist\utils\jwt\jwa.js
+ dist\cjs\middleware\jwk\jwk.js
+ dist\middleware\jwk\jwk.js
+ dist\cjs\utils\jwt\jws.js
+ dist\utils\jwt\jws.js
+ dist\cjs\middleware\jwt\jwt.js
+ dist\cjs\utils\jwt\jwt.js
+ dist\middleware\jwt\jwt.js
+ dist\utils\jwt\jwt.js
+ dist\cjs\middleware\language\language.js
+ dist\middleware\language\language.js
+ dist\cjs\router\reg-exp-router\matcher.js
+ dist\router\reg-exp-router\matcher.js
+ dist\cjs\helper\ssg\middleware.js
+ dist\helper\ssg\middleware.js
+ dist\cjs\utils\mime.js
+ dist\utils\mime.js
+ dist\adapter\netlify\mod.js
+ dist\cjs\adapter\netlify\mod.js
+ dist\cjs\router\reg-exp-router\node.js
+ dist\cjs\router\trie-router\node.js
+ dist\router\reg-exp-router\node.js
+ dist\router\trie-router\node.js
+ dist\cjs\middleware\serve-static\path.js
+ dist\middleware\serve-static\path.js
+ dist\cjs\middleware\secure-headers\permissions-policy.js
+ dist\middleware\secure-headers\permissions-policy.js
+ dist\cjs\helper\ssg\plugins.js
+ dist\helper\ssg\plugins.js
+ dist\cjs\router\reg-exp-router\prepared-router.js
+ dist\router\reg-exp-router\prepared-router.js
+ dist\cjs\preset\quick.js
+ dist\preset\quick.js
+ dist\cjs\jsx\dom\render.js
+ dist\jsx\dom\render.js
+ dist\cjs\middleware\request-id\request-id.js
+ dist\middleware\request-id\request-id.js
+ dist\cjs\request.js
+ dist\request.js
+ dist\cjs\router.js
+ dist\cjs\router\linear-router\router.js
+ dist\cjs\router\pattern-router\router.js
+ dist\cjs\router\reg-exp-router\router.js
+ dist\cjs\router\smart-router\router.js
+ dist\cjs\router\trie-router\router.js
+ dist\router.js
+ dist\router\linear-router\router.js
+ dist\router\pattern-router\router.js
+ dist\router\reg-exp-router\router.js
+ dist\router\smart-router\router.js
+ dist\router\trie-router\router.js
+ dist\cjs\middleware\secure-headers\secure-headers.js
+ dist\middleware\secure-headers\secure-headers.js
+ dist\adapter\cloudflare-workers\serve-static-module.js
+ dist\cjs\adapter\cloudflare-workers\serve-static-module.js
+ dist\adapter\bun\serve-static.js
+ dist\adapter\cloudflare-workers\serve-static.js
+ dist\adapter\deno\serve-static.js
+ dist\cjs\adapter\bun\serve-static.js
+ dist\cjs\adapter\cloudflare-workers\serve-static.js
+ dist\cjs\adapter\deno\serve-static.js
+ dist\adapter\bun\server.js
+ dist\cjs\adapter\bun\server.js
+ dist\cjs\jsx\dom\server.js
+ dist\jsx\dom\server.js
+ dist\cjs\helper\streaming\sse.js
+ dist\helper\streaming\sse.js
+ dist\adapter\bun\ssg.js
+ dist\adapter\deno\ssg.js
+ dist\cjs\adapter\bun\ssg.js
+ dist\cjs\adapter\deno\ssg.js
+ dist\cjs\helper\ssg\ssg.js
+ dist\helper\ssg\ssg.js
+ dist\cjs\helper\streaming\stream.js
+ dist\cjs\utils\stream.js
+ dist\helper\streaming\stream.js
+ dist\utils\stream.js
+ dist\cjs\jsx\streaming.js
+ dist\jsx\streaming.js
+ dist\cjs\helper\streaming\text.js
+ dist\helper\streaming\text.js
+ dist\cjs\middleware\timing\timing.js
+ dist\middleware\timing\timing.js
+ dist\cjs\preset\tiny.js
+ dist\preset\tiny.js
+ dist\cjs\router\reg-exp-router\trie.js
+ dist\router\reg-exp-router\trie.js
+ dist\adapter\aws-lambda\types.js
+ dist\adapter\service-worker\types.js
+ dist\cjs\adapter\aws-lambda\types.js
+ dist\cjs\adapter\service-worker\types.js
+ dist\cjs\client\types.js
+ dist\cjs\helper\conninfo\types.js
+ dist\cjs\jsx\types.js
+ dist\cjs\types.js
+ dist\cjs\utils\jwt\types.js
+ dist\cjs\utils\types.js
+ dist\client\types.js
+ dist\helper\conninfo\types.js
+ dist\jsx\types.js
+ dist\types.js
+ dist\utils\jwt\types.js
+ dist\utils\types.js
+ dist\cjs\utils\url.js
+ dist\utils\url.js
+ dist\cjs\utils\jwt\utf8.js
+ dist\utils\jwt\utf8.js
+ dist\adapter\cloudflare-workers\utils.js
+ dist\cjs\adapter\cloudflare-workers\utils.js
+ dist\cjs\client\utils.js
+ dist\cjs\helper\ssg\utils.js
+ dist\cjs\helper\streaming\utils.js
+ dist\cjs\jsx\dom\utils.js
+ dist\cjs\jsx\utils.js
+ dist\cjs\validator\utils.js
+ dist\client\utils.js
+ dist\helper\ssg\utils.js
+ dist\helper\streaming\utils.js
+ dist\jsx\dom\utils.js
+ dist\jsx\utils.js
+ dist\validator\utils.js
+ dist\cjs\validator\validator.js
+ dist\validator\validator.js
+ dist\adapter\bun\websocket.js
+ dist\adapter\cloudflare-workers\websocket.js
+ dist\adapter\deno\websocket.js
+ dist\cjs\adapter\bun\websocket.js
+ dist\cjs\adapter\cloudflare-workers\websocket.js
+ dist\cjs\adapter\deno\websocket.js
+ dist\cjs\package.json
+ dist\types\package.json
+ package.json
+ README.md
+ dist\types\utils\accept.d.ts
+ dist\types\helper\accepts\accepts.d.ts
+ dist\types\jsx\base.d.ts
+ dist\types\utils\basic-auth.d.ts
+ dist\types\utils\body.d.ts
+ dist\types\utils\buffer.d.ts
+ dist\types\jsx\children.d.ts
+ dist\types\client\client.d.ts
+ dist\types\jsx\dom\client.d.ts
+ dist\types\utils\color.d.ts
+ dist\types\helper\css\common.d.ts
+ dist\types\jsx\intrinsic-element\common.d.ts
+ dist\types\jsx\components.d.ts
+ dist\types\jsx\dom\components.d.ts
+ dist\types\jsx\dom\intrinsic-element\components.d.ts
+ dist\types\jsx\intrinsic-element\components.d.ts
+ dist\types\compose.d.ts
+ dist\types\utils\compress.d.ts
+ dist\types\utils\concurrent.d.ts
+ dist\types\adapter\aws-lambda\conninfo.d.ts
+ dist\types\adapter\bun\conninfo.d.ts
+ dist\types\adapter\cloudflare-pages\conninfo.d.ts
+ dist\types\adapter\cloudflare-workers\conninfo.d.ts
+ dist\types\adapter\deno\conninfo.d.ts
+ dist\types\adapter\lambda-edge\conninfo.d.ts
+ dist\types\adapter\netlify\conninfo.d.ts
+ dist\types\adapter\vercel\conninfo.d.ts
+ dist\types\jsx\constants.d.ts
+ dist\types\request\constants.d.ts
+ dist\types\utils\constants.d.ts
+ dist\types\context.d.ts
+ dist\types\jsx\context.d.ts
+ dist\types\jsx\dom\context.d.ts
+ dist\types\utils\cookie.d.ts
+ dist\types\utils\crypto.d.ts
+ dist\types\jsx\dom\css.d.ts
+ dist\types\middleware\etag\digest.d.ts
+ dist\types\utils\encode.d.ts
+ dist\types\client\fetch-result-please.d.ts
+ dist\types\utils\filepath.d.ts
+ dist\types\adapter\aws-lambda\handler.d.ts
+ dist\types\adapter\cloudflare-pages\handler.d.ts
+ dist\types\adapter\lambda-edge\handler.d.ts
+ dist\types\adapter\netlify\handler.d.ts
+ dist\types\adapter\service-worker\handler.d.ts
+ dist\types\adapter\vercel\handler.d.ts
+ dist\types\utils\handler.d.ts
+ dist\types\utils\headers.d.ts
+ dist\types\hono-base.d.ts
+ dist\types\hono.d.ts
+ dist\types\utils\html.d.ts
+ dist\types\http-exception.d.ts
+ dist\types\utils\http-status.d.ts
+ dist\types\adapter\aws-lambda\index.d.ts
+ dist\types\adapter\bun\index.d.ts
+ dist\types\adapter\cloudflare-pages\index.d.ts
+ dist\types\adapter\cloudflare-workers\index.d.ts
+ dist\types\adapter\deno\index.d.ts
+ dist\types\adapter\lambda-edge\index.d.ts
+ dist\types\adapter\netlify\index.d.ts
+ dist\types\adapter\service-worker\index.d.ts
+ dist\types\adapter\vercel\index.d.ts
+ dist\types\client\index.d.ts
+ dist\types\helper\accepts\index.d.ts
+ dist\types\helper\adapter\index.d.ts
+ dist\types\helper\conninfo\index.d.ts
+ dist\types\helper\cookie\index.d.ts
+ dist\types\helper\css\index.d.ts
+ dist\types\helper\dev\index.d.ts
+ dist\types\helper\factory\index.d.ts
+ dist\types\helper\html\index.d.ts
+ dist\types\helper\proxy\index.d.ts
+ dist\types\helper\route\index.d.ts
+ dist\types\helper\ssg\index.d.ts
+ dist\types\helper\streaming\index.d.ts
+ dist\types\helper\testing\index.d.ts
+ dist\types\helper\websocket\index.d.ts
+ dist\types\index.d.ts
+ dist\types\jsx\dom\hooks\index.d.ts
+ dist\types\jsx\dom\index.d.ts
+ dist\types\jsx\hooks\index.d.ts
+ dist\types\jsx\index.d.ts
+ dist\types\middleware\basic-auth\index.d.ts
+ dist\types\middleware\bearer-auth\index.d.ts
+ dist\types\middleware\body-limit\index.d.ts
+ dist\types\middleware\cache\index.d.ts
+ dist\types\middleware\combine\index.d.ts
+ dist\types\middleware\compress\index.d.ts
+ dist\types\middleware\context-storage\index.d.ts
+ dist\types\middleware\cors\index.d.ts
+ dist\types\middleware\csrf\index.d.ts
+ dist\types\middleware\etag\index.d.ts
+ dist\types\middleware\ip-restriction\index.d.ts
+ dist\types\middleware\jsx-renderer\index.d.ts
+ dist\types\middleware\jwk\index.d.ts
+ dist\types\middleware\jwt\index.d.ts
+ dist\types\middleware\language\index.d.ts
+ dist\types\middleware\logger\index.d.ts
+ dist\types\middleware\method-override\index.d.ts
+ dist\types\middleware\powered-by\index.d.ts
+ dist\types\middleware\pretty-json\index.d.ts
+ dist\types\middleware\request-id\index.d.ts
+ dist\types\middleware\secure-headers\index.d.ts
+ dist\types\middleware\serve-static\index.d.ts
+ dist\types\middleware\timeout\index.d.ts
+ dist\types\middleware\timing\index.d.ts
+ dist\types\middleware\trailing-slash\index.d.ts
+ dist\types\router\linear-router\index.d.ts
+ dist\types\router\pattern-router\index.d.ts
+ dist\types\router\reg-exp-router\index.d.ts
+ dist\types\router\smart-router\index.d.ts
+ dist\types\router\trie-router\index.d.ts
+ dist\types\utils\jwt\index.d.ts
+ dist\types\validator\index.d.ts
+ dist\types\jsx\intrinsic-elements.d.ts
+ dist\types\utils\ipaddr.d.ts
+ dist\types\jsx\dom\jsx-dev-runtime.d.ts
+ dist\types\jsx\jsx-dev-runtime.d.ts
+ dist\types\jsx\dom\jsx-runtime.d.ts
+ dist\types\jsx\jsx-runtime.d.ts
+ dist\types\utils\jwt\jwa.d.ts
+ dist\types\middleware\jwk\jwk.d.ts
+ dist\types\utils\jwt\jws.d.ts
+ dist\types\middleware\jwt\jwt.d.ts
+ dist\types\utils\jwt\jwt.d.ts
+ dist\types\middleware\language\language.d.ts
+ dist\types\router\reg-exp-router\matcher.d.ts
+ dist\types\helper\ssg\middleware.d.ts
+ dist\types\utils\mime.d.ts
+ dist\types\adapter\netlify\mod.d.ts
+ dist\types\router\reg-exp-router\node.d.ts
+ dist\types\router\trie-router\node.d.ts
+ dist\types\middleware\serve-static\path.d.ts
+ dist\types\middleware\secure-headers\permissions-policy.d.ts
+ dist\types\helper\ssg\plugins.d.ts
+ dist\types\router\reg-exp-router\prepared-router.d.ts
+ dist\types\preset\quick.d.ts
+ dist\types\jsx\dom\render.d.ts
+ dist\types\middleware\request-id\request-id.d.ts
+ dist\types\request.d.ts
+ dist\types\router.d.ts
+ dist\types\router\linear-router\router.d.ts
+ dist\types\router\pattern-router\router.d.ts
+ dist\types\router\reg-exp-router\router.d.ts
+ dist\types\router\smart-router\router.d.ts
+ dist\types\router\trie-router\router.d.ts
+ dist\types\middleware\secure-headers\secure-headers.d.ts
+ dist\types\adapter\cloudflare-workers\serve-static-module.d.ts
+ dist\types\adapter\bun\serve-static.d.ts
+ dist\types\adapter\cloudflare-workers\serve-static.d.ts
+ dist\types\adapter\deno\serve-static.d.ts
+ dist\types\adapter\bun\server.d.ts
+ dist\types\jsx\dom\server.d.ts
+ dist\types\helper\streaming\sse.d.ts
+ dist\types\adapter\bun\ssg.d.ts
+ dist\types\adapter\deno\ssg.d.ts
+ dist\types\helper\ssg\ssg.d.ts
+ dist\types\helper\streaming\stream.d.ts
+ dist\types\utils\stream.d.ts
+ dist\types\jsx\streaming.d.ts
+ dist\types\helper\streaming\text.d.ts
+ dist\types\middleware\timing\timing.d.ts
+ dist\types\preset\tiny.d.ts
+ dist\types\router\reg-exp-router\trie.d.ts
+ dist\types\adapter\aws-lambda\types.d.ts
+ dist\types\adapter\service-worker\types.d.ts
+ dist\types\client\types.d.ts
+ dist\types\helper\conninfo\types.d.ts
+ dist\types\jsx\types.d.ts
+ dist\types\types.d.ts
+ dist\types\utils\jwt\types.d.ts
+ dist\types\utils\types.d.ts
+ dist\types\utils\url.d.ts
+ dist\types\utils\jwt\utf8.d.ts
+ dist\types\adapter\cloudflare-workers\utils.d.ts
+ dist\types\client\utils.d.ts
+ dist\types\helper\ssg\utils.d.ts
+ dist\types\helper\streaming\utils.d.ts
+ dist\types\jsx\dom\utils.d.ts
+ dist\types\jsx\utils.d.ts
+ dist\types\validator\utils.d.ts
+ dist\types\validator\validator.d.ts
+ dist\types\adapter\bun\websocket.d.ts
+ dist\types\adapter\cloudflare-workers\websocket.d.ts
+ dist\types\adapter\deno\websocket.d.ts
+ dist\tsconfig.build.tsbuildinfo
+[hono] Extract .b8ba1a376f75f7ef-00000009.hono (decompressed 245.89 KB tgz file in 0ns)
+[hono] Extracted to .b8ba1a376f75f7ef-00000009.hono (4.172s)
+ LICENSE
+ lib\fxp.cjs
+ lib\fxp.d.cts
+ src\v6\OutputBuilders\BaseOutputBuilder.js
+ src\v6\valueParsers\booleanParser.js
+ src\v6\valueParsers\booleanParserExt.js
+ src\v6\inputSource\BufferSource.js
+ src\v6\CharsSymbol.js
+ src\cli\cli.js
+ src\v6\valueParsers\currency.js
+ src\xmlparser\DocTypeReader.js
+ src\v6\EntitiesParser.js
+ src\v6\valueParsers\EntitiesParser.js
+ lib\fxbuilder.min.js
+ src\fxp.js
+ lib\fxp.min.js
+ lib\fxparser.min.js
+ lib\fxvalidator.min.js
+ src\ignoreAttributes.js
+ src\v6\valueParsers\join.js
+ src\v6\OutputBuilders\JsArrBuilder.js
+ src\v6\OutputBuilders\JsMinArrBuilder.js
+ src\v6\OutputBuilders\JsObjBuilder.js
+ src\xmlbuilder\json2xml.js
+ src\cli\man.js
+ src\xmlparser\node2json.js
+ src\v6\valueParsers\number.js
+ src\v6\OptionsBuilder.js
+ src\xmlparser\OptionsBuilder.js
+ src\xmlparser\OrderedObjParser.js
+ src\v6\OutputBuilders\ParserOptionsBuilder.js
+ src\cli\read.js
+ src\v6\Report.js
+ src\v6\inputSource\StringSource.js
+ src\v6\TagPath.js
+ src\v6\TagPathMatcher.js
+ src\v6\valueParsers\trim.js
+ src\util.js
+ src\validator.js
+ src\v6\Xml2JsParser.js
+ src\xmlparser\xmlNode.js
+ src\v6\XMLParser.js
+ src\xmlparser\XMLParser.js
+ src\v6\XmlPartReader.js
+ src\v6\XmlSpecialTagsReader.js
+ package.json
+ lib\fxbuilder.min.js.map
+ lib\fxp.min.js.map
+ lib\fxparser.min.js.map
+ lib\fxvalidator.min.js.map
+ CHANGELOG.md
+ README.md
+ src\fxp.d.ts
+[fast-xml-parser] Extract .5ffeb67ff79eff15-0000000A.fast-xml-parser (decompressed 237.57 KB tgz file in 0ns)
+[fast-xml-parser] Extracted to .5ffeb67ff79eff15-0000000A.fast-xml-parser (453ms)
+ LICENSE
+ chromium-versions.js
+ full-chromium-versions.js
+ full-versions.js
+ index.js
+ versions.js
+ chromium-versions.json
+ full-chromium-versions.json
+ full-versions.json
+ package.json
+ versions.json
+ README.md
+[electron-to-chromium] Extract .3dba3f3525dffede-0000000B.electron-to-chromium (decompressed 32.88 KB tgz file in 0ns)
+[electron-to-chromium] Extracted to .3dba3f3525dffede-0000000B.electron-to-chromium (62ms)
+ lib\agents.js
+ lib\dns.js
+ lib\errors.js
+ lib\index.js
+ lib\options.js
+ lib\proxy.js
+ package.json
+ README.md
+[@npmcli/agent] Extract .79aefb35afed9d9f-0000000C.agent (decompressed 6.0 KB tgz file in 0ns)
+[@npmcli/agent] Extracted to .79aefb35afed9d9f-0000000C.agent (62ms)
+ .eslintrc
+ .nycrc
+ LICENSE
+ index.js
+ test\index.js
+ package.json
+ tsconfig.json
+ CHANGELOG.md
+ README.md
+ index.d.ts
+ .github\FUNDING.yml
+[safe-array-concat] Extract .fbafbeff3fe5ff2e-0000000D.safe-array-concat (decompressed 6.54 KB tgz file in 0ns)
+[safe-array-concat] Extracted to .fbafbeff3fe5ff2e-0000000D.safe-array-concat (62ms)
+[Scripts] Starting scripts for "esbuild"
+[Scripts] Finished scripts for "esbuild"
+[Scripts] Starting scripts for "tree-sitter-powershell"
+node:internal/modules/cjs/loader:1424
+  throw err;
+  ^
+
+Error: Cannot find module 'env-paths'
+Require stack:
+- D:\code\cimicode\dev-new\cimicode\node_modules\.bun\node-gyp@12.2.0\node_modules\node-gyp\bin\node-gyp.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1421:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1059:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1064:22)
+    at Module._load (node:internal/modules/cjs/loader:1227:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)
+    at Module.require (node:internal/modules/cjs/loader:1504:12)
+    at require (node:internal/modules/helpers:152:16)
+    at Object.<anonymous> (D:\code\cimicode\dev-new\cimicode\node_modules\.bun\node-gyp@12.2.0\node_modules\node-gyp\bin\node-gyp.js:7:18)
+    at Module._compile (node:internal/modules/cjs/loader:1761:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\code\\cimicode\\dev-new\\cimicode\\node_modules\\.bun\\node-gyp@12.2.0\\node_modules\\node-gyp\\bin\\node-gyp.js'
+  ]
+}
+
+Node.js v24.13.0
+error: install script from "tree-sitter-powershell" exited with 1
