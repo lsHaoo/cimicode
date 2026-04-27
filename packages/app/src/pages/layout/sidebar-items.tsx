@@ -82,6 +82,7 @@ export type SessionItemProps = {
   clearHoverProjectSoon: () => void
   prefetchSession: (session: Session, priority?: "high" | "low") => void
   archiveSession: (session: Session) => Promise<void>
+  showArchiveDialog: (session: Session) => void
 }
 
 const SessionRow = (props: {
@@ -145,6 +146,7 @@ export const SessionItem = (props: SessionItemProps): JSX.Element => {
   const notification = useNotification()
   const permission = usePermission()
   const globalSync = useGlobalSync()
+
   const unseenCount = createMemo(() => notification.session.unseenCount(props.session.id))
   const hasError = createMemo(() => notification.session.unseenHasError(props.session.id))
   const [sessionStore] = globalSync.child(props.session.directory)
@@ -175,6 +177,12 @@ export const SessionItem = (props: SessionItemProps): JSX.Element => {
     if (!props.showChild) return
     return childSessionOnPath(sessionStore.session, props.session.id, params.id)
   })
+
+  const handleArchiveClick = (event: MouseEvent) => {
+    event.preventDefault()
+    event.stopPropagation()
+    props.showArchiveDialog(props.session)
+  }
 
   const warm = (span: number, priority: "high" | "low") => {
     const nav = props.navList?.()
@@ -256,11 +264,7 @@ export const SessionItem = (props: SessionItemProps): JSX.Element => {
                   variant="ghost"
                   class="size-6 rounded-md"
                   aria-label={language.t("common.archive")}
-                  onClick={(event) => {
-                    event.preventDefault()
-                    event.stopPropagation()
-                    void props.archiveSession(props.session)
-                  }}
+                  onClick={handleArchiveClick}
                 />
               </Tooltip>
             </div>

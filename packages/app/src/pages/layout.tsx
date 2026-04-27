@@ -80,6 +80,7 @@ import {
   drainPendingDeepLinks,
 } from "./layout/deep-links"
 import { createInlineEditorController } from "./layout/inline-editor"
+import { sessionTitle } from "@/utils/session-title"
 import {
   LocalWorkspace,
   SortableWorkspace,
@@ -1801,6 +1802,33 @@ export default function Layout(props: ParentProps) {
     )
   }
 
+  function DialogArchiveSession(props: { session: Session }) {
+    const handleArchive = () => {
+      dialog.close()
+      void archiveSession(props.session)
+    }
+
+    return (
+      <Dialog title={language.t("session.delete.title")} fit>
+        <div class="flex flex-col gap-4 pl-6 pr-2.5 pb-3">
+          <div class="flex flex-col gap-1">
+            <span class="text-14-regular text-text-strong">
+              {language.t("session.delete.confirm", { name: sessionTitle(props.session.title) })}
+            </span>
+          </div>
+          <div class="flex justify-end gap-2">
+            <Button variant="ghost" size="large" onClick={() => dialog.close()}>
+              {language.t("common.cancel")}
+            </Button>
+            <Button variant="primary" size="large" onClick={handleArchive}>
+              {language.t("session.delete.button")}
+            </Button>
+          </div>
+        </div>
+      </Dialog>
+    )
+  }
+
   const activeRoute = {
     session: "",
     sessionProject: "",
@@ -2020,6 +2048,7 @@ export default function Layout(props: ParentProps) {
     clearHoverProjectSoon,
     prefetchSession,
     archiveSession,
+    showArchiveDialog: (session) => dialog.show(() => <DialogArchiveSession session={session} />),
     workspaceName,
     renameWorkspace,
     editorOpen,
@@ -2127,7 +2156,7 @@ export default function Layout(props: ParentProps) {
           "max-w-full overflow-hidden": panelProps.mobile,
         }}
         style={{
-          width: panelProps.mobile ? undefined : `${panel()}px`,
+          width: panelProps.mobile ? undefined : '100%',
         }}
       >
         <Show
