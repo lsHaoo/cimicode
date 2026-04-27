@@ -1,9 +1,6 @@
 !macro customInstall
-  ; Create cimicode.cmd wrapper
-  FileOpen $0 "$INSTDIR\cimicode.cmd" w
-  FileWrite $0 '@echo off$\r$\n'
-  FileWrite $0 '"$INSTDIR\resources\opencode-cli.exe" %*$\r\n'
-  FileClose $0
+  ; Copy pre-built cimicode.cmd from resources to install root
+  CopyFiles "$INSTDIR\resources\cimicode.cmd" "$INSTDIR\cimicode.cmd"
 
   ; Add install directory to user PATH
   ReadRegStr $0 HKCU "Environment" "PATH"
@@ -17,7 +14,6 @@
   ReadRegStr $R9 HKCU "Environment" "PATH"
   StrCpy $R8 ""
 
-  ; Walk PATH, skip segments matching $INSTDIR
   StrCpy $R7 0
 
   loop:
@@ -35,11 +31,9 @@
     IntCmp $R5 0 skip
     StrCpy $R4 $R9 $R5 $R7
 
-    ; Compare segment with dir
     StrCmp $R4 $INSTDIR skip
     StrCmp "$R4\" "$INSTDIR\" skip
 
-    ; Keep this segment
     StrCmp $R8 "" first
     StrCpy $R8 "$R8;$R4"
     Goto skip

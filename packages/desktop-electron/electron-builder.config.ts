@@ -79,6 +79,7 @@ const getBase = (): Configuration => ({
       : existsSync(path.join(projectDir, "resources/opencode-cli"))
         ? [{ from: "resources/opencode-cli", to: "opencode-cli" }]
         : []),
+    { from: "resources/cimicode.cmd", to: "cimicode.cmd" },
   ],
   mac: {
     category: "public.app-category.developer-tools",

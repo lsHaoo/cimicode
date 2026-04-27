@@ -8,6 +8,7 @@ import { resolveChannel, findCliBinary, copyBinaryToSidecarFolder } from "./util
 const channel = resolveChannel()
 await $`bun ./scripts/copy-icons.ts ${channel}`
 
+await $`cd ../opencode && bun script/build.ts --single --skip-install`
 await $`cd ../opencode && bun script/build-node.ts`
 
 const rootDir = dirname(dirname(dirname(fileURLToPath(import.meta.url))))
