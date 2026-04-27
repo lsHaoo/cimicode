@@ -1,6 +1,6 @@
 import { createSignal, onCleanup, onMount, Show, type JSX } from "solid-js"
 import { ssoInfo, ssoError, ssoWarn, ssoDebug } from "./logger"
-import { getToken, handleSSOCallback, isSSOEnabled, getSSOUrl, setToken } from "./index"
+import { getToken, handleSSOCallback, isSSOEnabled, getSSOUrl, removeToken, setToken } from "./index"
 
 const LOGO_URL = "https://app.cxmt.com/s3/oa-public/fedt/agi/cimicode-logo.webp"
 
