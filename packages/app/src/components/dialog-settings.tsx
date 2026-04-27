@@ -1,4 +1,4 @@
-import { Component, Show } from "solid-js"
+import { Component } from "solid-js"
 import { Dialog } from "@opencode-ai/ui/dialog"
 import { Tabs } from "@opencode-ai/ui/tabs"
 import { Icon } from "@opencode-ai/ui/icon"
@@ -20,15 +20,6 @@ export const DialogSettings: Component = () => {
   return (
     <Dialog size="x-large">
       <div class="settings-fullscreen-wrapper">
-        <div class="settings-header">
-          <IconButton
-            icon="close"
-            variant="ghost"
-            aria-label="Close settings"
-            class="settings-close-button"
-            onClick={() => dialog.close()}
-          />
-        </div>
         <Tabs orientation="vertical" variant="settings" defaultValue="general" class="h-full settings-dialog">
           <Tabs.List>
             <div class="flex flex-col justify-between h-full w-full">
@@ -69,18 +60,34 @@ export const DialogSettings: Component = () => {
               </div>
             </div>
           </Tabs.List>
-          <Tabs.Content value="general" class="no-scrollbar">
-            <SettingsGeneral />
-          </Tabs.Content>
-          <Tabs.Content value="shortcuts" class="no-scrollbar">
-            <SettingsKeybinds />
-          </Tabs.Content>
-          <Tabs.Content value="providers" class="no-scrollbar">
-            <SettingsProviders />
-          </Tabs.Content>
-          <Tabs.Content value="models" class="no-scrollbar">
-            <SettingsModels />
-          </Tabs.Content>
+          <div class="settings-main">
+            <div
+              class="settings-main-header"
+              classList={{
+                "settings-main-header-windows": platform.platform === "desktop" && platform.os === "windows",
+              }}
+            >
+              <IconButton
+                icon="close"
+                variant="ghost"
+                aria-label="Close settings"
+                class="settings-close-button"
+                onClick={() => dialog.close()}
+              />
+            </div>
+            <Tabs.Content value="general" class="settings-content no-scrollbar">
+              <SettingsGeneral />
+            </Tabs.Content>
+            <Tabs.Content value="shortcuts" class="settings-content no-scrollbar">
+              <SettingsKeybinds />
+            </Tabs.Content>
+            <Tabs.Content value="providers" class="settings-content no-scrollbar">
+              <SettingsProviders />
+            </Tabs.Content>
+            <Tabs.Content value="models" class="settings-content no-scrollbar">
+              <SettingsModels />
+            </Tabs.Content>
+          </div>
         </Tabs>
       </div>
     </Dialog>
