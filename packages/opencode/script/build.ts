@@ -236,6 +236,15 @@ for (const item of targets) {
   }
 
   await $`rm -rf ./dist/${name}/bin/tui`
+
+  // Copy builtin skills alongside the binary for CLI distribution
+  const skillsSource = path.resolve(dir, "../../packages/skills")
+  const skillsDest = `dist/${name}/bin/skills`
+  if (fs.existsSync(skillsSource)) {
+    fs.cpSync(skillsSource, skillsDest, { recursive: true })
+    console.log(`Copied builtin skills to ${skillsDest}`)
+  }
+
   await Bun.file(`dist/${name}/package.json`).write(
     JSON.stringify(
       {

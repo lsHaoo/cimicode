@@ -1,6 +1,7 @@
 import os from "os"
 import path from "path"
 import { pathToFileURL } from "url"
+import { cpSync, existsSync, mkdirSync, readdirSync } from "fs"
 import z from "zod"
 import { Effect, Layer, Context, Schema } from "effect"
 import { zod } from "@/util/effect-zod"
@@ -24,6 +25,40 @@ const EXTERNAL_DIRS = [".claude", ".agents"]
 const EXTERNAL_SKILL_PATTERN = "skills/**/SKILL.md"
 const OPENCODE_SKILL_PATTERN = "{skill,skills}/**/SKILL.md"
 const SKILL_PATTERN = "**/SKILL.md"
+const BUILTIN_SKILLS_DIR = path.join(Global.Path.config, "skills")
+
+function resolveBuiltinSkillsSource(): string | null {
+  // 1. Monorepo development: packages/skills relative to this file
+  //    packages/opencode/src/skill/index.ts -> ../../../skills -> packages/skills
+  try {
+    const devSource = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../../skills")
+    if (existsSync(path.join(devSource, "brainstorming", "SKILL.md"))) return devSource
+  } catch {}
+
+  // 2. Bundled CLI: skills/ directory next to the executable
+  try {
+    const exeDir = path.dirname(process.execPath)
+    const bundledSource = path.join(exeDir, "skills")
+    if (existsSync(path.join(bundledSource, "brainstorming", "SKILL.md"))) return bundledSource
+  } catch {}
+
+  return null
+}
+
+function syncBuiltinSkills() {
+  mkdirSync(BUILTIN_SKILLS_DIR, { recursive: true })
+
+  const source = resolveBuiltinSkillsSource()
+  if (!source) return
+
+  for (const entry of readdirSync(source, { withFileTypes: true })) {
+    if (!entry.isDirectory()) continue
+    const targetSkill = path.join(BUILTIN_SKILLS_DIR, entry.name)
+    if (!existsSync(targetSkill)) {
+      cpSync(path.join(source, entry.name), targetSkill, { recursive: true })
+    }
+  }
+}
 
 export const Info = Schema.Struct({
   name: Schema.String,
@@ -152,6 +187,11 @@ const discoverSkills = Effect.fnUntraced(function* (
 ) {
   const state: ScanState = { matches: new Set(), dirs: new Set() }
 
+  // Builtin skills from ~/.cimi/cimicode/skills (lowest priority, user skills override)
+  if (yield* fsys.isDir(BUILTIN_SKILLS_DIR)) {
+    yield* scan(state, BUILTIN_SKILLS_DIR, SKILL_PATTERN, { scope: "builtin" })
+  }
+
   if (!Flag.OPENCODE_DISABLE_EXTERNAL_SKILLS) {
     for (const dir of EXTERNAL_DIRS) {
       const root = path.join(Global.Path.home, dir)
@@ -218,6 +258,7 @@ export const layer = Layer.effect(
     const fsys = yield* AppFileSystem.Service
     const discovered = yield* InstanceState.make(
       Effect.fn("Skill.discovery")(function* (ctx) {
+        syncBuiltinSkills()
         return yield* discoverSkills(config, discovery, fsys, ctx.directory, ctx.worktree)
       }),
     )
