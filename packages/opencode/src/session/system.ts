@@ -3,7 +3,7 @@ import { Context, Effect, Layer } from "effect"
 import { Instance } from "../project/instance"
 
 import PROMPT_CIMICODE from "./prompt/cimicode.txt"
-import type { Provider } from "@/provider"
+import type { Provider } from "@/provider/provider"
 import type { Agent } from "@/agent/agent"
 import { Permission } from "@/permission"
 import { Skill } from "@/skill"
