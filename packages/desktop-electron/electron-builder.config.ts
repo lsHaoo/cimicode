@@ -1,4 +1,5 @@
 import { execFile } from "node:child_process"
+import { existsSync } from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 import { promisify } from "node:util"
@@ -56,7 +57,7 @@ const channel = (() => {
 })()
 
 const getBase = (): Configuration => ({
-  artifactName: "cimicode-electron-${os}-${arch}.${ext}",
+  artifactName: "Cimi_${version}-beta.${ext}",
   afterPack,
   directories: {
     output: "dist",
@@ -64,11 +65,21 @@ const getBase = (): Configuration => ({
   },
   files: ["out/**/*", "resources/**/*"],
   extraResources: [
-    {
-      from: "native/",
-      to: "native/",
-      filter: ["index.js", "index.d.ts", "build/Release/mac_window.node", "swift-build/**"],
-    },
+    ...(existsSync(path.join(projectDir, "native"))
+      ? [
+          {
+            from: "native/",
+            to: "native/",
+            filter: ["index.js", "index.d.ts", "build/Release/mac_window.node", "swift-build/**"],
+          },
+        ]
+      : []),
+    ...(existsSync(path.join(projectDir, "resources/opencode-cli.exe"))
+      ? [{ from: "resources/opencode-cli.exe", to: "opencode-cli.exe" }]
+      : existsSync(path.join(projectDir, "resources/opencode-cli"))
+        ? [{ from: "resources/opencode-cli", to: "opencode-cli" }]
+        : []),
+    { from: "resources/cimicode.cmd", to: "cimicode.cmd" },
   ],
   mac: {
     category: "public.app-category.developer-tools",
@@ -98,6 +109,7 @@ const getBase = (): Configuration => ({
     allowToChangeInstallationDirectory: true,
     installerIcon: `resources/icons/icon.ico`,
     installerHeaderIcon: `resources/icons/icon.ico`,
+    include: "installer.nsh",
   },
   linux: {
     icon: `resources/icons`,
