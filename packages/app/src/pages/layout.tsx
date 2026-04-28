@@ -1813,7 +1813,9 @@ export default function Layout(props: ParentProps) {
         <div class="flex flex-col gap-4 pl-6 pr-2.5 pb-3">
           <div class="flex flex-col gap-1">
             <span class="text-14-regular text-text-strong">
-              {language.t("session.delete.confirm", { name: sessionTitle(props.session.title) })}
+              {language.t("session.delete.confirm", {
+                name: sessionTitle(props.session.title) ?? language.t("command.session.new"),
+              })}
             </span>
           </div>
           <div class="flex justify-end gap-2">
@@ -2095,6 +2097,7 @@ export default function Layout(props: ParentProps) {
       clearHoverProjectSoon,
       prefetchSession,
       archiveSession,
+      showArchiveDialog: (session) => dialog.show(() => <DialogArchiveSession session={session} />),
     },
   }
 

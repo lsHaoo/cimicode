@@ -1,6 +1,6 @@
 import path from "path"
 import fs from "fs/promises"
-import { xdgData, xdgCache, xdgConfig, xdgState } from "xdg-basedir"
+import { xdgData, xdgCache, xdgState } from "xdg-basedir"
 import os from "os"
 import { Context, Effect, Layer } from "effect"
 import { Flock } from "./util/flock"
@@ -8,7 +8,7 @@ import { Flock } from "./util/flock"
 const app = "cimicode"
 const data = path.join(xdgData!, app)
 const cache = path.join(xdgCache!, app)
-const config = path.join(xdgConfig!, app)
+const config = path.join(os.homedir(), ".cimi", "cimicode")
 const state = path.join(xdgState!, app)
 
 const paths = {
