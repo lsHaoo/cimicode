@@ -80,6 +80,7 @@ const getBase = (): Configuration => ({
         ? [{ from: "resources/opencode-cli", to: "opencode-cli" }]
         : []),
     { from: "resources/cimicode.cmd", to: "cimicode.cmd" },
+    { from: "../../packages/skills/", to: "skills/" },
   ],
   mac: {
     category: "public.app-category.developer-tools",

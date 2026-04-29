@@ -1,4 +1,4 @@
-import { Log } from "../util"
+import * as Log from "@opencode-ai/core/util/log"
 import path from "path"
 import { pathToFileURL } from "url"
 import os from "os"
@@ -20,7 +20,7 @@ import { Account } from "@/account/account"
 import { isRecord } from "@/util/record"
 import type { ConsoleState } from "./console-state"
 import { AppFileSystem } from "@opencode-ai/core/filesystem"
-import { InstanceState } from "@/effect"
+import { InstanceState } from "@/effect/instance-state"
 import { Context, Duration, Effect, Exit, Fiber, Layer, Option, Schema } from "effect"
 import { EffectFlock } from "@opencode-ai/core/util/effect-flock"
 import { InstanceRef } from "@/effect/instance-ref"
@@ -293,13 +293,7 @@ export interface Interface {
 export class Service extends Context.Service<Service, Interface>()("@opencode/Config") {}
 
 function globalConfigFile() {
-  const candidates = ["opencode.jsonc", "opencode.json", "config.json"].map((file) =>
-    path.join(Global.Path.config, file),
-  )
-  for (const file of candidates) {
-    if (existsSync(file)) return file
-  }
-  return candidates[0]
+  return path.join(Global.Path.config, "cimicode.json")
 }
 
 function patchJsonc(input: string, patch: unknown, path: string[] = []): string {
@@ -387,30 +381,7 @@ export const layer = Layer.effect(
     })
 
     const loadGlobal = Effect.fnUntraced(function* () {
-      let result: Info = pipe(
-        {},
-        mergeDeep(yield* loadFile(path.join(Global.Path.config, "config.json"))),
-        mergeDeep(yield* loadFile(path.join(Global.Path.config, "opencode.json"))),
-        mergeDeep(yield* loadFile(path.join(Global.Path.config, "opencode.jsonc"))),
-      )
-
-      const legacy = path.join(Global.Path.config, "config")
-      if (existsSync(legacy)) {
-        yield* Effect.promise(() =>
-          import(pathToFileURL(legacy).href, { with: { type: "toml" } })
-            .then(async (mod) => {
-              const { provider, model, ...rest } = mod.default
-              if (provider && model) result.model = `${provider}/${model}`
-              result["$schema"] = "https://opencode.ai/config.json"
-              result = mergeDeep(result, rest)
-              await fsNode.writeFile(path.join(Global.Path.config, "config.json"), JSON.stringify(result, null, 2))
-              await fsNode.unlink(legacy)
-            })
-            .catch(() => {}),
-        )
-      }
-
-      return result
+      return yield* loadFile(path.join(Global.Path.config, "cimicode.json"))
     })
 
     const [cachedGlobal, invalidateGlobal] = yield* Effect.cachedInvalidateWithTTL(
@@ -795,3 +766,5 @@ export const defaultLayer = layer.pipe(
   Layer.provide(Account.defaultLayer),
   Layer.provide(Npm.defaultLayer),
 )
+
+export * as Config from "./config"
