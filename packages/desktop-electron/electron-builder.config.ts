@@ -102,8 +102,11 @@ const getBase = (): Configuration => ({
   win: {
     icon: `resources/icons/icon.ico`,
     signAndEditExecutable: false,
-    signtoolOptions: {},
+    signtoolOptions: {
+      sign: signWindows,
+    },
     target: ["nsis", "dir"],
+    verifyUpdateCodeSignature: false,
   },
   nsis: {
     oneClick: false,
