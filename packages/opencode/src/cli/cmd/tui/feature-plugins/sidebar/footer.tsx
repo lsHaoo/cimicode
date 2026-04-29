@@ -1,6 +1,7 @@
 import type { TuiPlugin, TuiPluginApi, TuiPluginModule } from "@opencode-ai/plugin/tui"
 import { createMemo, Show } from "solid-js"
 import { Global } from "@opencode-ai/core/global"
+import { TuiVersion } from "../../util/version"
 
 const id = "internal:sidebar-footer"
 
@@ -68,7 +69,7 @@ function View(props: { api: TuiPluginApi }) {
         <span style={{ fg: theme().text }}>
           <b>miCode</b>
         </span>{" "}
-        <span>{props.api.app.version}</span>
+        <span>{TuiVersion}</span>
       </text>
     </box>
   )

@@ -1,4 +1,4 @@
-import { afterEach, describe, test, expect } from "bun:test"
+﻿import { afterEach, describe, test, expect } from "bun:test"
 import { Permission } from "../src/permission"
 import { Config } from "@/config/config"
 import { Instance } from "../src/project/instance"
@@ -146,7 +146,7 @@ describe("Permission.disabled for task tool", () => {
 
 // Integration tests that load permissions from real config files
 describe("permission.task with real config files", () => {
-  test("loads task permissions from opencode.json config", async () => {
+  test("loads task permissions from cimicode.json config", async () => {
     await using tmp = await tmpdir({
       git: true,
       config: {

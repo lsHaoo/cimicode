@@ -1,6 +1,6 @@
 import os from "os"
 import path from "path"
-import { pathToFileURL } from "url"
+import { fileURLToPath, pathToFileURL } from "url"
 import { cpSync, existsSync, mkdirSync, readdirSync } from "fs"
 import z from "zod"
 import { Effect, Layer, Context, Schema } from "effect"
@@ -46,6 +46,7 @@ function resolveBuiltinSkillsSource(): string | null {
 }
 
 function syncBuiltinSkills() {
+  if (process.env.OPENCODE_TEST_HOME) return
   mkdirSync(BUILTIN_SKILLS_DIR, { recursive: true })
 
   const source = resolveBuiltinSkillsSource()
@@ -188,7 +189,7 @@ const discoverSkills = Effect.fnUntraced(function* (
   const state: ScanState = { matches: new Set(), dirs: new Set() }
 
   // Builtin skills from ~/.cimi/cimicode/skills (lowest priority, user skills override)
-  if (yield* fsys.isDir(BUILTIN_SKILLS_DIR)) {
+  if (!process.env.OPENCODE_TEST_HOME && (yield* fsys.isDir(BUILTIN_SKILLS_DIR))) {
     yield* scan(state, BUILTIN_SKILLS_DIR, SKILL_PATTERN, { scope: "builtin" })
   }
 

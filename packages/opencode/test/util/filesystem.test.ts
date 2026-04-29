@@ -1,4 +1,4 @@
-import { describe, test, expect } from "bun:test"
+﻿import { describe, test, expect } from "bun:test"
 import path from "path"
 import fs from "fs/promises"
 import { Filesystem } from "@/util/filesystem"
@@ -154,20 +154,20 @@ describe("filesystem", () => {
       const nested = path.join(project, "nested")
       await fs.mkdir(nested, { recursive: true })
 
-      await fs.writeFile(path.join(tmp.path, "opencode.json"), "{}", "utf-8")
-      await fs.writeFile(path.join(tmp.path, "opencode.jsonc"), "{}", "utf-8")
-      await fs.writeFile(path.join(project, "opencode.json"), "{}", "utf-8")
-      await fs.writeFile(path.join(project, "opencode.jsonc"), "{}", "utf-8")
+      await fs.writeFile(path.join(tmp.path, "cimicode.json"), "{}", "utf-8")
+      await fs.writeFile(path.join(tmp.path, "cimicode.jsonc"), "{}", "utf-8")
+      await fs.writeFile(path.join(project, "cimicode.json"), "{}", "utf-8")
+      await fs.writeFile(path.join(project, "cimicode.jsonc"), "{}", "utf-8")
 
-      const result = await Filesystem.findUp(["opencode.json", "opencode.jsonc"], nested, tmp.path, {
+      const result = await Filesystem.findUp(["cimicode.json", "cimicode.jsonc"], nested, tmp.path, {
         rootFirst: true,
       })
 
       expect(result).toEqual([
-        path.join(tmp.path, "opencode.json"),
-        path.join(tmp.path, "opencode.jsonc"),
-        path.join(project, "opencode.json"),
-        path.join(project, "opencode.jsonc"),
+        path.join(tmp.path, "cimicode.json"),
+        path.join(tmp.path, "cimicode.jsonc"),
+        path.join(project, "cimicode.json"),
+        path.join(project, "cimicode.jsonc"),
       ])
     })
   })
@@ -192,7 +192,7 @@ describe("filesystem", () => {
     test("reads UTF-8 content correctly", async () => {
       await using tmp = await tmpdir()
       const filepath = path.join(tmp.path, "unicode.txt")
-      const content = "Hello 世界 🌍"
+      const content = "Hello 涓栫晫 馃實"
       await fs.writeFile(filepath, content, "utf-8")
 
       expect(await Filesystem.readText(filepath)).toBe(content)

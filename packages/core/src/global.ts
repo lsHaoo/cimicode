@@ -6,9 +6,10 @@ import { Context, Effect, Layer } from "effect"
 import { Flock } from "./util/flock"
 
 const app = "cimicode"
+const home = process.env.OPENCODE_TEST_HOME ?? os.homedir()
 const data = path.join(xdgData!, app)
 const cache = path.join(xdgCache!, app)
-const config = path.join(os.homedir(), ".cimi", "cimicode")
+const config = path.join(home, ".cimi", "cimicode")
 const state = path.join(xdgState!, app)
 
 const paths = {

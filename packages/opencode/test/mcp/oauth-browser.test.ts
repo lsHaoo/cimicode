@@ -1,4 +1,4 @@
-import { test, expect, mock, beforeEach } from "bun:test"
+﻿import { test, expect, mock, beforeEach } from "bun:test"
 import { EventEmitter } from "events"
 import { Effect } from "effect"
 import type { MCP as MCPNS } from "../../src/mcp/index"
@@ -113,7 +113,7 @@ test("BrowserOpenFailed event is published when open() throws", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
       await Bun.write(
-        `${dir}/opencode.json`,
+        `${dir}/cimicode.json`,
         JSON.stringify({
           $schema: "https://opencode.ai/config.json",
           mcp: {
@@ -169,7 +169,7 @@ test("BrowserOpenFailed event is NOT published when open() succeeds", async () =
   await using tmp = await tmpdir({
     init: async (dir) => {
       await Bun.write(
-        `${dir}/opencode.json`,
+        `${dir}/cimicode.json`,
         JSON.stringify({
           $schema: "https://opencode.ai/config.json",
           mcp: {
@@ -223,7 +223,7 @@ test("open() is called with the authorization URL", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
       await Bun.write(
-        `${dir}/opencode.json`,
+        `${dir}/cimicode.json`,
         JSON.stringify({
           $schema: "https://opencode.ai/config.json",
           mcp: {

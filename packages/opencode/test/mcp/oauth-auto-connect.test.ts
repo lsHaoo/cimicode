@@ -1,4 +1,4 @@
-import { test, expect, mock, beforeEach } from "bun:test"
+﻿import { test, expect, mock, beforeEach } from "bun:test"
 import { Effect } from "effect"
 
 // Mock UnauthorizedError to match the SDK's class
@@ -118,7 +118,7 @@ test("first connect to OAuth server shows needs_auth instead of failed", async (
   await using tmp = await tmpdir({
     init: async (dir) => {
       await Bun.write(
-        `${dir}/opencode.json`,
+        `${dir}/cimicode.json`,
         JSON.stringify({
           $schema: "https://opencode.ai/config.json",
           mcp: {
@@ -238,7 +238,7 @@ test("authenticate() stores a connected client when auth completes without redir
   await using tmp = await tmpdir({
     init: async (dir) => {
       await Bun.write(
-        `${dir}/opencode.json`,
+        `${dir}/cimicode.json`,
         JSON.stringify({
           $schema: "https://opencode.ai/config.json",
           mcp: {

@@ -1,4 +1,4 @@
-import { test, expect, mock, beforeEach } from "bun:test"
+﻿import { test, expect, mock, beforeEach } from "bun:test"
 import { Effect } from "effect"
 import type { MCP as MCPNS } from "../../src/mcp/index"
 
@@ -55,7 +55,7 @@ test("headers are passed to transports when oauth is enabled (default)", async (
   await using tmp = await tmpdir({
     init: async (dir) => {
       await Bun.write(
-        `${dir}/opencode.json`,
+        `${dir}/cimicode.json`,
         JSON.stringify({
           $schema: "https://opencode.ai/config.json",
           mcp: {
