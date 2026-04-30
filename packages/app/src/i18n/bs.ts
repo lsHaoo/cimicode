@@ -441,18 +441,11 @@ export const dict = {
 
   "toast.session.listFailed.title": "Neuspjelo učitavanje sesija za {{project}}",
 
-  "toast.update.title": "Dostupno ažuriranje",
-  "toast.update.description": "Nova verzija Cimi-a ({{version}}) je dostupna za instalaciju.",
-  "toast.update.action.installRestart": "Instaliraj i restartuj",
-  "toast.update.action.notYet": "Ne još",
 
   "error.page.title": "Nešto je pošlo po zlu",
   "error.page.description": "Došlo je do greške prilikom učitavanja aplikacije.",
   "error.page.details.label": "Detalji greške",
   "error.page.action.restart": "Restartuj",
-  "error.page.action.checking": "Provjera...",
-  "error.page.action.checkUpdates": "Provjeri ažuriranja",
-  "error.page.action.updateTo": "Ažuriraj na {{version}}",
   "error.page.report.prefix": "Molimo prijavi ovu grešku Cimi timu",
   "error.page.report.discord": "na Discordu",
   "error.page.version": "Verzija: {{version}}",

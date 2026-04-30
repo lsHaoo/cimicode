@@ -9,6 +9,7 @@ import { DialogVariant } from "./dialog-variant"
 import { useKeybind } from "../context/keybind"
 import * as fuzzysort from "fuzzysort"
 import { useConnected } from "./use-connected"
+import { isAllowedVisibleProvider } from "./provider-filter"
 
 export function DialogModel(props: { providerID?: string }) {
   const local = useLocal()
@@ -33,6 +34,7 @@ export function DialogModel(props: { providerID?: string }) {
       return items.flatMap((item) => {
         const provider = sync.data.provider.find((x) => x.id === item.providerID)
         if (!provider) return []
+        if (!isAllowedVisibleProvider(provider, sync.data.config)) return []
         const model = provider.models[item.modelID]
         if (!model) return []
         return [
@@ -62,6 +64,7 @@ export function DialogModel(props: { providerID?: string }) {
 
     const providerOptions = pipe(
       sync.data.provider,
+      filter((provider) => isAllowedVisibleProvider(provider, sync.data.config)),
       sortBy(
         (provider) => provider.id !== "opencode",
         (provider) => providerDisplayName(provider),
@@ -101,12 +104,12 @@ export function DialogModel(props: { providerID?: string }) {
       ),
     )
 
-    const popularProviders = !connected()
+    const providerLinks = !connected()
       ? pipe(
           providers(),
           map((option) => ({
             ...option,
-            category: "Popular providers",
+            category: "Providers",
           })),
           take(6),
         )
@@ -115,11 +118,11 @@ export function DialogModel(props: { providerID?: string }) {
     if (needle) {
       return [
         ...fuzzysort.go(needle, providerOptions, { keys: ["title", "category"] }).map((x) => x.obj),
-        ...fuzzysort.go(needle, popularProviders, { keys: ["title"] }).map((x) => x.obj),
+        ...fuzzysort.go(needle, providerLinks, { keys: ["title"] }).map((x) => x.obj),
       ]
     }
 
-    return [...favoriteOptions, ...recentOptions, ...providerOptions, ...popularProviders]
+    return [...favoriteOptions, ...recentOptions, ...providerOptions, ...providerLinks]
   })
 
   const provider = createMemo(() =>
@@ -153,7 +156,7 @@ export function DialogModel(props: { providerID?: string }) {
       keybind={[
         {
           keybind: keybind.all.model_provider_list?.[0],
-          title: connected() ? "Connect provider" : "View all providers",
+          title: "Connect provider",
           onTrigger() {
             dialog.replace(() => <DialogProvider />)
           },

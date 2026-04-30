@@ -439,18 +439,11 @@ export const dict = {
 
   "toast.session.listFailed.title": "Kunne ikke laste sesjoner for {{project}}",
 
-  "toast.update.title": "Oppdatering tilgjengelig",
-  "toast.update.description": "En ny versjon av Cimi ({{version}}) er nå tilgjengelig for installasjon.",
-  "toast.update.action.installRestart": "Installer og start på nytt",
-  "toast.update.action.notYet": "Ikke nå",
 
   "error.page.title": "Noe gikk galt",
   "error.page.description": "Det oppstod en feil under lasting av applikasjonen.",
   "error.page.details.label": "Feildetaljer",
   "error.page.action.restart": "Start på nytt",
-  "error.page.action.checking": "Sjekker...",
-  "error.page.action.checkUpdates": "Se etter oppdateringer",
-  "error.page.action.updateTo": "Oppdater til {{version}}",
   "error.page.report.prefix": "Vennligst rapporter denne feilen til Cimi-teamet",
   "error.page.report.discord": "på Discord",
   "error.page.version": "Versjon: {{version}}",

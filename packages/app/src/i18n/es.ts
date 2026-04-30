@@ -441,18 +441,11 @@ export const dict = {
 
   "toast.session.listFailed.title": "Fallo al cargar sesiones para {{project}}",
 
-  "toast.update.title": "Actualización disponible",
-  "toast.update.description": "Una nueva versión de Cimi ({{version}}) está disponible para instalar.",
-  "toast.update.action.installRestart": "Instalar y reiniciar",
-  "toast.update.action.notYet": "Todavía no",
 
   "error.page.title": "Algo salió mal",
   "error.page.description": "Ocurrió un error al cargar la aplicación.",
   "error.page.details.label": "Detalles del error",
   "error.page.action.restart": "Reiniciar",
-  "error.page.action.checking": "Comprobando...",
-  "error.page.action.checkUpdates": "Buscar actualizaciones",
-  "error.page.action.updateTo": "Actualizar a {{version}}",
   "error.page.report.prefix": "Por favor reporta este error al equipo de Cimi",
   "error.page.report.discord": "en Discord",
   "error.page.version": "Versión: {{version}}",

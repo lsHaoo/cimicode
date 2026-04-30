@@ -12,6 +12,7 @@ import { useArgs } from "./args"
 import { useSDK } from "./sdk"
 import { RGBA } from "@opentui/core"
 import { Filesystem } from "@/util/filesystem"
+import { isAllowedVisibleProvider } from "../component/provider-filter"
 
 export function parseModel(model: string) {
   const [providerID, ...rest] = model.split("/")
@@ -30,7 +31,7 @@ export const { use: useLocal, provider: LocalProvider } = createSimpleContext({
 
     function isModelValid(model: { providerID: string; modelID: string }) {
       const provider = sync.data.provider.find((x) => x.id === model.providerID)
-      return !!provider?.models[model.modelID]
+      return !!provider?.models[model.modelID] && isAllowedVisibleProvider(provider, sync.data.config)
     }
 
     function getFirstValidModel(...modelFns: (() => { providerID: string; modelID: string } | undefined)[]) {
@@ -185,7 +186,7 @@ export const { use: useLocal, provider: LocalProvider } = createSimpleContext({
           }
         }
 
-        const provider = sync.data.provider[0]
+        const provider = sync.data.provider.find((item) => isAllowedVisibleProvider(item, sync.data.config))
         if (!provider) return undefined
         const defaultModel = sync.data.provider_default[provider.id]
         const firstModel = Object.values(provider.models)[0]

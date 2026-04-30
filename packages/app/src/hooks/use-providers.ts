@@ -1,43 +1,42 @@
 import { useGlobalSync } from "@/context/global-sync"
 import { decode64 } from "@/utils/base64"
+import { isAllowedVisibleProvider } from "@/utils/provider-filter"
 import { useParams } from "@solidjs/router"
 import { createMemo } from "solid-js"
 
-export const popularProviders = [
-  "opencode",
-  "opencode-go",
-  "anthropic",
-  "github-copilot",
-  "openai",
-  "google",
-  "openrouter",
-  "vercel",
-]
-const popularProviderSet = new Set(popularProviders)
+export const popularProviders: string[] = []
 
 export function useProviders() {
   const globalSync = useGlobalSync()
   const params = useParams()
   const dir = createMemo(() => decode64(params.dir) ?? "")
-  const providers = () => {
+  const state = () => {
     if (dir()) {
       const [projectStore] = globalSync.child(dir())
-      if (projectStore.provider_ready) return projectStore.provider
+      if (projectStore.provider_ready) return { provider: projectStore.provider, config: projectStore.config }
     }
-    return globalSync.data.provider
+    return { provider: globalSync.data.provider, config: globalSync.data.config }
   }
+  const providers = () => state().provider
+  const configProvider = (providerID: string) => state().config.provider?.[providerID]
+  const allowed = (provider: ReturnType<typeof providers>["all"][number]) =>
+    isAllowedVisibleProvider(provider, configProvider(provider.id))
+
   return {
     all: () => providers().all,
     default: () => providers().default,
-    popular: () => providers().all.filter((p) => popularProviderSet.has(p.id)),
+    popular: () => [],
     connected: () => {
       const connected = new Set(providers().connected)
-      return providers().all.filter((p) => connected.has(p.id))
+      return providers().all.filter((p) => connected.has(p.id) && allowed(p))
     },
     paid: () => {
       const connected = new Set(providers().connected)
       return providers().all.filter(
-        (p) => connected.has(p.id) && (p.id !== "opencode" || Object.values(p.models).some((m) => m.cost?.input)),
+        (p) =>
+          connected.has(p.id) &&
+          allowed(p) &&
+          (p.id !== "opencode" || Object.values(p.models).some((m) => m.cost?.input)),
       )
     },
   }

@@ -51,7 +51,7 @@ function View(props: { api: TuiPluginApi }) {
             </box>
             <text fg={theme().textMuted}>CimiCode includes free models so you can start immediately.</text>
             <text fg={theme().textMuted}>
-              Connect from 75+ providers to use other models, including Claude, GPT, Gemini etc
+              Connect CXMT Cimi or a custom OpenAI-compatible provider to use other models
             </text>
             <box flexDirection="row" gap={1} justifyContent="space-between">
               <text fg={theme().text}>Connect provider</text>

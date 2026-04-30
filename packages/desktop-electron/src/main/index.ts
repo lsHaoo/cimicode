@@ -6,8 +6,7 @@ import { createServer } from "node:net"
 import { homedir } from "node:os"
 import { dirname, join } from "node:path"
 import type { Event } from "electron"
-import { app, BrowserWindow, dialog } from "electron"
-import pkg from "electron-updater"
+import { app, BrowserWindow } from "electron"
 
 import contextMenu from "electron-context-menu"
 contextMenu({ showSaveImageAs: true, showLookUpSelection: false, showSearchWithGoogle: false })
@@ -41,11 +40,9 @@ app.setPath("userData", cimiConfigPath)
 app.setPath("appData", cimiDataPath)
 app.setPath("cache", cimiCachePath)
 app.setPath("logs", join(cimiDataPath, "log"))
-const { autoUpdater } = pkg
-
 import type { InitStep, ServerReadyData, SqliteMigrationProgress, WslConfig } from "../preload/types"
 import { checkAppExists, resolveAppPath, wslPath } from "./apps"
-import { CHANNEL, UPDATER_ENABLED } from "./constants"
+import { CHANNEL } from "./constants"
 import { syncBuiltinSkills } from "./skills"
 import { registerIpcHandlers, sendDeepLinks, sendMenuCommand, sendSqliteMigrationProgress } from "./ipc"
 import { initLogging } from "./logging"
@@ -124,7 +121,6 @@ function setupApp() {
     app.setAsDefaultProtocolClient("cimi")
     registerRendererProtocol()
     setDockIcon()
-    setupAutoUpdater()
     syncBuiltinSkills()
     startSSOCallbackServer()
     await initialize()
@@ -232,9 +228,6 @@ function wireMenu() {
   if (!mainWindow) return
   createMenu({
     trigger: (id) => mainWindow && sendMenuCommand(mainWindow, id),
-    checkForUpdates: () => {
-      void checkForUpdates(true)
-    },
     reload: () => mainWindow?.reload(),
     relaunch: () => {
       killSidecar()
@@ -259,7 +252,6 @@ registerIpcHandlers({
       initEmitter.off("step", listener)
     }
   },
-  getWindowConfig: () => ({ updaterEnabled: UPDATER_ENABLED }),
   consumeInitialDeepLinks: () => pendingDeepLinks.splice(0),
   getDefaultServerUrl: () => getDefaultServerUrl(),
   setDefaultServerUrl: (url) => setDefaultServerUrl(url),
@@ -272,9 +264,6 @@ registerIpcHandlers({
   wslPath: async (path, mode) => wslPath(path, mode),
   resolveAppPath: async (appName) => resolveAppPath(appName),
   loadingWindowComplete: () => loadingComplete.resolve(),
-  runUpdater: async (alertOnFail) => checkForUpdates(alertOnFail),
-  checkUpdate: async () => checkUpdate(),
-  installUpdate: async () => installUpdate(),
   setBackgroundColor: (color) => setBackgroundColor(color),
 })
 
@@ -331,122 +320,6 @@ async function getSidecarPort() {
 
 function sqliteNeedsMigration(databasePath: string) {
   return !existsSync(databasePath) && existsSync(join(dirname(databasePath), "storage"))
-}
-
-function setupAutoUpdater() {
-  if (!UPDATER_ENABLED) return
-  autoUpdater.logger = logger
-  autoUpdater.channel = "latest"
-  autoUpdater.allowPrerelease = false
-  autoUpdater.allowDowngrade = true
-  autoUpdater.autoDownload = false
-  autoUpdater.autoInstallOnAppQuit = true
-  logger.log("auto updater configured", {
-    channel: autoUpdater.channel,
-    allowPrerelease: autoUpdater.allowPrerelease,
-    allowDowngrade: autoUpdater.allowDowngrade,
-    currentVersion: app.getVersion(),
-  })
-}
-
-let downloadedUpdateVersion: string | undefined
-
-async function checkUpdate() {
-  if (!UPDATER_ENABLED) return { updateAvailable: false }
-  if (downloadedUpdateVersion) {
-    logger.log("returning cached downloaded update", {
-      version: downloadedUpdateVersion,
-    })
-    return { updateAvailable: true, version: downloadedUpdateVersion }
-  }
-  logger.log("checking for updates", {
-    currentVersion: app.getVersion(),
-    channel: autoUpdater.channel,
-    allowPrerelease: autoUpdater.allowPrerelease,
-    allowDowngrade: autoUpdater.allowDowngrade,
-  })
-  try {
-    const result = await autoUpdater.checkForUpdates()
-    const updateInfo = result?.updateInfo
-    logger.log("update metadata fetched", {
-      releaseVersion: updateInfo?.version ?? null,
-      releaseDate: updateInfo?.releaseDate ?? null,
-      releaseName: updateInfo?.releaseName ?? null,
-      files: updateInfo?.files?.map((file) => file.url) ?? [],
-    })
-    const version = result?.updateInfo?.version
-    if (result?.isUpdateAvailable === false || !version) {
-      logger.log("no update available", {
-        reason: "provider returned no newer version",
-      })
-      return { updateAvailable: false }
-    }
-    logger.log("update available", { version })
-    await autoUpdater.downloadUpdate()
-    logger.log("update download completed", { version })
-    downloadedUpdateVersion = version
-    return { updateAvailable: true, version }
-  } catch (error) {
-    logger.error("update check failed", error)
-    return { updateAvailable: false, failed: true }
-  }
-}
-
-async function installUpdate() {
-  if (!downloadedUpdateVersion) {
-    logger.log("install update skipped", {
-      reason: "no downloaded update ready",
-    })
-    return
-  }
-  logger.log("installing downloaded update", {
-    version: downloadedUpdateVersion,
-  })
-  killSidecar()
-  autoUpdater.quitAndInstall()
-}
-
-async function checkForUpdates(alertOnFail: boolean) {
-  if (!UPDATER_ENABLED) return
-  logger.log("checkForUpdates invoked", { alertOnFail })
-  const result = await checkUpdate()
-  if (!result.updateAvailable) {
-    if (result.failed) {
-      logger.log("no update decision", { reason: "update check failed" })
-      if (!alertOnFail) return
-      await dialog.showMessageBox({
-        type: "error",
-        message: "Update check failed.",
-        title: "Update Error",
-      })
-      return
-    }
-
-    logger.log("no update decision", { reason: "already up to date" })
-    if (!alertOnFail) return
-    await dialog.showMessageBox({
-      type: "info",
-      message: "You're up to date.",
-      title: "No Updates",
-    })
-    return
-  }
-
-  const response = await dialog.showMessageBox({
-    type: "info",
-    message: `Update ${result.version ?? ""} downloaded. Restart now?`,
-    title: "Update Ready",
-    buttons: ["Restart", "Later"],
-    defaultId: 0,
-    cancelId: 1,
-  })
-  logger.log("update prompt response", {
-    version: result.version ?? null,
-    restartNow: response.response === 0,
-  })
-  if (response.response === 0) {
-    await installUpdate()
-  }
 }
 
 function delay(ms: number) {

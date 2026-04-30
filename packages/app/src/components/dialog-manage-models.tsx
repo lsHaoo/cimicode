@@ -5,7 +5,6 @@ import { Tooltip } from "@opencode-ai/ui/tooltip"
 import { Button } from "@opencode-ai/ui/button"
 import type { Component } from "solid-js"
 import { useLocal } from "@/context/local"
-import { popularProviders } from "@/hooks/use-providers"
 import { useLanguage } from "@/context/language"
 import { useDialog } from "@opencode-ai/ui/context/dialog"
 import { DialogSelectProvider } from "./dialog-select-provider"
@@ -18,7 +17,6 @@ export const DialogManageModels: Component = () => {
   const handleConnectProvider = () => {
     dialog.show(() => <DialogSelectProvider />)
   }
-  const providerRank = (id: string) => popularProviders.indexOf(id)
   const providerList = (providerID: string) => local.model.list().filter((x) => x.provider.id === providerID)
   const providerVisible = (providerID: string) =>
     providerList(providerID).every((x) => local.model.visible({ modelID: x.id, providerID: x.provider.id }))
@@ -68,13 +66,7 @@ export const DialogManageModels: Component = () => {
           )
         }}
         sortGroupsBy={(a, b) => {
-          const aRank = providerRank(a.items[0].provider.id)
-          const bRank = providerRank(b.items[0].provider.id)
-          const aPopular = aRank >= 0
-          const bPopular = bRank >= 0
-          if (aPopular && !bPopular) return -1
-          if (!aPopular && bPopular) return 1
-          return aRank - bRank
+          return a.items[0].provider.name.localeCompare(b.items[0].provider.name)
         }}
         onSelect={(x) => {
           if (!x) return

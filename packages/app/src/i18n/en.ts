@@ -454,10 +454,6 @@ export const dict = {
   "toast.session.listFailed.title": "Failed to load sessions for {{project}}",
   "toast.project.reloadFailed.title": "Failed to reload {{project}}",
 
-  "toast.update.title": "Update available",
-  "toast.update.description": "A new version of Cimi ({{version}}) is now available to install.",
-  "toast.update.action.installRestart": "Install and restart",
-  "toast.update.action.notYet": "Not yet",
   "toast.reload.embed.title": "Embedded mode only",
   "toast.reload.embed.description": "Restart service is only available when this web app is embedded in an iframe.",
 
@@ -465,9 +461,6 @@ export const dict = {
   "error.page.description": "An error occurred while loading the application.",
   "error.page.details.label": "Error Details",
   "error.page.action.restart": "Restart",
-  "error.page.action.checking": "Checking...",
-  "error.page.action.checkUpdates": "Check for updates",
-  "error.page.action.updateTo": "Update to {{version}}",
   "error.page.circular": "[Circular]",
   "error.page.report.prefix": "Please report this error to the Cimi team",
   "error.page.report.discord": "on Discord",

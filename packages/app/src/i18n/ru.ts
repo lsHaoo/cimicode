@@ -440,18 +440,11 @@ export const dict = {
 
   "toast.session.listFailed.title": "Не удалось загрузить сессии для {{project}}",
 
-  "toast.update.title": "Доступно обновление",
-  "toast.update.description": "Новая версия Cimi ({{version}}) доступна для установки.",
-  "toast.update.action.installRestart": "Установить и перезапустить",
-  "toast.update.action.notYet": "Пока нет",
 
   "error.page.title": "Что-то пошло не так",
   "error.page.description": "Произошла ошибка при загрузке приложения.",
   "error.page.details.label": "Детали ошибки",
   "error.page.action.restart": "Перезапустить",
-  "error.page.action.checking": "Проверка...",
-  "error.page.action.checkUpdates": "Проверить обновления",
-  "error.page.action.updateTo": "Обновить до {{version}}",
   "error.page.report.prefix": "Пожалуйста, сообщите об этой ошибке команде Cimi",
   "error.page.report.discord": "в Discord",
   "error.page.version": "Версия: {{version}}",

@@ -440,18 +440,11 @@ export const dict = {
 
   "toast.session.listFailed.title": "{{project}} için oturumlar yüklenemedi",
 
-  "toast.update.title": "Güncelleme mevcut",
-  "toast.update.description": "Cimi'un yeni bir sürümü ({{version}}) yüklemeye hazır.",
-  "toast.update.action.installRestart": "Yükle ve yeniden başlat",
-  "toast.update.action.notYet": "Şimdi değil",
 
   "error.page.title": "Bir şeyler yanlış gitti",
   "error.page.description": "Uygulama yüklenirken bir hata oluştu.",
   "error.page.details.label": "Hata Detayları",
   "error.page.action.restart": "Yeniden Başlat",
-  "error.page.action.checking": "Kontrol ediliyor...",
-  "error.page.action.checkUpdates": "Güncellemeleri kontrol et",
-  "error.page.action.updateTo": "{{version}} sürümüne güncelle",
   "error.page.report.prefix": "Lütfen bu hatayı Cimi ekibine bildirin",
   "error.page.report.discord": "Discord üzerinden",
   "error.page.version": "Sürüm: {{version}}",

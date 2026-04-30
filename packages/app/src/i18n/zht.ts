@@ -433,18 +433,11 @@ export const dict = {
 
   "toast.session.listFailed.title": "無法載入 {{project}} 的工作階段",
 
-  "toast.update.title": "有可用更新",
-  "toast.update.description": "Cimi 有新版本 ({{version}}) 可安裝。",
-  "toast.update.action.installRestart": "安裝並重新啟動",
-  "toast.update.action.notYet": "稍後",
 
   "error.page.title": "出了點問題",
   "error.page.description": "載入應用程式時發生錯誤。",
   "error.page.details.label": "錯誤詳情",
   "error.page.action.restart": "重新啟動",
-  "error.page.action.checking": "檢查中...",
-  "error.page.action.checkUpdates": "檢查更新",
-  "error.page.action.updateTo": "更新到 {{version}}",
   "error.page.report.prefix": "請將此錯誤回報給 Cimi 團隊",
   "error.page.report.discord": "在 Discord 上",
   "error.page.version": "版本: {{version}}",

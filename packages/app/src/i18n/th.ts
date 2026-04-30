@@ -439,18 +439,11 @@ export const dict = {
 
   "toast.session.listFailed.title": "ไม่สามารถโหลดเซสชันสำหรับ {{project}}",
 
-  "toast.update.title": "มีการอัปเดต",
-  "toast.update.description": "เวอร์ชันใหม่ของ Cimi ({{version}}) พร้อมใช้งานสำหรับติดตั้ง",
-  "toast.update.action.installRestart": "ติดตั้งและรีสตาร์ท",
-  "toast.update.action.notYet": "ยังไม่",
 
   "error.page.title": "เกิดข้อผิดพลาด",
   "error.page.description": "เกิดข้อผิดพลาดระหว่างการโหลดแอปพลิเคชัน",
   "error.page.details.label": "รายละเอียดข้อผิดพลาด",
   "error.page.action.restart": "รีสตาร์ท",
-  "error.page.action.checking": "กำลังตรวจสอบ...",
-  "error.page.action.checkUpdates": "ตรวจสอบการอัปเดต",
-  "error.page.action.updateTo": "อัปเดตเป็น {{version}}",
   "error.page.report.prefix": "โปรดรายงานข้อผิดพลาดนี้ให้ทีม Cimi",
   "error.page.report.discord": "บน Discord",
   "error.page.version": "เวอร์ชัน: {{version}}",
