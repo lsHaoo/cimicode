@@ -9,6 +9,10 @@ import {
   normalizeMimeType,
   svgTextFromValue,
 } from "../pierre/media"
+import { PdfPreview } from "./previews/pdf-preview"
+import { DocxPreview } from "./previews/docx-preview"
+import { XlsxPreview } from "./previews/xlsx-preview"
+import { PptxPreview } from "./previews/pptx-preview"
 
 export type FileMediaOptions = {
   mode?: "auto" | "off"
@@ -19,10 +23,16 @@ export type FileMediaOptions = {
   deleted?: boolean
   readFile?: (path: string) => Promise<FileContent | undefined>
   onLoad?: () => void
-  onError?: (ctx: { kind: "image" | "audio" | "svg" }) => void
+  onError?: (ctx: { kind: "image" | "audio" | "svg" | "pdf" | "docx" | "xlsx" | "xls" | "pptx" | "ppt" }) => void
 }
 
-function mediaValue(cfg: FileMediaOptions, mode: "image" | "audio") {
+const documentKinds = ["pdf", "docx", "xlsx", "xls", "pptx", "ppt"] as const
+type DocumentKind = (typeof documentKinds)[number]
+function isDocumentKind(k: string | undefined): k is DocumentKind {
+  return documentKinds.includes(k as DocumentKind)
+}
+
+function mediaValue(cfg: FileMediaOptions, mode: "image" | "audio" | "document") {
   if (cfg.current !== undefined) return cfg.current
   if (mode === "image") return cfg.after ?? cfg.before
   return cfg.after ?? cfg.before
@@ -59,14 +69,20 @@ export function FileMedia(props: { media?: FileMediaOptions; fallback: () => JSX
   const direct = createMemo(() => {
     const media = cfg()
     const k = kind()
-    if (!media || (k !== "image" && k !== "audio")) return
-    return dataUrlFromMediaValue(mediaValue(media, k), k)
+    if (!media) return
+    if (k === "image" || k === "audio") {
+      return dataUrlFromMediaValue(mediaValue(media, k), k)
+    }
+    if (isDocumentKind(k)) {
+      return dataUrlFromMediaValue(mediaValue(media, "document"), k)
+    }
   })
 
   const request = createMemo(() => {
     const media = cfg()
     const k = kind()
-    if (!media || (k !== "image" && k !== "audio")) return
+    if (!media) return
+    if (k !== "image" && k !== "audio" && !isDocumentKind(k)) return
     if (media.current !== undefined) return
     if (deleted()) return
     if (direct()) return
@@ -246,6 +262,34 @@ export function FileMedia(props: { media?: FileMediaOptions; fallback: () => JSX
             </div>
           )
         })()}
+      </Match>
+      <Match when={kind() === "pdf"}>
+        <div class="flex justify-center bg-background-stronger px-6 py-4 overflow-x-auto">
+          <Show when={src()} fallback={<div class="text-text-weak">Loading PDF data...</div>}>
+            {(data) => <PdfPreview data={data()} path={cfg()?.path} onLoad={onLoad} />}
+          </Show>
+        </div>
+      </Match>
+      <Match when={kind() === "docx"}>
+        <div class="flex justify-center bg-background-stronger overflow-x-auto">
+          <Show when={src()} fallback={<div class="text-text-weak">Loading document data...</div>}>
+            {(data) => <DocxPreview data={data()} path={cfg()?.path} onLoad={onLoad} />}
+          </Show>
+        </div>
+      </Match>
+      <Match when={kind() === "xlsx" || kind() === "xls"}>
+        <div class="flex justify-center bg-background-stronger px-6 py-4 overflow-x-auto">
+          <Show when={src()} fallback={<div class="text-text-weak">Loading spreadsheet data...</div>}>
+            {(data) => <XlsxPreview data={data()} path={cfg()?.path} onLoad={onLoad} />}
+          </Show>
+        </div>
+      </Match>
+      <Match when={kind() === "pptx" || kind() === "ppt"}>
+        <div class="flex justify-center bg-background-stronger px-6 py-4 overflow-x-auto">
+          <Show when={src()} fallback={<div class="text-text-weak">Loading presentation data...</div>}>
+            {(data) => <PptxPreview data={data()} path={cfg()?.path} onLoad={onLoad} />}
+          </Show>
+        </div>
       </Match>
       <Match when={isBinary()}>
         <div class="flex min-h-56 flex-col items-center justify-center gap-2 px-6 py-10 text-center">

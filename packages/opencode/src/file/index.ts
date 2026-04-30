@@ -298,6 +298,20 @@ function shouldEncode(mimeType: string) {
   return ["image", "audio", "video", "font", "model", "multipart"].includes(top)
 }
 
+function getDocumentMimeType(fileExt: string): string {
+  const mimeTypes: Record<string, string> = {
+    pdf: "application/pdf",
+    docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    xls: "application/vnd.ms-excel",
+    pptx: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    ppt: "application/vnd.ms-powerpoint",
+  }
+  return mimeTypes[fileExt] || "application/octet-stream"
+}
+
+const previewableDocumentExtensions = new Set(["pdf", "docx", "xlsx", "xls", "pptx", "ppt"])
+
 const hidden = (item: string) => {
   const normalized = item.replaceAll("\\", "/").replace(/\/+$/, "")
   return normalized.split("/").some((part) => part.startsWith(".") && part.length > 1)
@@ -527,7 +541,19 @@ export const layer = Layer.effect(
 
       const knownText = isTextByExtension(file) || isTextByName(file)
 
-      if (isBinaryByExtension(file) && !knownText) return { type: "binary" as const, content: "" }
+      if (isBinaryByExtension(file) && !knownText) {
+        const fileExt = path.extname(file).toLowerCase().slice(1)
+        if (previewableDocumentExtensions.has(fileExt)) {
+          const bytes = yield* appFs.readFile(full).pipe(Effect.catch(() => Effect.succeed(new Uint8Array())))
+          return {
+            type: "binary" as const,
+            content: Buffer.from(bytes).toString("base64"),
+            mimeType: getDocumentMimeType(fileExt),
+            encoding: "base64" as const,
+          }
+        }
+        return { type: "binary" as const, content: "" }
+      }
 
       const exists = yield* appFs.existsSafe(full)
       if (!exists) return { type: "text" as const, content: "" }
