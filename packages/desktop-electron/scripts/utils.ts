@@ -1,3 +1,5 @@
+import { existsSync } from "node:fs"
+import { join } from "node:path"
 import { $ } from "bun"
 
 export type Channel = "dev" | "beta" | "prod"
@@ -54,8 +56,32 @@ function nativeTarget() {
 export function getCurrentSidecar(target = RUST_TARGET ?? nativeTarget()) {
   const binaryConfig = SIDECAR_BINARIES.find((b) => b.rustTarget === target)
   if (!binaryConfig) throw new Error(`Sidecar configuration not available for Rust target '${target}'`)
-
   return binaryConfig
+}
+
+export function findCliBinary(rootDir: string) {
+  const sidecar = getCurrentSidecar()
+  const binaryName = process.platform === "win32" ? "opencode.exe" : "opencode"
+
+  // Try with the configured ocBinary name (e.g. opencode-windows-x64-baseline)
+  const distPath = join(rootDir, "packages/opencode/dist", sidecar.ocBinary, "bin", binaryName)
+  if (existsSync(distPath)) return distPath
+
+  // Try without -baseline suffix (e.g. opencode-windows-x64)
+  const nonBaseline = sidecar.ocBinary.replace(/-baseline$/, "")
+  const distPath2 = join(rootDir, "packages/opencode/dist", nonBaseline, "bin", binaryName)
+  if (existsSync(distPath2)) return distPath2
+
+  // Try node_modules
+  const nmPath = join(rootDir, "node_modules", sidecar.ocBinary, "bin", binaryName)
+  if (existsSync(nmPath)) return nmPath
+
+  const nmPath2 = join(rootDir, "node_modules", nonBaseline, "bin", binaryName)
+  if (existsSync(nmPath2)) return nmPath2
+
+  throw new Error(
+    `Cannot find opencode CLI binary. Tried:\n  ${distPath}\n  ${distPath2}\n  ${nmPath}\n  ${nmPath2}\nRun "bun run --cwd packages/opencode build" first.`,
+  )
 }
 
 export async function copyBinaryToSidecarFolder(source: string) {

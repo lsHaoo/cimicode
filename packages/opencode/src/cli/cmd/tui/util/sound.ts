@@ -2,7 +2,7 @@ import { Player } from "cli-sound"
 import { mkdirSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { basename, join } from "node:path"
-import { Process } from "@/util"
+import { Process } from "@/util/process"
 import { which } from "@/util/which"
 import pulseA from "../asset/pulse-a.wav" with { type: "file" }
 import pulseB from "../asset/pulse-b.wav" with { type: "file" }
@@ -12,7 +12,7 @@ import charge from "../asset/charge.wav" with { type: "file" }
 const FILE = [pulseA, pulseB, pulseC]
 
 const HUM = charge
-const DIR = join(tmpdir(), "opencode-sfx")
+const DIR = join(tmpdir(), "cimicode-sfx")
 
 const LIST = [
   "ffplay",
@@ -152,3 +152,5 @@ export function pulse(scale = 1) {
 export function dispose() {
   stop()
 }
+
+export * as Sound from "./sound"

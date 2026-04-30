@@ -20,9 +20,10 @@ import { childSessionOnPath, hasProjectPermissions } from "./helpers"
 const OPENCODE_PROJECT_ID = "4b0ea68d7af9a6031a7ffda7ad66e0cb83315750"
 
 export function getProjectAvatarSource(id?: string, icon?: { color?: string; url?: string; override?: string }) {
-  return id === OPENCODE_PROJECT_ID
-    ? "https://cimicode.ai/favicon.svg"
-    : (icon?.override ?? (icon?.color ? undefined : icon?.url))
+  if (id === OPENCODE_PROJECT_ID) return "https://cimicode.ai/favicon.svg"
+  if (icon?.override) return icon?.override
+  if (icon?.color) return undefined
+  return icon?.url
 }
 
 export const ProjectIcon = (props: { project: LocalProject; class?: string; notify?: boolean }): JSX.Element => {
@@ -82,6 +83,7 @@ export type SessionItemProps = {
   clearHoverProjectSoon: () => void
   prefetchSession: (session: Session, priority?: "high" | "low") => void
   archiveSession: (session: Session) => Promise<void>
+  showArchiveDialog: (session: Session) => void
 }
 
 const SessionRow = (props: {
@@ -145,6 +147,7 @@ export const SessionItem = (props: SessionItemProps): JSX.Element => {
   const notification = useNotification()
   const permission = usePermission()
   const globalSync = useGlobalSync()
+
   const unseenCount = createMemo(() => notification.session.unseenCount(props.session.id))
   const hasError = createMemo(() => notification.session.unseenHasError(props.session.id))
   const [sessionStore] = globalSync.child(props.session.directory)
@@ -175,6 +178,12 @@ export const SessionItem = (props: SessionItemProps): JSX.Element => {
     if (!props.showChild) return
     return childSessionOnPath(sessionStore.session, props.session.id, params.id)
   })
+
+  const handleArchiveClick = (event: MouseEvent) => {
+    event.preventDefault()
+    event.stopPropagation()
+    props.showArchiveDialog(props.session)
+  }
 
   const warm = (span: number, priority: "high" | "low") => {
     const nav = props.navList?.()
@@ -256,11 +265,7 @@ export const SessionItem = (props: SessionItemProps): JSX.Element => {
                   variant="ghost"
                   class="size-6 rounded-md"
                   aria-label={language.t("common.archive")}
-                  onClick={(event) => {
-                    event.preventDefault()
-                    event.stopPropagation()
-                    void props.archiveSession(props.session)
-                  }}
+                  onClick={handleArchiveClick}
                 />
               </Tooltip>
             </div>

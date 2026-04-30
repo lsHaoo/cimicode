@@ -1,10 +1,10 @@
 import { Hono } from "hono"
 import { describeRoute, validator, resolver } from "hono-openapi"
 import z from "zod"
-import { Config } from "@/config"
-import { Provider } from "@/provider"
-import { ModelsDev } from "@/provider"
-import { ProviderAuth } from "@/provider"
+import { Config } from "@/config/config"
+import { Provider } from "@/provider/provider"
+import { ModelsDev } from "@/provider/models"
+import { ProviderAuth } from "@/provider/auth"
 import { ProviderID } from "@/provider/schema"
 import { mapValues } from "remeda"
 import { errors } from "../../error"
@@ -50,6 +50,7 @@ export const ProviderRoutes = lazy(() =>
             mapValues(filtered, (x) => Provider.fromModelsDevProvider(x)),
             connected,
           )
+          Provider.removeFreeModels(providers)
           return {
             all: Object.values(providers),
             default: Provider.defaultModelIDs(providers),

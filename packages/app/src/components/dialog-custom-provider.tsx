@@ -12,8 +12,10 @@ import { Link } from "@/components/link"
 import { useGlobalSDK } from "@/context/global-sdk"
 import { useGlobalSync } from "@/context/global-sync"
 import { useLanguage } from "@/context/language"
+import { useLocal } from "@/context/local"
 import { type FormState, headerRow, modelRow, validateCustomProvider } from "./dialog-custom-provider-form"
 import { DialogSelectProvider } from "./dialog-select-provider"
+import { DialogSelectModel } from "./dialog-select-model"
 
 type Props = {
   back?: "providers" | "close"
@@ -24,6 +26,16 @@ export function DialogCustomProvider(props: Props) {
   const globalSync = useGlobalSync()
   const globalSDK = useGlobalSDK()
   const language = useLanguage()
+
+  // 检查是否在 LocalProvider 上下文中
+  let canShowModelDialog = false
+  try {
+    useLocal()
+    canShowModelDialog = true
+  } catch (error) {
+    // 不在 LocalProvider 上下文中，跳过模型选择对话框
+    console.log("Not in LocalProvider context, skipping model selection dialog")
+  }
 
   const [form, setForm] = createStore<FormState>({
     providerID: "",
@@ -139,12 +151,25 @@ export function DialogCustomProvider(props: Props) {
     },
     onSuccess: (result) => {
       dialog.close()
+
+      // 发送自定义事件通知其他组件provider已更新
+      window.dispatchEvent(new CustomEvent('provider-updated', {
+        detail: { providerID: result.providerID, action: 'add', models: result.config.models }
+      }))
+
       showToast({
         variant: "success",
         icon: "circle-check",
         title: language.t("provider.connect.toast.connected.title", { provider: result.name }),
         description: language.t("provider.connect.toast.connected.description", { provider: result.name }),
       })
+
+      // 在 LocalProvider 上下文中显示模型选择对话框
+      if (canShowModelDialog) {
+        setTimeout(() => {
+          dialog.show(() => <DialogSelectModel />)
+        }, 150)
+      }
     },
     onError: (err) => {
       const message = err instanceof Error ? err.message : String(err)

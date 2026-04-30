@@ -1,8 +1,8 @@
-import { test, expect, describe } from "bun:test"
+﻿import { test, expect, describe } from "bun:test"
 import { Effect } from "effect"
 import path from "path"
 import fs from "fs/promises"
-import { Filesystem } from "../../src/util"
+import { Filesystem } from "@/util/filesystem"
 import { File } from "../../src/file"
 import { Instance } from "../../src/project/instance"
 import { provideInstance, tmpdir } from "../fixture/fixture"
@@ -142,8 +142,8 @@ describe("Instance.containsPath", () => {
     await Instance.provide({
       directory: subdir,
       fn: () => {
-        // .opencode at worktree root, but we're running from packages/lib
-        expect(Instance.containsPath(path.join(tmp.path, ".opencode", "state"))).toBe(true)
+        // .cimicode at worktree root, but we're running from packages/lib
+        expect(Instance.containsPath(path.join(tmp.path, ".cimicode", "state"))).toBe(true)
         // sibling package should also be accessible
         expect(Instance.containsPath(path.join(tmp.path, "packages", "other", "file.ts"))).toBe(true)
         // worktree root itself

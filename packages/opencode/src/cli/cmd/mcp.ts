@@ -7,7 +7,7 @@ import { UI } from "../ui"
 import { MCP } from "../../mcp"
 import { McpAuth } from "../../mcp/auth"
 import { McpOAuthProvider } from "../../mcp/oauth-provider"
-import { Config } from "../../config"
+import { Config } from "@/config/config"
 import { ConfigMCP } from "../../config/mcp"
 import { Instance } from "../../project/instance"
 import { Installation } from "../../installation"
@@ -15,7 +15,7 @@ import { InstallationVersion } from "@opencode-ai/core/installation/version"
 import path from "path"
 import { Global } from "@opencode-ai/core/global"
 import { modify, applyEdits } from "jsonc-parser"
-import { Filesystem } from "../../util"
+import { Filesystem } from "@/util/filesystem"
 import { Bus } from "../../bus"
 import { AppRuntime } from "../../effect/app-runtime"
 import { Effect } from "effect"
@@ -198,7 +198,7 @@ export const McpAuthCommand = cmd({
 
         if (servers.length === 0) {
           prompts.log.warn("No OAuth-capable MCP servers configured")
-          prompts.log.info("Remote MCP servers support OAuth by default. Add a remote server in opencode.json:")
+          prompts.log.info("Remote MCP servers support OAuth by default. Add a remote server in cimicode.json:")
           prompts.log.info(`
   "mcp": {
     "my-server": {
@@ -410,11 +410,11 @@ export const McpLogoutCommand = cmd({
 })
 
 async function resolveConfigPath(baseDir: string, global = false) {
-  // Check for existing config files (prefer .jsonc over .json, check .opencode/ subdirectory too)
-  const candidates = [path.join(baseDir, "opencode.json"), path.join(baseDir, "opencode.jsonc")]
+  // Check for existing config files (prefer .jsonc over .json, check .cimicode/ subdirectory too)
+  const candidates = [path.join(baseDir, "cimicode.json"), path.join(baseDir, "cimicode.jsonc")]
 
   if (!global) {
-    candidates.push(path.join(baseDir, ".opencode", "opencode.json"), path.join(baseDir, ".opencode", "opencode.jsonc"))
+    candidates.push(path.join(baseDir, ".cimicode", "cimicode.json"), path.join(baseDir, ".cimicode", "cimicode.jsonc"))
   }
 
   for (const candidate of candidates) {
@@ -423,7 +423,7 @@ async function resolveConfigPath(baseDir: string, global = false) {
     }
   }
 
-  // Default to opencode.json if none exist
+  // Default to cimicode.json if none exist
   return candidates[0]
 }
 

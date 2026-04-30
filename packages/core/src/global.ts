@@ -1,14 +1,15 @@
 import path from "path"
 import fs from "fs/promises"
-import { xdgData, xdgCache, xdgConfig, xdgState } from "xdg-basedir"
+import { xdgData, xdgCache, xdgState } from "xdg-basedir"
 import os from "os"
 import { Context, Effect, Layer } from "effect"
 import { Flock } from "./util/flock"
 
-const app = "opencode"
+const app = "cimicode"
+const home = process.env.OPENCODE_TEST_HOME ?? os.homedir()
 const data = path.join(xdgData!, app)
 const cache = path.join(xdgCache!, app)
-const config = path.join(xdgConfig!, app)
+const config = path.join(home, ".cimi", "cimicode")
 const state = path.join(xdgState!, app)
 
 const paths = {

@@ -4,14 +4,14 @@ import fs from "fs/promises"
 import { Effect } from "effect"
 import { tmpdir } from "../fixture/fixture"
 import { Instance } from "../../src/project/instance"
-import { ProviderAuth } from "../../src/provider"
+import { ProviderAuth } from "@/provider/auth"
 import { ProviderID } from "../../src/provider/schema"
 
 describe("plugin.auth-override", () => {
   test("user plugin overrides built-in github-copilot auth", async () => {
     await using tmp = await tmpdir({
       init: async (dir) => {
-        const pluginDir = path.join(dir, ".opencode", "plugin")
+        const pluginDir = path.join(dir, ".cimicode", "plugin")
         await fs.mkdir(pluginDir, { recursive: true })
 
         await Bun.write(

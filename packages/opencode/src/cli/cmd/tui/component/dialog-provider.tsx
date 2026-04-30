@@ -14,8 +14,18 @@ import { useKeyboard } from "@opentui/solid"
 import * as Clipboard from "@tui/util/clipboard"
 import { useToast } from "../ui/toast"
 import { isConsoleManagedProvider } from "@tui/util/provider-origin"
+import { useConnected } from "./use-connected"
+import {
+  CXMT_CIMI_PROVIDER_ID,
+  CXMT_CIMI_PROVIDER_NAME,
+  loadPresetModels,
+  presetConfigPatch,
+  presetProviderID,
+  type PresetModel,
+} from "./provider-preset"
 
 const PROVIDER_PRIORITY: Record<string, number> = {
+  [CXMT_CIMI_PROVIDER_ID]: 0,
   opencode: 0,
   "opencode-go": 1,
   openai: 2,
@@ -24,121 +34,141 @@ const PROVIDER_PRIORITY: Record<string, number> = {
   google: 5,
 }
 
+export function providerDisplayName(provider: { id: string; name: string }) {
+  if (provider.id === "opencode") return "CimiCode"
+  if (provider.id === "opencode-go") return "CimiCode Go"
+  return provider.name
+}
+
 export function createDialogProviderOptions() {
   const sync = useSync()
   const dialog = useDialog()
   const sdk = useSDK()
   const toast = useToast()
   const { theme } = useTheme()
+  const onboarded = useConnected()
   const options = createMemo(() => {
-    return pipe(
-      sync.data.provider_next.all,
-      sortBy((x) => PROVIDER_PRIORITY[x.id] ?? 99),
-      map((provider) => {
-        const consoleManaged = isConsoleManagedProvider(sync.data.console_state.consoleManagedProviders, provider.id)
-        const connected = sync.data.provider_next.connected.includes(provider.id)
+    const connected = sync.data.provider_next.connected.includes(CXMT_CIMI_PROVIDER_ID)
+    const cxmt = {
+      title: CXMT_CIMI_PROVIDER_NAME,
+      value: CXMT_CIMI_PROVIDER_ID,
+      description: "Recommended preset",
+      category: "Popular",
+      gutter: connected && onboarded() ? <text fg={theme.success}>✓</text> : undefined,
+      onSelect() {
+        dialog.replace(() => <CxmtCimiModelSelect />)
+      },
+    }
 
-        return {
-          title: provider.name,
-          value: provider.id,
-          description: {
-            opencode: "(Recommended)",
-            anthropic: "(API key)",
-            openai: "(ChatGPT Plus/Pro or API key)",
-            "opencode-go": "Low cost subscription for everyone",
-          }[provider.id],
-          footer: consoleManaged ? sync.data.console_state.activeOrgName : undefined,
-          category: provider.id in PROVIDER_PRIORITY ? "Popular" : "Other",
-          gutter: connected ? <text fg={theme.success}>✓</text> : undefined,
-          async onSelect() {
-            if (consoleManaged) return
+    return [
+      cxmt,
+      ...pipe(
+        sync.data.provider_next.all.filter((provider) => provider.id !== CXMT_CIMI_PROVIDER_ID),
+        sortBy((x) => PROVIDER_PRIORITY[x.id] ?? 99),
+        map((provider) => {
+          const consoleManaged = isConsoleManagedProvider(sync.data.console_state.consoleManagedProviders, provider.id)
+          const connected = sync.data.provider_next.connected.includes(provider.id)
 
-            const methods = sync.data.provider_auth[provider.id] ?? [
-              {
-                type: "api",
-                label: "API key",
-              },
-            ]
-            let index: number | null = 0
-            if (methods.length > 1) {
-              index = await new Promise<number | null>((resolve) => {
-                dialog.replace(
-                  () => (
-                    <DialogSelect
-                      title="Select auth method"
-                      options={methods.map((x, index) => ({
-                        title: x.label,
-                        value: index,
-                      }))}
-                      onSelect={(option) => resolve(option.value)}
+          return {
+            title: providerDisplayName(provider),
+            value: provider.id,
+            description: {
+              opencode: "(Recommended)",
+              anthropic: "(API key)",
+              openai: "(ChatGPT Plus/Pro or API key)",
+              "opencode-go": "Low cost subscription for everyone",
+            }[provider.id],
+            footer: consoleManaged ? sync.data.console_state.activeOrgName : undefined,
+            category: provider.id in PROVIDER_PRIORITY ? "Popular" : "Other",
+            gutter: connected && onboarded() ? <text fg={theme.success}>✓</text> : undefined,
+            async onSelect() {
+              if (consoleManaged) return
+
+              const methods = sync.data.provider_auth[provider.id] ?? [
+                {
+                  type: "api",
+                  label: "API key",
+                },
+              ]
+              let index: number | null = 0
+              if (methods.length > 1) {
+                index = await new Promise<number | null>((resolve) => {
+                  dialog.replace(
+                    () => (
+                      <DialogSelect
+                        title="Select auth method"
+                        options={methods.map((x, index) => ({
+                          title: x.label,
+                          value: index,
+                        }))}
+                        onSelect={(option) => resolve(option.value)}
+                      />
+                    ),
+                    () => resolve(null),
+                  )
+                })
+              }
+              if (index == null) return
+              const method = methods[index]
+              if (method.type === "oauth") {
+                let inputs: Record<string, string> | undefined
+                if (method.prompts?.length) {
+                  const value = await PromptsMethod({
+                    dialog,
+                    prompts: method.prompts,
+                  })
+                  if (!value) return
+                  inputs = value
+                }
+
+                const result = await sdk.client.provider.oauth.authorize({
+                  providerID: provider.id,
+                  method: index,
+                  inputs,
+                })
+                if (result.error) {
+                  toast.show({
+                    variant: "error",
+                    message: JSON.stringify(result.error),
+                  })
+                  dialog.clear()
+                  return
+                }
+                if (result.data?.method === "code") {
+                  dialog.replace(() => (
+                    <CodeMethod
+                      providerID={provider.id}
+                      title={method.label}
+                      index={index}
+                      authorization={result.data!}
                     />
-                  ),
-                  () => resolve(null),
-                )
-              })
-            }
-            if (index == null) return
-            const method = methods[index]
-            if (method.type === "oauth") {
-              let inputs: Record<string, string> | undefined
-              if (method.prompts?.length) {
-                const value = await PromptsMethod({
-                  dialog,
-                  prompts: method.prompts,
-                })
-                if (!value) return
-                inputs = value
+                  ))
+                }
+                if (result.data?.method === "auto") {
+                  dialog.replace(() => (
+                    <AutoMethod
+                      providerID={provider.id}
+                      title={method.label}
+                      index={index}
+                      authorization={result.data!}
+                    />
+                  ))
+                }
               }
-
-              const result = await sdk.client.provider.oauth.authorize({
-                providerID: provider.id,
-                method: index,
-                inputs,
-              })
-              if (result.error) {
-                toast.show({
-                  variant: "error",
-                  message: JSON.stringify(result.error),
-                })
-                dialog.clear()
-                return
+              if (method.type === "api") {
+                let metadata: Record<string, string> | undefined
+                if (method.prompts?.length) {
+                  const value = await PromptsMethod({ dialog, prompts: method.prompts })
+                  if (!value) return
+                  metadata = value
+                }
+                return dialog.replace(() => <ApiMethod providerID={provider.id} title={method.label} metadata={metadata} />)
               }
-              if (result.data?.method === "code") {
-                dialog.replace(() => (
-                  <CodeMethod
-                    providerID={provider.id}
-                    title={method.label}
-                    index={index}
-                    authorization={result.data!}
-                  />
-                ))
-              }
-              if (result.data?.method === "auto") {
-                dialog.replace(() => (
-                  <AutoMethod
-                    providerID={provider.id}
-                    title={method.label}
-                    index={index}
-                    authorization={result.data!}
-                  />
-                ))
-              }
-            }
-            if (method.type === "api") {
-              let metadata: Record<string, string> | undefined
-              if (method.prompts?.length) {
-                const value = await PromptsMethod({ dialog, prompts: method.prompts })
-                if (!value) return
-                metadata = value
-              }
-              return dialog.replace(() => (
-                <ApiMethod providerID={provider.id} title={method.label} metadata={metadata} />
-              ))
-            }
-          },
-        }
-      }),
-    )
+            },
+          }
+        }),
+      ),
+    ]
   })
   return options
 }
@@ -146,6 +176,90 @@ export function createDialogProviderOptions() {
 export function DialogProvider() {
   const options = createDialogProviderOptions()
   return <DialogSelect title="Connect a provider" options={options()} />
+}
+
+function CxmtCimiModelSelect() {
+  const dialog = useDialog()
+  const sdk = useSDK()
+  const { theme } = useTheme()
+  const [models, setModels] = createSignal<PresetModel[]>([])
+  const [loading, setLoading] = createSignal(true)
+
+  onMount(async () => {
+    setModels(await loadPresetModels(sdk.fetch))
+    setLoading(false)
+  })
+
+  const options = createMemo(() => {
+    if (loading()) {
+      return [
+        {
+          title: "Loading models...",
+          value: undefined as PresetModel | undefined,
+          disabled: true,
+        },
+      ]
+    }
+
+    return models().map((model) => ({
+      title: model.name,
+      value: model,
+      description: `${model.provider} · ${(model.limit.context / 1000).toFixed(0)}K context`,
+      footer: <text fg={theme.textMuted}>{model.url}</text>,
+      onSelect() {
+        dialog.replace(() => <CxmtCimiApiKey model={model} />)
+      },
+    }))
+  })
+
+  return <DialogSelect title="Select CXMT Cimi model" options={options()} />
+}
+
+function CxmtCimiApiKey(props: { model: PresetModel }) {
+  const dialog = useDialog()
+  const sdk = useSDK()
+  const sync = useSync()
+  const toast = useToast()
+  const { theme } = useTheme()
+
+  return (
+    <DialogPrompt
+      title={`Connect ${props.model.provider}`}
+      placeholder="API key"
+      description={() => (
+        <box gap={1}>
+          <text fg={theme.textMuted}>Configure {props.model.name} through the CXMT Cimi OpenAI-compatible gateway.</text>
+          <text fg={theme.textMuted}>{props.model.url}</text>
+        </box>
+      )}
+      onConfirm={async (value) => {
+        const apiKey = value.trim()
+        if (!apiKey) return
+
+        const providerID = presetProviderID(props.model)
+        await sdk.client.auth.set(
+          {
+            providerID,
+            auth: {
+              type: "api",
+              key: apiKey,
+            },
+          },
+          { throwOnError: true },
+        )
+        await sdk.client.global.config.update(
+          {
+            config: presetConfigPatch(props.model, sync.data.config.disabled_providers ?? []),
+          },
+          { throwOnError: true },
+        )
+        await sdk.client.instance.dispose()
+        await sync.bootstrap()
+        toast.show({ variant: "success", message: `Configured ${props.model.name}` })
+        dialog.replace(() => <DialogModel providerID={providerID} />)
+      }}
+    />
+  )
 }
 
 interface AutoMethodProps {
@@ -270,22 +384,22 @@ function ApiMethod(props: ApiMethodProps) {
           opencode: (
             <box gap={1}>
               <text fg={theme.textMuted}>
-                OpenCode Zen gives you access to all the best coding models at the cheapest prices with a single API
+                CimiCode Zen gives you access to all the best coding models at the cheapest prices with a single API
                 key.
               </text>
               <text fg={theme.text}>
-                Go to <span style={{ fg: theme.primary }}>https://opencode.ai/zen</span> to get a key
+                Go to <span style={{ fg: theme.primary }}>https://cimicode.ai/zen</span> to get a key
               </text>
             </box>
           ),
           "opencode-go": (
             <box gap={1}>
               <text fg={theme.textMuted}>
-                OpenCode Go is a $10 per month subscription that provides reliable access to popular open coding models
+                CimiCode Go is a $10 per month subscription that provides reliable access to popular open coding models
                 with generous usage limits.
               </text>
               <text fg={theme.text}>
-                Go to <span style={{ fg: theme.primary }}>https://opencode.ai/zen</span> and enable OpenCode Go
+                Go to <span style={{ fg: theme.primary }}>https://cimicode.ai/zen</span> and enable CimiCode Go
               </text>
             </box>
           ),

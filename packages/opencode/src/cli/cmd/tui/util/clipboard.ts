@@ -48,7 +48,7 @@ export async function read(): Promise<Content | undefined> {
   const os = platform()
 
   if (os === "darwin") {
-    const tmpfile = path.join(tmpdir(), "opencode-clipboard.png")
+    const tmpfile = path.join(tmpdir(), "cimicode-clipboard.png")
     try {
       await Process.run(
         [
@@ -201,3 +201,5 @@ export async function copy(text: string): Promise<void> {
   const method = await getCopyMethod()
   await method(text)
 }
+
+export * as Clipboard from "./clipboard"

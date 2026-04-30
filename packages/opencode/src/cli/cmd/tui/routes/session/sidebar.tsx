@@ -3,8 +3,9 @@ import { useSync } from "@tui/context/sync"
 import { createMemo, Show } from "solid-js"
 import { useTheme } from "../../context/theme"
 import { useTuiConfig } from "../../context/tui-config"
-import { InstallationChannel, InstallationVersion } from "@opencode-ai/core/installation/version"
-import { TuiPluginRuntime } from "../../plugin"
+import { InstallationChannel } from "@opencode-ai/core/installation/version"
+import { TuiPluginRuntime } from "@/cli/cmd/tui/plugin/runtime"
+import { TuiVersion } from "../../util/version"
 
 import { getScrollAcceleration } from "../../util/scroll"
 
@@ -87,7 +88,7 @@ export function Sidebar(props: { sessionID: string; overlay?: boolean }) {
               <span style={{ fg: theme.text }}>
                 <b>Code</b>
               </span>{" "}
-              <span>{InstallationVersion}</span>
+              <span>{TuiVersion}</span>
             </text>
           </TuiPluginRuntime.Slot>
         </box>
