@@ -1,24 +1,31 @@
-import { createEffect, createMemo, createSignal, Match, on, onCleanup, Switch } from "solid-js"
+import { createEffect, createMemo, createSignal, Match, on, onCleanup, Show, Switch } from "solid-js"
 import { createStore } from "solid-js/store"
 import { Dynamic } from "solid-js/web"
 import { makeEventListener } from "@solid-primitives/event-listener"
 import type { FileSearchHandle } from "@opencode-ai/ui/file"
 import { useFileComponent } from "@opencode-ai/ui/context/file"
+import { HtmlPreview } from "@opencode-ai/ui/html-preview"
+import { Markdown } from "@opencode-ai/ui/markdown"
 import { cloneSelectedLineRange, previewSelectedLines } from "@opencode-ai/ui/pierre/selection-bridge"
 import { createLineCommentController } from "@opencode-ai/ui/line-comment-annotations"
 import { sampledChecksum } from "@opencode-ai/core/util/encode"
 import { DropdownMenu } from "@opencode-ai/ui/dropdown-menu"
 import { IconButton } from "@opencode-ai/ui/icon-button"
+import { RadioGroup } from "@opencode-ai/ui/radio-group"
 import { Tabs } from "@opencode-ai/ui/tabs"
 import { ScrollView } from "@opencode-ai/ui/scroll-view"
 import { showToast } from "@opencode-ai/ui/toast"
+import { Button } from "@opencode-ai/ui/button"
 import { selectionFromLines, useFile, type FileSelection, type SelectedLineRange } from "@/context/file"
 import { useComments } from "@/context/comments"
 import { useLanguage } from "@/context/language"
 import { usePrompt } from "@/context/prompt"
+import { usePlatform } from "@/context/platform"
 import { getSessionHandoff } from "@/pages/session/handoff"
 import { useSessionLayout } from "@/pages/session/session-layout"
 import { createSessionTabs } from "@/pages/session/helpers"
+import { previewKind, previewScrollTab } from "@/pages/session/file-tabs-preview"
+import { decode64 } from "@/utils/base64"
 
 function FileCommentMenu(props: {
   moreLabel: string
@@ -177,6 +184,7 @@ export function FileTabContent(props: { tab: string }) {
   const language = useLanguage()
   const prompt = usePrompt()
   const fileComponent = useFileComponent()
+  const platform = usePlatform()
   const { sessionKey, tabs, view } = useSessionLayout()
   const activeFileTab = createSessionTabs({
     tabs,
@@ -200,6 +208,20 @@ export function FileTabContent(props: { tab: string }) {
   })
   const contents = createMemo(() => state()?.content?.content ?? "")
   const cacheKey = createMemo(() => sampledChecksum(contents()))
+  const preview = createMemo(() => previewKind(path()))
+  const [mode, setMode] = createSignal<"source" | "preview">("source")
+  const scrollTab = createMemo(() => previewScrollTab(props.tab, preview(), mode()))
+
+  const absolutePath = createMemo(() => {
+    const relativePath = path()
+    if (!relativePath) return
+    const key = sessionKey()
+    const dir = key.split("/")[0]
+    const root = decode64(dir)
+    if (!root) return
+    const sep = root.includes("\\") ? "\\" : "/"
+    return root.endsWith(sep) ? root + relativePath : root + sep + relativePath
+  })
   const selectedLines = createMemo<SelectedLineRange | null>(() => {
     const p = path()
     if (!p) return null
@@ -207,7 +229,7 @@ export function FileTabContent(props: { tab: string }) {
     return (getSessionHandoff(sessionKey())?.files[p] as SelectedLineRange | undefined) ?? null
   })
   const scrollSync = createScrollSync({
-    tab: () => props.tab,
+    tab: () => scrollTab(),
     view,
   })
 
@@ -343,6 +365,7 @@ export function FileTabContent(props: { tab: string }) {
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (activeFileTab() !== props.tab) return
+      if (mode() === "preview") return
       if (!(event.metaKey || event.ctrlKey) || event.altKey || event.shiftKey) return
       if (event.key.toLowerCase() !== "f") return
 
@@ -359,6 +382,7 @@ export function FileTabContent(props: { tab: string }) {
       path,
       () => {
         commentsUi.note.reset()
+        setMode("source")
       },
       { defer: true },
     ),
@@ -370,6 +394,8 @@ export function FileTabContent(props: { tab: string }) {
     if (!focus || !p) return
     if (focus.file !== p) return
     if (activeFileTab() !== props.tab) return
+
+    if (preview() && mode() === "preview") setMode("source")
 
     const target = fileComments().find((comment) => comment.id === focus.id)
     if (!target) return
@@ -393,6 +419,16 @@ export function FileTabContent(props: { tab: string }) {
     if (!restore) return
     scrollSync.queueRestore()
   })
+
+  createEffect(
+    on(
+      mode,
+      () => {
+        scrollSync.queueRestore()
+      },
+      { defer: true },
+    ),
+  )
 
   const renderFile = (source: string) => (
     <div class="relative overflow-hidden pb-40">
@@ -440,10 +476,56 @@ export function FileTabContent(props: { tab: string }) {
     </div>
   )
 
+  const renderPreview = (source: string) => (
+    <Switch>
+      <Match when={preview() === "markdown"}>
+        <div class="px-6 pb-40">
+          <Markdown
+            text={source}
+            cacheKey={cacheKey()}
+            class="mx-auto w-full max-w-4xl select-text"
+          />
+        </div>
+      </Match>
+      <Match when={preview() === "html"}>
+        <div class="px-3 pb-40">
+          <HtmlPreview html={source} title={path() ?? ""} onLoad={scrollSync.queueRestore} />
+        </div>
+      </Match>
+    </Switch>
+  )
+
   return (
-    <Tabs.Content value={props.tab} class="mt-3 relative h-full">
-      <ScrollView class="h-full" viewportRef={scrollSync.setViewport} onScroll={scrollSync.handleScroll as any}>
+    <Tabs.Content value={props.tab} class="mt-3 relative flex h-full min-h-0 flex-col">
+      <Show when={preview()}>
+        <div class="mb-3 flex justify-end pr-6 gap-3">
+          <RadioGroup
+            options={["source", "preview"] as const}
+            current={mode()}
+            size="small"
+            value={(item) => item}
+            label={(item) =>
+              language.t(item === "source" ? "ui.htmlPreview.mode.source" : "ui.htmlPreview.mode.preview")
+            }
+            onSelect={(item) => {
+              if (!item) return
+              setMode(item)
+            }}
+          />
+          <Show when={preview() === "html" && platform.openPath}>
+            <Button size="small" onClick={() => platform.openPath?.(absolutePath() ?? "")}>
+              {language.t("ui.htmlPreview.openInBrowser")}
+            </Button>
+          </Show>
+        </div>
+      </Show>
+      <ScrollView
+        class="min-h-0 flex-1 show-file-thumb"
+        viewportRef={scrollSync.setViewport}
+        onScroll={scrollSync.handleScroll as any}
+      >
         <Switch>
+          <Match when={state()?.loaded && preview() && mode() === "preview"}>{renderPreview(contents())}</Match>
           <Match when={state()?.loaded}>{renderFile(contents())}</Match>
           <Match when={state()?.loading}>
             <div class="px-6 py-4 text-text-weak">{language.t("common.loading")}...</div>
