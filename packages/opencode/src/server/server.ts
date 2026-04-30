@@ -17,14 +17,9 @@ import { WorkspaceRouterMiddleware } from "./workspace"
 import { InstanceMiddleware } from "./routes/instance/middleware"
 import { WorkspaceRoutes } from "./routes/control/workspace"
 import { ExperimentalHttpApiServer } from "./routes/instance/httpapi/server"
-<<<<<<< HEAD
-import { WorkspacePaths } from "./routes/instance/httpapi/workspace"
 // [CimiCode 定制] 合并上游代码时务必保留此 import —— 以下是定制路由的挂载
 import { CimiCustomRoutes } from "@/cimi-custom/routes"
-import { Context } from "effect"
-=======
 import * as ServerBackend from "./backend"
->>>>>>> 30fc696a3a7c33e57ca75d82f5d713d850a292a7
 
 // @ts-ignore This global is needed to prevent ai-sdk from logging warnings to stdout https://github.com/vercel/ai/blob/2dc67e0ef538307f21368db32d5a12345d98831b/packages/ai/src/logger/log-warnings.ts#L85
 globalThis.AI_SDK_LOG_WARNINGS = false
