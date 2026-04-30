@@ -1,6 +1,6 @@
 import path from "path"
-import { Instance } from "../../project/instance"
-import { Log } from "../util/log"
+import { Instance } from "@/project/instance"
+import { Log } from "@/util"
 import type { HandlerContext } from "./types"
 
 const log = Log.create({ service: "file-manager" })
@@ -38,7 +38,9 @@ export function resolveFullPath(basePath: string, relativePath: string): string 
  * 安全检查：确保路径在工作目录内
  */
 export function validatePath(basePath: string, fullPath: string): boolean {
-  return fullPath.startsWith(basePath)
+  const resolvedBase = path.resolve(basePath)
+  const resolvedFull = path.resolve(fullPath)
+  return resolvedFull === resolvedBase || resolvedFull.startsWith(resolvedBase + path.sep)
 }
 
 /**

@@ -1,7 +1,6 @@
 import { Hono } from "hono"
 import { proxy } from "hono/proxy"
-import { Log } from "@/util/log"
-import { Env } from "@/env"
+import { Log } from "@/util"
 
 const log = Log.create({ service: "agi-proxy" })
 
@@ -9,12 +8,12 @@ const log = Log.create({ service: "agi-proxy" })
  * 根据环境变量获取代理目标URL
  */
 function getProxyTarget(): string {
-  const env = Env.get("OC_ENVIRONMENT")
+  const env = process.env.OC_ENVIRONMENT
   log.debug("proxy target environment", { env })
   if (env === "test") {
-    return "http://t-app.cdtp.com "
+    return "http://t-app.cdtp.com"
   }
-  return "http://app.cxmt.com "
+  return "http://app.cxmt.com"
 }
 
 /**

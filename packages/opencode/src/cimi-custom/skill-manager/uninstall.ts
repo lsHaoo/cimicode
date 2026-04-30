@@ -1,6 +1,5 @@
-import { NamedError } from "@opencode-ai/util/error"
-import { Log } from "@/util/log"
-import { Global } from "@/global"
+import { Log } from "@/util"
+import { Global } from "@opencode-ai/core/global"
 import path from "path"
 import fs from "fs/promises"
 
@@ -11,7 +10,7 @@ function getSkillInstallDir(): string {
 }
 
 async function disposeInstanceForReload() {
-  const { Instance } = await import("../../project/instance")
+  const { Instance } = await import("@/project/instance")
   await Instance.disposeAll()
 }
 

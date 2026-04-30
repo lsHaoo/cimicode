@@ -4,7 +4,7 @@ FROM registry.hefei.paas-t.cxmt.com/appe-registry/codercom/enterprise-base:ubunt
 USER root
 
 # 安装 Node.js（离线）
-COPY external-deps/node-v24.14.0-linux-x64.tar.xz /tmp/node-v24.14.0-linux-x64.tar.xz
+COPY offline-pkgs/node-v24.14.0-linux-x64.tar.xz /tmp/node-v24.14.0-linux-x64.tar.xz
 RUN tar -xf /tmp/node-v24.14.0-linux-x64.tar.xz -C /usr/local --strip-components=1 && \
     rm /tmp/node-v24.14.0-linux-x64.tar.xz
 
@@ -29,7 +29,7 @@ RUN sed -i 's/\r$//' patches/*
 # 移除 patchedDependencies 配置（bun 在 Linux 上处理 patch 有问题）
 RUN node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('package.json'));delete p.patchedDependencies;fs.writeFileSync('package.json',JSON.stringify(p,null,2))"
 
-# 使用联网镜像源，可移除 postinstall 脚本（不执行 copy-external-deps.mjs）
+# 使用联网镜像源，可移除 postinstall 脚本（不执行 copy-offline-pkgs.mjs）
 RUN node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('package.json'));delete p.scripts.postinstall;fs.writeFileSync('package.json',JSON.stringify(p,null,2))"
 
 # 关键：修改子包 package.json，添加缺失的依赖（@babel/preset-typescript + solid-js）
@@ -100,12 +100,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends busybox && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # 安装 Node.js（离线）
-COPY external-deps/node-v24.14.0-linux-x64.tar.xz /tmp/node-v24.14.0-linux-x64.tar.xz
+COPY offline-pkgs/node-v24.14.0-linux-x64.tar.xz /tmp/node-v24.14.0-linux-x64.tar.xz
 RUN tar -xf /tmp/node-v24.14.0-linux-x64.tar.xz -C /usr/local --strip-components=1 && \
     rm /tmp/node-v24.14.0-linux-x64.tar.xz
 
 # 安装 ripgrep（离线）
-COPY external-deps/ripgrep-14.1.1-x86_64-unknown-linux-musl.tar.gz /tmp/ripgrep.tar.gz
+COPY offline-pkgs/ripgrep-14.1.1-x86_64-unknown-linux-musl.tar.gz /tmp/ripgrep.tar.gz
 RUN tar -xf /tmp/ripgrep.tar.gz -C /tmp && \
     cp /tmp/ripgrep-14.1.1-x86_64-unknown-linux-musl/rg /usr/local/bin/rg && \
     chmod +x /usr/local/bin/rg && \
@@ -113,10 +113,10 @@ RUN tar -xf /tmp/ripgrep.tar.gz -C /tmp && \
 
 # 预装 opencode skills 到 root 用户配置目录（单用户容器）
 #RUN mkdir -p /root/.config/opencode
-#COPY external-deps/skills /root/.config/opencode/skills
+#COPY offline-pkgs/skills /root/.config/opencode/skills
 # 改为👇 放到非挂载目录，永久保留默认文件
 RUN mkdir -p /opt/default-config/opencode
-COPY external-deps/skills /opt/default-config/opencode/skills
+COPY offline-pkgs/skills /opt/default-config/opencode/skills
 
 # 使用 busybox 提供所有常用命令
 RUN busybox --install -s /usr/local/bin

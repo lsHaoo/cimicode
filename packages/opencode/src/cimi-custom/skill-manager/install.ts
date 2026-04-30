@@ -1,7 +1,6 @@
-import { Config } from "@/config/config"
-import { NamedError } from "@opencode-ai/util/error"
-import { Log } from "@/util/log"
-import { Global } from "@/global"
+import { NamedError } from "@opencode-ai/core/util/error"
+import { Log } from "@/util"
+import { Global } from "@opencode-ai/core/global"
 import path from "path"
 import fs from "fs/promises"
 import { ZipReader, BlobReader, BlobWriter } from "@zip.js/zip.js"
@@ -13,26 +12,17 @@ function getSkillInstallDir(): string {
   return path.join(Global.Path.config, "skills")
 }
 
-/**
- * 安全检查 zip 文件路径，防止 Zip Slip 攻击
- */
 function validateZipEntry(filename: string): boolean {
-  // 检查是否包含路径遍历字符
   if (filename.includes("..")) {
     return false
   }
-  // 检查是否是绝对路径（Windows 或 Unix 风格）
   if (path.isAbsolute(filename.replace(/\\/g, "/"))) {
     return false
   }
   return true
 }
 
-/**
- * 将 zip 中的路径转换为本地系统路径
- */
 function normalizeZipPath(zipPath: string): string {
-  // zip 文件总是使用 / 作为分隔符，转换为系统路径
   const normalized = zipPath.replace(/\\/g, "/")
   return normalized.split("/").join(path.sep)
 }
@@ -63,7 +53,6 @@ async function extractSkill(zipBuffer: ArrayBuffer, skillName: string, isUpdate:
       }
 
       const skillMdPath = skillMdEntry.filename
-      // zip 路径以 / 分隔，获取目录部分
       const parts = skillMdPath.replace(/\\/g, "/").split("/")
       parts.pop()
       skillRootDir = parts.join("/")
@@ -77,22 +66,18 @@ async function extractSkill(zipBuffer: ArrayBuffer, skillName: string, isUpdate:
         }
       }
 
-      // 提取文件到临时目录
       for (const entry of entries) {
         if (entry.directory) continue
 
         const sourcePath = entry.filename.replace(/\\/g, "/")
 
-        // 只提取 skillRootDir 下的文件
         if (skillRootDir !== "" && !sourcePath.startsWith(skillRootDir + "/")) {
           continue
         }
 
-        // 获取相对于 skillRootDir 的路径
         const relativePath = skillRootDir === "" ? sourcePath : sourcePath.slice(skillRootDir.length + 1)
         const targetPath = path.join(tempDir, skillName, normalizeZipPath(relativePath))
 
-        // 确保目标路径在临时目录内（双重安全检查）
         const resolvedTarget = path.resolve(targetPath)
         const resolvedTemp = path.resolve(tempDir)
         if (!resolvedTarget.startsWith(resolvedTemp + path.sep) && resolvedTarget !== resolvedTemp) {
@@ -119,12 +104,10 @@ async function extractSkill(zipBuffer: ArrayBuffer, skillName: string, isUpdate:
         })
       }
 
-      // 如果目标目录已存在，先删除
       if (await fs.access(targetDir).then(() => true).catch(() => false)) {
         await fs.rm(targetDir, { recursive: true, force: true })
       }
 
-      // 原子性移动 skillName 子目录到目标目录
       const skillTempDir = path.join(tempDir, skillName)
       await fs.rename(skillTempDir, targetDir)
 
@@ -146,7 +129,7 @@ async function extractSkill(zipBuffer: ArrayBuffer, skillName: string, isUpdate:
 }
 
 async function disposeInstanceForReload() {
-  const { Instance } = await import("../../project/instance")
+  const { Instance } = await import("@/project/instance")
   await Instance.disposeAll()
 }
 
@@ -169,7 +152,6 @@ export async function install(skillName: string, downloadUrl: string, accessToke
     const skillDir = path.join(installDir, skillName)
     const skillMdPath = path.join(skillDir, "SKILL.md")
 
-    // 检查是否已存在
     const exists = await fs.access(skillMdPath).then(() => true).catch(() => false)
 
     const operation = exists ? "Updating" : "Installing"

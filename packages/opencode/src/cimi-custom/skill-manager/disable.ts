@@ -1,21 +1,18 @@
-import { Skill } from "../../skill"
-import { Config } from "@/config/config"
-import { Log } from "@/util/log"
+import { Skill } from "@/skill"
+import { Config } from "@/config"
+import { Log } from "@/util"
+import { AppRuntime } from "@/effect/app-runtime"
 
 const log = Log.create({ service: "skill-manager" })
 
-// Helper: dispose instance to trigger reload
 async function disposeInstanceForReload() {
-  const { Instance } = await import("../../project/instance")
+  const { Instance } = await import("@/project/instance")
   await Instance.disposeAll()
 }
 
-/**
- * 禁用 skill
- */
 export async function disable(skillName: string) {
   try {
-    const skillInfo = await Skill.get(skillName)
+    const skillInfo = await AppRuntime.runPromise(Skill.Service.use((svc) => svc.get(skillName)))
     if (!skillInfo) {
       return {
         success: false as const,
@@ -25,7 +22,7 @@ export async function disable(skillName: string) {
       }
     }
 
-    const config = await Config.get()
+    const config = await AppRuntime.runPromise(Config.Service.use((cfg) => cfg.get()))
     const skillPermission = config.permission?.skill ?? "allow"
 
     let newPermission
@@ -35,12 +32,16 @@ export async function disable(skillName: string) {
       newPermission = { ...skillPermission, [skillName]: "deny" as const }
     }
 
-    await Config.updateGlobal({
-      permission: {
-        ...config.permission,
-        skill: newPermission,
-      },
-    })
+    await AppRuntime.runPromise(
+      Config.Service.use((cfg) =>
+        cfg.updateGlobal({
+          permission: {
+            ...config.permission,
+            skill: newPermission,
+          },
+        })
+      ),
+    )
     await disposeInstanceForReload()
 
     return {

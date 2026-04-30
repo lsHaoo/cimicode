@@ -10,7 +10,6 @@ Skill 管理模块提供对 OpenCode skills 的安装、启用、禁用和状态
 | 查询 Skill 状态 | 获取 skill 的存在性和启用状态 |
 | 启用 Skill | 在全局配置中启用指定的 skill |
 | 禁用 Skill | 在全局配置中禁用指定的 skill |
-| 切换 Skill | 切换 skill 的启用状态（启用↔禁用） |
 
 ## API 接口
 
@@ -20,13 +19,13 @@ Skill 管理模块提供对 OpenCode skills 的安装、启用、禁用和状态
 
 **端点**
 ```
-GET /skill-manager/status/:name
+GET /skill-manager/status?skillName=:name
 ```
 
-**路径参数**
+**查询参数**
 
 | 参数 | 类型 | 必填 | 说明 |
-|------|------|------|
+|------|------|------|------|
 | skillName | string | 是 | Skill 名称 |
 
 **响应示例**
@@ -62,19 +61,21 @@ POST /skill-manager/install
 |--------|------|------|
 | X-Access-Token | 访问令牌（传递给下载服务器） | 否 |
 
+**请求类型**: `application/json`
+
 **请求体**
 
 ```json
 {
   "skillName": "my-skill",
-  "downloadUrl": "https://example.com/skills/my-skill.zip "
+  "downloadUrl": "https://example.com/skills/my-skill.zip"
 }
 ```
 
 **请求字段**
 
 | 字段 | 类型 | 必填 | 说明 |
-|------|------|------|
+|------|------|------|------|
 | skillName | string | 是 | 要安装的 skill 名称 |
 | downloadUrl | string | 是 | skill 压缩包的下载 URL（.zip 格式） |
 
@@ -101,10 +102,20 @@ POST /skill-manager/install
 PUT /skill-manager/enable
 ```
 
-**查询参数**
+**请求类型**: `application/json`
 
-| 参数 | 类型 | 必填 | 说明 |
-|------|------|------|
+**请求体**
+
+```json
+{
+  "skillName": "my-skill"
+}
+```
+
+**请求字段**
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
 | skillName | string | 是 | Skill 名称 |
 
 **成功响应**
@@ -127,10 +138,20 @@ PUT /skill-manager/enable
 PUT /skill-manager/disable
 ```
 
-**查询参数**
+**请求类型**: `application/json`
 
-| 参数 | 类型 | 必填 | 说明 |
-|------|------|------|
+**请求体**
+
+```json
+{
+  "skillName": "my-skill"
+}
+```
+
+**请求字段**
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
 | skillName | string | 是 | Skill 名称 |
 
 **成功响应**
@@ -141,32 +162,6 @@ PUT /skill-manager/disable
   "message": "Skill 'my-skill' disabled",
   "skillName": "my-skill",
   "enabled": false
-}
-```
-
----
-
-### 5. 切换 Skill
-
-**端点**
-```
-PUT /skill-manager/toggle
-```
-
-**查询参数**
-
-| 参数 | 类型 | 必填 | 说明 |
-|------|------|------|
-| skillName | string | 是 | Skill 名称 |
-
-**成功响应**
-
-```json
-{
-  "success": true,
-  "message": "Skill 'my-skill' enabled",
-  "skillName": "my-skill",
-  "enabled": true
 }
 ```
 
@@ -184,7 +179,7 @@ await fetch('/skill-manager/install', {
   },
   body: JSON.stringify({
     skillName: 'my-skill',
-    downloadUrl: 'https://example.com/my-skill.zip '
+    downloadUrl: 'https://example.com/my-skill.zip'
   })
 })
 
@@ -192,7 +187,32 @@ await fetch('/skill-manager/install', {
 await fetch('/skill-manager/status?skillName=my-skill').then(r => r.json())
 
 // 启用 skill
-await fetch('/skill-manager/enable?skillName=my-skill', { method: 'PUT' })
+await fetch('/skill-manager/enable', {
+  method: 'PUT',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ skillName: 'my-skill' })
+})
+
+// 禁用 skill
+await fetch('/skill-manager/disable', {
+  method: 'PUT',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ skillName: 'my-skill' })
+})
+```
+
+---
+
+## 错误处理
+
+所有接口在失败时返回包含 `success: false` 的 JSON 响应：
+
+```json
+{
+  "success": false,
+  "message": "错误描述",
+  "skillName": "my-skill"
+}
 ```
 
 ---

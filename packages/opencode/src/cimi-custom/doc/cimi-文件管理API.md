@@ -110,7 +110,7 @@ curl "http://localhost:4096/file-manager/list?path=uploads"
 
 ---
 
-### 3. 下载文件
+### 3. 下载文件或文件夹
 
 **接口**: `GET /file-manager/download`
 
@@ -118,19 +118,24 @@ curl "http://localhost:4096/file-manager/list?path=uploads"
 
 | 参数 | 类型 | 必填 | 说明 |
 |------|------|------|------|
-| path | String | 是 | 文件的相对路径 |
+| path | String | 是 | 文件或文件夹的相对路径 |
 
 **请求示例**:
 
 ```bash
+# 下载文件
 curl -o downloaded.txt "http://localhost:4096/file-manager/download?path=uploads/file.txt"
+
+# 下载文件夹（自动打包为 zip）
+curl -o folder.zip "http://localhost:4096/file-manager/download?path=uploads/folder1"
 ```
 
 **响应**:
-- 成功：二进制文件流
+- 文件：二进制文件流
+- 文件夹：zip 压缩包二进制流
 - 失败：JSON 错误信息
 
-**响应头**:
+**响应头（文件）**:
 
 | 响应头 | 说明 |
 |--------|------|
@@ -138,29 +143,7 @@ curl -o downloaded.txt "http://localhost:4096/file-manager/download?path=uploads
 | Content-Disposition | attachment; filename="文件名" |
 | Content-Length | 文件大小（字节） |
 
----
-
-### 4. 下载文件夹
-
-**接口**: `GET /file-manager/download-folder`
-
-**请求参数**:
-
-| 参数 | 类型 | 必填 | 说明 |
-|------|------|------|------|
-| path | String | 是 | 文件夹的相对路径 |
-
-**请求示例**:
-
-```bash
-curl -o folder.zip "http://localhost:4096/file-manager/download-folder?path=uploads/folder1"
-```
-
-**响应**:
-- 成功：zip 压缩包二进制流
-- 失败：JSON 错误信息
-
-**响应头**:
+**响应头（文件夹）**:
 
 | 响应头 | 说明 |
 |--------|------|
@@ -174,7 +157,7 @@ curl -o folder.zip "http://localhost:4096/file-manager/download-folder?path=uplo
 |----------|------|--------|------|
 | 环境变量 | `FOLDER_DOWNLOAD_SIZE_LIMIT` | 300 | MB |
 
-**响应示例（超限）**:
+**响应示例（文件夹超限）**:
 
 ```json
 {
@@ -182,9 +165,14 @@ curl -o folder.zip "http://localhost:4096/file-manager/download-folder?path=uplo
 }
 ```
 
+**说明**:
+- 后端根据路径自动判断是文件还是文件夹，无需前端区分
+- 文件直接流式返回，文件夹自动打包为 zip
+- ~~`GET /file-manager/download-folder` 已废弃，统一使用 `/download`~~
+
 ---
 
-### 5. 创建文件夹
+### 4. 创建文件夹
 
 **接口**: `POST /file-manager/mkdir`
 
@@ -228,7 +216,7 @@ curl -X POST http://localhost:4096/file-manager/mkdir \
 
 ---
 
-### 6. 删除文件或文件夹
+### 5. 删除文件或文件夹
 
 **接口**: `DELETE /file-manager/delete`
 

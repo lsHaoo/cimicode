@@ -2,10 +2,11 @@ import type { Context } from "hono"
 import path from "path"
 import fs from "fs"
 import os from "os"
-import { Log } from "../util/log"
+import { Log } from "@/util"
 import { getBasePath, validateRelativePath, resolveFullPath, validatePath, getRelativePath } from "./utils"
 import type { UploadResponse } from "./types"
-import { Config } from "../../config/config"
+import { Config } from "@/config"
+import { AppRuntime } from "@/effect/app-runtime"
 
 const log = Log.create({ service: "upload" })
 
@@ -90,7 +91,7 @@ async function getYstUrl(): Promise<string> {
   }
 
   // 2. Fallback 到 Config
-  const config = await Config.get()
+  const config = await AppRuntime.runPromise(Config.Service.use((cfg) => cfg.get()))
   if (config.ystUrl) {
     return config.ystUrl
   }

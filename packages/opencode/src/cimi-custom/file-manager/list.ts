@@ -1,7 +1,7 @@
 import type { Context } from "hono"
 import path from "path"
 import fs from "fs"
-import { Log } from "../util/log"
+import { Log } from "@/util"
 import { getBasePath, validateRelativePath, validatePath, getRelativePath } from "./utils"
 import type { ListResult, DirectoryItem } from "./types"
 

@@ -1,7 +1,7 @@
 import { Hono } from "hono"
 import { describeRoute, resolver } from "hono-openapi"
 import z from "zod"
-import { lazy } from "../../util/lazy"
+import { lazy } from "@/util/lazy"
 
 export const RestartRoutes = lazy(() =>
   new Hono()

@@ -1,8 +1,9 @@
 import { Hono } from "hono"
 import { describeRoute, validator, resolver } from "hono-openapi"
 import z from "zod"
-import { uploadHandler, downloadHandler, downloadFolderHandler, listHandler, createDirectoryHandler, deleteHandler } from "../../file-manager"
-import { lazy } from "../../util/lazy"
+import { uploadHandler, downloadHandler, listHandler, createDirectoryHandler, deleteHandler } from "../file-manager"
+// import { downloadFolderHandler } from "../file-manager" // 已合并到 /download
+import { lazy } from "@/util/lazy"
 
 export const FileManagerRoutes = lazy(() =>
   new Hono()
@@ -115,16 +116,16 @@ export const FileManagerRoutes = lazy(() =>
         return listHandler(c)
       },
     )
-    // GET /download - 下载文件
+    // GET /download - 下载文件或文件夹（文件夹自动打包为 zip）
     .get(
       "/download",
       describeRoute({
-        summary: "Download file",
-        description: "Download a file from the specified path in the project directory.",
+        summary: "Download file or folder",
+        description: "Download a file or folder from the specified path. Folders are automatically packaged as a zip archive.",
         operationId: "file.download",
         responses: {
           200: {
-            description: "File content",
+            description: "File content or zip archive",
             content: {
               "application/octet-stream": {
                 schema: resolver(z.any()),
@@ -132,38 +133,10 @@ export const FileManagerRoutes = lazy(() =>
             },
           },
           400: {
-            description: "Invalid path or cannot download directory",
+            description: "Invalid path or folder size exceeds limit",
           },
           404: {
-            description: "File not found",
-          },
-        },
-      }),
-      async (c) => {
-        return downloadHandler(c)
-      },
-    )
-    // GET /download-folder - 下载文件夹（zip）
-    .get(
-      "/download-folder",
-      describeRoute({
-        summary: "Download folder as zip",
-        description: "Download a folder as a zip archive from the specified path in the project directory.",
-        operationId: "file.downloadFolder",
-        responses: {
-          200: {
-            description: "Zip archive",
-            content: {
-              "application/zip": {
-                schema: resolver(z.any()),
-              },
-            },
-          },
-          400: {
-            description: "Invalid path or not a directory",
-          },
-          404: {
-            description: "Directory not found",
+            description: "File or directory not found",
           },
           500: {
             description: "Failed to create zip archive",
@@ -171,9 +144,40 @@ export const FileManagerRoutes = lazy(() =>
         },
       }),
       async (c) => {
-        return downloadFolderHandler(c)
+        return downloadHandler(c)
       },
     )
+    // [已废弃] /download-folder 已合并到 /download，后端自动判断文件/文件夹
+    // .get(
+    //   "/download-folder",
+    //   describeRoute({
+    //     summary: "Download folder as zip",
+    //     description: "Download a folder as a zip archive from the specified path in the project directory.",
+    //     operationId: "file.downloadFolder",
+    //     responses: {
+    //       200: {
+    //         description: "Zip archive",
+    //         content: {
+    //           "application/zip": {
+    //             schema: resolver(z.any()),
+    //           },
+    //         },
+    //       },
+    //       400: {
+    //         description: "Invalid path or not a directory",
+    //       },
+    //       404: {
+    //         description: "Directory not found",
+    //       },
+    //       500: {
+    //         description: "Failed to create zip archive",
+    //       },
+    //     },
+    //   }),
+    //   async (c) => {
+    //     return downloadFolderHandler(c)
+    //   },
+    // )
     // DELETE /delete - 删除文件或文件夹
     .delete(
       "/delete",

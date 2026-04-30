@@ -1,7 +1,6 @@
 // 导出所有 handler 供路由使用
 export { handleUpload as uploadHandler } from "./upload"
 export { handleDownload as downloadHandler } from "./download"
-export { handleDownloadFolder as downloadFolderHandler } from "./download-folder"
 export { handleList as listHandler } from "./list"
 export { handleCreateDirectory as createDirectoryHandler } from "./mkdir"
 export { handleDelete as deleteHandler } from "./delete"

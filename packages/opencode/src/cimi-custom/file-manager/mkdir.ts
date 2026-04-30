@@ -1,7 +1,6 @@
 import type { Context } from "hono"
-import path from "path"
 import fs from "fs"
-import { Log } from "../util/log"
+import { Log } from "@/util"
 import { getBasePath, validateRelativePath, validatePath, getRelativePath } from "./utils"
 import type { CreateDirectoryResult } from "./types"
 
@@ -31,6 +30,18 @@ export async function handleCreateDirectory(c: Context) {
     return c.json({ error: "Invalid path: path escapes project directory" }, 400)
   }
 
+  // 检查路径是否已存在
+  try {
+    const stat = await fs.promises.stat(fullPath)
+    if (stat.isDirectory()) {
+      return c.json({ error: "Directory already exists" }, 409)
+    } else {
+      return c.json({ error: "Path exists but is not a directory" }, 409)
+    }
+  } catch {
+    // 路径不存在，继续创建
+  }
+
   // 创建目录
   try {
     await fs.promises.mkdir(fullPath, { recursive: true })
@@ -47,19 +58,6 @@ export async function handleCreateDirectory(c: Context) {
   } catch (err) {
     log.error("create directory failed", { error: err })
     const message = err instanceof Error ? err.message : "Unknown error"
-
-    // 检查是否是路径已存在
-    try {
-      const stat = await fs.promises.stat(fullPath)
-      if (stat.isDirectory()) {
-        return c.json({ error: "Directory already exists" }, 409)
-      } else {
-        return c.json({ error: "Path exists but is not a directory" }, 409)
-      }
-    } catch {
-      // 其他错误
-    }
-
     return c.json({ error: message }, 500)
   }
 }

@@ -18,6 +18,8 @@ import { InstanceMiddleware } from "./routes/instance/middleware"
 import { WorkspaceRoutes } from "./routes/control/workspace"
 import { ExperimentalHttpApiServer } from "./routes/instance/httpapi/server"
 import { WorkspacePaths } from "./routes/instance/httpapi/workspace"
+// [CimiCode 定制] 合并上游代码时务必保留此 import —— 以下是定制路由的挂载
+import { CimiCustomRoutes } from "@/cimi-custom/routes"
 import { Context } from "effect"
 
 // @ts-ignore This global is needed to prevent ai-sdk from logging warnings to stdout https://github.com/vercel/ai/blob/2dc67e0ef538307f21368db32d5a12345d98831b/packages/ai/src/logger/log-warnings.ts#L85
@@ -52,7 +54,9 @@ function create(opts: { cors?: string[] }) {
       app: app
         .use(InstanceMiddleware(Flag.OPENCODE_WORKSPACE_ID ? WorkspaceID.make(Flag.OPENCODE_WORKSPACE_ID) : undefined))
         .use(FenceMiddleware)
-        .route("/", InstanceRoutes(runtime.upgradeWebSocket)),
+        .route("/", InstanceRoutes(runtime.upgradeWebSocket))
+        // [CimiCode 定制] 合并上游代码时务必保留此行
+        .route("/", CimiCustomRoutes()),
       runtime,
     }
   }
@@ -76,7 +80,10 @@ function create(opts: { cors?: string[] }) {
       .route("/", ControlPlaneRoutes())
       .route("/", workspaceApp)
       .route("/", InstanceRoutes(runtime.upgradeWebSocket))
-      .route("/", UIRoutes()),
+      // ！！！[CimiCode 定制] 上游 UIRoutes 已被自定义 WebUI 代理替代（通过 CIMICODE_WEB_URL），合并时保留注释
+      // .route("/", UIRoutes())
+      // ！！！[CimiCode 定制] 合并上游代码时务必保留此行
+      .route("/", CimiCustomRoutes()),
     runtime,
   }
 }

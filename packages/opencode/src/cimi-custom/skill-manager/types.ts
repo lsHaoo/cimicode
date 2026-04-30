@@ -41,11 +41,3 @@ export const DisableResult = z.object({
   enabled: z.boolean(),
 })
 export type DisableResult = z.infer<typeof DisableResult>
-
-export const ToggleResult = z.object({
-  success: z.boolean(),
-  message: z.string(),
-  skillName: z.string(),
-  enabled: z.boolean(),
-})
-export type ToggleResult = z.infer<typeof ToggleResult>

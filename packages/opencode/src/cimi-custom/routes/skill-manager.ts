@@ -1,8 +1,8 @@
 import { Hono } from "hono"
 import { describeRoute, validator, resolver } from "hono-openapi"
 import z from "zod"
-import { getStatus, install, uninstall, toggle, enable, disable } from "../../skill-manager"
-import { lazy } from "../../util/lazy"
+import { getStatus, install, uninstall, enable, disable } from "../skill-manager"
+import { lazy } from "@/util/lazy"
 
 export const SkillManagerRoutes = lazy(() =>
   new Hono()
@@ -160,38 +160,6 @@ export const SkillManagerRoutes = lazy(() =>
       async (c) => {
         const { skillName } = c.req.valid("json")
         const result = await disable(skillName)
-        return c.json(result)
-      },
-    )
-    // PUT /skill-manager/toggle/:name - 切换 skill 启用状态
-    .put(
-      "/toggle/:name",
-      describeRoute({
-        summary: "Toggle skill",
-        description: "Toggle the enabled state of a specific skill.",
-        operationId: "skill-manager.toggle",
-        responses: {
-          200: {
-            description: "Toggle result",
-            content: {
-              "application/json": {
-                schema: resolver(
-                  z.object({
-                    success: z.boolean(),
-                    message: z.string(),
-                    skillName: z.string(),
-                    enabled: z.boolean(),
-                  }),
-                ),
-              },
-            },
-          },
-        },
-      }),
-      validator("param", z.object({ name: z.string() })),
-      async (c) => {
-        const { name } = c.req.valid("param")
-        const result = await toggle(name)
         return c.json(result)
       },
     )
