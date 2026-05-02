@@ -74,10 +74,10 @@ const getBase = (): Configuration => ({
           },
         ]
       : []),
-    ...(existsSync(path.join(projectDir, "resources/opencode-cli.exe"))
-      ? [{ from: "resources/opencode-cli.exe", to: "opencode-cli.exe" }]
-      : existsSync(path.join(projectDir, "resources/opencode-cli"))
-        ? [{ from: "resources/opencode-cli", to: "opencode-cli" }]
+    ...(existsSync(path.join(projectDir, "resources/cimicode-cli.exe"))
+      ? [{ from: "resources/cimicode-cli.exe", to: "cimicode-cli.exe" }]
+      : existsSync(path.join(projectDir, "resources/cimicode-cli"))
+        ? [{ from: "resources/cimicode-cli", to: "cimicode-cli" }]
         : []),
     { from: "resources/cimicode.cmd", to: "cimicode.cmd" },
     { from: "../../packages/skills/", to: "skills/" },

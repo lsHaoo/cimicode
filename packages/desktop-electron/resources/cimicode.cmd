@@ -1,2 +1,2 @@
 @echo off
-"%~dp0resources\opencode-cli.exe" %*
+"%~dp0resources\cimicode-cli.exe" %*
