@@ -1,6 +1,6 @@
 import { Skill } from "@/skill"
-import { Config } from "@/config"
-import { Log } from "@/util"
+import { Config } from "@/config/config"
+import * as Log from "@opencode-ai/core/util/log"
 import { AppRuntime } from "@/effect/app-runtime"
 
 const log = Log.create({ service: "skill-manager" })

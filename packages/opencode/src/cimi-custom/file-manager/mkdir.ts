@@ -1,6 +1,6 @@
 import type { Context } from "hono"
 import fs from "fs"
-import { Log } from "@/util"
+import * as Log from "@opencode-ai/core/util/log"
 import { getBasePath, validateRelativePath, validatePath, getRelativePath } from "./utils"
 import type { CreateDirectoryResult } from "./types"
 

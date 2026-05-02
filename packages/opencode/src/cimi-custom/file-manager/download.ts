@@ -2,7 +2,7 @@ import type { Context } from "hono"
 import path from "path"
 import fs from "fs"
 import { execSync } from "child_process"
-import { Log } from "@/util"
+import * as Log from "@opencode-ai/core/util/log"
 import { getBasePath, validateRelativePath, validatePath } from "./utils"
 import { ZipWriter, BlobWriter, BlobReader } from "@zip.js/zip.js"
 

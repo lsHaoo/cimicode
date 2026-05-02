@@ -1,6 +1,6 @@
 import type { Context } from "hono"
 import fs from "fs/promises"
-import { Log } from "@/util"
+import * as Log from "@opencode-ai/core/util/log"
 import { getBasePath, validateRelativePath, validatePath } from "./utils"
 
 const log = Log.create({ service: "delete" })

@@ -1,5 +1,5 @@
 import { Skill } from "@/skill"
-import { Config } from "@/config"
+import { Config } from "@/config/config"
 import { Permission } from "@/permission"
 import { AppRuntime } from "@/effect/app-runtime"
 

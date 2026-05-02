@@ -1,6 +1,6 @@
 import { Hono } from "hono"
 import { proxy } from "hono/proxy"
-import { Log } from "@/util"
+import * as Log from "@opencode-ai/core/util/log"
 
 const log = Log.create({ service: "agi-proxy" })
 

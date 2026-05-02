@@ -2,10 +2,10 @@ import type { Context } from "hono"
 import path from "path"
 import fs from "fs"
 import os from "os"
-import { Log } from "@/util"
+import * as Log from "@opencode-ai/core/util/log"
 import { getBasePath, validateRelativePath, resolveFullPath, validatePath, getRelativePath } from "./utils"
 import type { UploadResponse } from "./types"
-import { Config } from "@/config"
+import { Config } from "@/config/config"
 import { AppRuntime } from "@/effect/app-runtime"
 
 const log = Log.create({ service: "upload" })

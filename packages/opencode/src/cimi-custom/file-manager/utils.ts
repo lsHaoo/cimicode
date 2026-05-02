@@ -1,6 +1,6 @@
 import path from "path"
 import { Instance } from "@/project/instance"
-import { Log } from "@/util"
+import * as Log from "@opencode-ai/core/util/log"
 import type { HandlerContext } from "./types"
 
 const log = Log.create({ service: "file-manager" })

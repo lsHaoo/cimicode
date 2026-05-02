@@ -1,5 +1,5 @@
 import { NamedError } from "@opencode-ai/core/util/error"
-import { Log } from "@/util"
+import * as Log from "@opencode-ai/core/util/log"
 import { Global } from "@opencode-ai/core/global"
 import path from "path"
 import fs from "fs/promises"
