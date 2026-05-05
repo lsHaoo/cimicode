@@ -3,10 +3,14 @@ import { ProviderIcon } from "@opencode-ai/ui/provider-icon"
 import { Switch } from "@opencode-ai/ui/switch"
 import { Icon } from "@opencode-ai/ui/icon"
 import { IconButton } from "@opencode-ai/ui/icon-button"
+import { Button } from "@opencode-ai/ui/button"
 import { TextField } from "@opencode-ai/ui/text-field"
 import { type Component, For, Show } from "solid-js"
+import { useDialog } from "@opencode-ai/ui/context/dialog"
 import { useLanguage } from "@/context/language"
 import { useModels } from "@/context/models"
+import { useGlobalSync } from "@/context/global-sync"
+import { isConfigCustomProvider, isCxmtCimiProvider } from "@/utils/provider-filter"
 import { SettingsList } from "./settings-list"
 
 type ModelItem = ReturnType<ReturnType<typeof useModels>["list"]>[number]
@@ -31,8 +35,30 @@ const ListEmptyState: Component<{ message: string; filter: string }> = (props) =
 }
 
 export const SettingsModels: Component = () => {
+  const dialog = useDialog()
   const language = useLanguage()
   const models = useModels()
+  const globalSync = useGlobalSync()
+
+  const editableProvider = (providerID: string) => {
+    const provider = globalSync.data.config.provider?.[providerID]
+    if (isCxmtCimiProvider({ id: providerID, name: provider?.name })) return "preset"
+    if (isConfigCustomProvider(providerID, provider)) return "custom"
+  }
+
+  const editProvider = (providerID: string) => {
+    const mode = editableProvider(providerID)
+    if (!mode) return
+    if (mode === "preset") {
+      void import("./dialog-quick-setup-preset").then((x) => {
+        dialog.show(() => <x.DialogQuickSetupPreset providerID={providerID} />)
+      })
+      return
+    }
+    void import("./dialog-custom-provider").then((x) => {
+      dialog.show(() => <x.DialogCustomProvider back="close" mode="edit" providerID={providerID} />)
+    })
+  }
 
   const list = useFilteredList<ModelItem>({
     items: (_filter) => models.list(),
@@ -100,7 +126,12 @@ export const SettingsModels: Component = () => {
                             <div class="min-w-0">
                               <span class="text-14-regular text-text-strong truncate block">{item.name}</span>
                             </div>
-                            <div class="flex-shrink-0">
+                            <div class="flex flex-shrink-0 items-center gap-2">
+                              <Show when={editableProvider(item.provider.id)}>
+                                <Button size="large" variant="ghost" onClick={() => editProvider(item.provider.id)}>
+                                  {language.t("common.edit")}
+                                </Button>
+                              </Show>
                               <Switch
                                 checked={models.visible(key)}
                                 onChange={(checked) => {

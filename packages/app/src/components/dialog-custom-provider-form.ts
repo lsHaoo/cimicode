@@ -2,6 +2,18 @@ const PROVIDER_ID = /^[a-z0-9][a-z0-9-_]*$/
 const OPENAI_COMPATIBLE = "@ai-sdk/openai-compatible"
 
 type Translator = (key: string, vars?: Record<string, string | number | boolean>) => string
+type CustomProvider = {
+  npm?: string
+  name?: string
+  env?: string[]
+  options?: {
+    baseURL?: string
+    headers?: Record<string, string>
+  }
+  models?: Record<string, { name?: string }>
+}
+
+export type CustomMode = "create" | "edit"
 
 export type ModelErr = {
   id?: string
@@ -42,10 +54,12 @@ export type FormState = {
 }
 
 type ValidateArgs = {
+  mode: CustomMode
   form: FormState
   t: Translator
   disabledProviders: string[]
   existingProviderIDs: Set<string>
+  editingProviderID?: string
 }
 
 export function validateCustomProvider(input: ValidateArgs) {
@@ -71,9 +85,10 @@ export function validateCustomProvider(input: ValidateArgs) {
       : undefined
 
   const disabled = input.disabledProviders.includes(providerID)
+  const editing = input.mode === "edit" && input.editingProviderID === providerID
   const existsError = idError
     ? undefined
-    : input.existingProviderIDs.has(providerID) && !disabled
+    : input.existingProviderIDs.has(providerID) && !disabled && !editing
       ? input.t("provider.custom.error.providerID.exists")
       : undefined
 
@@ -153,6 +168,43 @@ export function validateCustomProvider(input: ValidateArgs) {
 let row = 0
 
 const nextRow = () => `row-${row++}`
+
+export function isCustomProvider(provider: CustomProvider | undefined) {
+  if (!provider) return false
+  if (provider.npm !== OPENAI_COMPATIBLE) return false
+  if (!provider.models || Object.keys(provider.models).length === 0) return false
+  return true
+}
+
+export function customProviderForm(input?: { providerID: string; provider: CustomProvider }): FormState {
+  const apiKey = input?.provider.env?.[0] ? `{env:${input.provider.env[0]}}` : ""
+  const models = input?.provider.models
+    ? Object.entries(input.provider.models).map(([id, item]) => ({
+        row: nextRow(),
+        id,
+        name: item.name ?? "",
+        err: {},
+      }))
+    : [modelRow()]
+  const headers = input?.provider.options?.headers
+    ? Object.entries(input.provider.options.headers).map(([key, value]) => ({
+        row: nextRow(),
+        key,
+        value,
+        err: {},
+      }))
+    : [headerRow()]
+
+  return {
+    providerID: input?.providerID ?? "",
+    name: input?.provider.name ?? "",
+    baseURL: input?.provider.options?.baseURL ?? "",
+    apiKey,
+    models: models.length > 0 ? models : [modelRow()],
+    headers: headers.length > 0 ? headers : [headerRow()],
+    err: {},
+  }
+}
 
 export const modelRow = (): ModelRow => ({ row: nextRow(), id: "", name: "", err: {} })
 export const headerRow = (): HeaderRow => ({ row: nextRow(), key: "", value: "", err: {} })

@@ -2357,6 +2357,33 @@ export type AuthRemoveResponses = {
 
 export type AuthRemoveResponse = AuthRemoveResponses[keyof AuthRemoveResponses]
 
+export type AuthGetData = {
+  body?: never
+  path: {
+    providerID: string
+  }
+  query?: never
+  url: "/auth/{providerID}"
+}
+
+export type AuthGetErrors = {
+  /**
+   * Bad request
+   */
+  400: BadRequestError
+}
+
+export type AuthGetError = AuthGetErrors[keyof AuthGetErrors]
+
+export type AuthGetResponses = {
+  /**
+   * Authentication credentials for the provider
+   */
+  200: Auth | null
+}
+
+export type AuthGetResponse = AuthGetResponses[keyof AuthGetResponses]
+
 export type AuthSetData = {
   body?: Auth
   path: {
@@ -5545,3 +5572,322 @@ export type FormatterStatusResponses = {
 }
 
 export type FormatterStatusResponse = FormatterStatusResponses[keyof FormatterStatusResponses]
+
+export type FileUploadData = {
+  body?: never
+  path?: never
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/file-manager/upload"
+}
+
+export type FileUploadResponses = {
+  /**
+   * Upload result
+   */
+  200: {
+    success: boolean
+    path: string
+    size?: number
+    error?: string
+  }
+}
+
+export type FileUploadResponse = FileUploadResponses[keyof FileUploadResponses]
+
+export type FileMkdirData = {
+  body?: never
+  path?: never
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/file-manager/mkdir"
+}
+
+export type FileMkdirErrors = {
+  /**
+   * Invalid path
+   */
+  400: unknown
+  /**
+   * Directory already exists or path is not a directory
+   */
+  409: unknown
+  /**
+   * Internal server error
+   */
+  500: unknown
+}
+
+export type FileMkdirResponses = {
+  /**
+   * Directory created successfully
+   */
+  200: {
+    success: boolean
+    path: string
+    error?: string
+  }
+}
+
+export type FileMkdirResponse = FileMkdirResponses[keyof FileMkdirResponses]
+
+export type FileList2Data = {
+  body?: never
+  path?: never
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/file-manager/list"
+}
+
+export type FileList2Errors = {
+  /**
+   * Invalid path
+   */
+  400: unknown
+  /**
+   * Directory not found
+   */
+  404: unknown
+}
+
+export type FileList2Responses = {
+  /**
+   * Directory contents
+   */
+  200: {
+    success: boolean
+    path: string
+    items: Array<{
+      name: string
+      type: "file" | "directory"
+      size: number
+      modifiedTime: string
+      path: string
+    }>
+  }
+}
+
+export type FileList2Response = FileList2Responses[keyof FileList2Responses]
+
+export type FileDownloadData = {
+  body?: never
+  path?: never
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/file-manager/download"
+}
+
+export type FileDownloadErrors = {
+  /**
+   * Invalid path or folder size exceeds limit
+   */
+  400: unknown
+  /**
+   * File or directory not found
+   */
+  404: unknown
+  /**
+   * Failed to create zip archive
+   */
+  500: unknown
+}
+
+export type FileDownloadResponses = {
+  /**
+   * File content or zip archive
+   */
+  200: unknown
+}
+
+export type FileDeleteData = {
+  body?: never
+  path?: never
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/file-manager/delete"
+}
+
+export type FileDeleteErrors = {
+  /**
+   * Invalid path
+   */
+  400: unknown
+  /**
+   * File or directory not found
+   */
+  404: unknown
+  /**
+   * Failed to delete
+   */
+  500: unknown
+}
+
+export type FileDeleteResponses = {
+  /**
+   * Deleted successfully
+   */
+  200: {
+    success: boolean
+    path: string
+    error?: string
+  }
+}
+
+export type FileDeleteResponse = FileDeleteResponses[keyof FileDeleteResponses]
+
+export type SkillManagerGetStatusData = {
+  body?: never
+  path?: never
+  query: {
+    directory?: string
+    workspace?: string
+    skillName: string
+  }
+  url: "/skill-manager/status"
+}
+
+export type SkillManagerGetStatusResponses = {
+  /**
+   * Skill status
+   */
+  200: {
+    exists: boolean
+    enabled: boolean
+  }
+}
+
+export type SkillManagerGetStatusResponse = SkillManagerGetStatusResponses[keyof SkillManagerGetStatusResponses]
+
+export type SkillManagerInstallData = {
+  body?: {
+    skillName: string
+    downloadUrl: string
+  }
+  path?: never
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/skill-manager/install"
+}
+
+export type SkillManagerInstallResponses = {
+  /**
+   * Install result
+   */
+  200: {
+    success: boolean
+    message: string
+    skillName?: string
+  }
+}
+
+export type SkillManagerInstallResponse = SkillManagerInstallResponses[keyof SkillManagerInstallResponses]
+
+export type SkillManagerUninstallData = {
+  body?: {
+    skillName: string
+  }
+  path?: never
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/skill-manager/uninstall"
+}
+
+export type SkillManagerUninstallResponses = {
+  /**
+   * Uninstall result
+   */
+  200: {
+    success: boolean
+    message: string
+    skillName?: string
+  }
+}
+
+export type SkillManagerUninstallResponse = SkillManagerUninstallResponses[keyof SkillManagerUninstallResponses]
+
+export type SkillManagerEnableData = {
+  body?: {
+    skillName: string
+  }
+  path?: never
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/skill-manager/enable"
+}
+
+export type SkillManagerEnableResponses = {
+  /**
+   * Enable result
+   */
+  200: {
+    success: boolean
+    message: string
+    skillName: string
+    enabled: boolean
+  }
+}
+
+export type SkillManagerEnableResponse = SkillManagerEnableResponses[keyof SkillManagerEnableResponses]
+
+export type SkillManagerDisableData = {
+  body?: {
+    skillName: string
+  }
+  path?: never
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/skill-manager/disable"
+}
+
+export type SkillManagerDisableResponses = {
+  /**
+   * Disable result
+   */
+  200: {
+    success: boolean
+    message: string
+    skillName: string
+    enabled: boolean
+  }
+}
+
+export type SkillManagerDisableResponse = SkillManagerDisableResponses[keyof SkillManagerDisableResponses]
+
+export type AppRestartData = {
+  body?: never
+  path?: never
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/reload"
+}
+
+export type AppRestartResponses = {
+  /**
+   * Restart initiated
+   */
+  200: {
+    message: string
+  }
+}
+
+export type AppRestartResponse = AppRestartResponses[keyof AppRestartResponses]

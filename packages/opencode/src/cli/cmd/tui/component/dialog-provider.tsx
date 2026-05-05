@@ -6,6 +6,7 @@ import { useSDK } from "../context/sdk"
 import { DialogPrompt } from "../ui/dialog-prompt"
 import { useTheme } from "../context/theme"
 import { DialogModel } from "./dialog-model"
+import { DialogModelEdit } from "./dialog-model-edit"
 import { useToast } from "../ui/toast"
 import { useConnected } from "./use-connected"
 import {
@@ -16,7 +17,7 @@ import {
   presetProviderID,
   type PresetModel,
 } from "./provider-preset"
-import { isCustomProvider } from "./provider-filter"
+import { isCustomProvider, isEditableProvider } from "./provider-filter"
 
 export function providerDisplayName(provider: { id: string; name: string }) {
   if (provider.id === "opencode") return "CimiCode"
@@ -136,6 +137,20 @@ export function createDialogProviderOptions() {
     const connected = sync.data.provider_next.connected.includes(CXMT_CIMI_PROVIDER_ID)
     const customConnected = sync.data.provider.some((provider) => isCustomProvider(provider.id, sync.data.config))
 
+    const editOptions = onboarded()
+      ? sync.data.provider
+          .filter((provider) => isEditableProvider(provider.id, sync.data.config))
+          .map((provider) => ({
+            title: provider.name ?? provider.id,
+            value: `edit:${provider.id}`,
+            description: "Edit models",
+            category: "Edit models",
+            onSelect() {
+              dialog.replace(() => <DialogModelEdit providerID={provider.id} />)
+            },
+          }))
+      : []
+
     return [
       {
         title: CXMT_CIMI_PROVIDER_NAME,
@@ -157,6 +172,7 @@ export function createDialogProviderOptions() {
           void configureCustomProvider()
         },
       },
+      ...editOptions,
     ]
   })
   return options

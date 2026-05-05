@@ -15,6 +15,12 @@ export function isCustomProvider(providerID: string, config: Config) {
   return !!provider.models && Object.keys(provider.models).length > 0
 }
 
+export function isEditableProvider(providerID: string, config: Config) {
+  const provider = config.provider?.[providerID]
+  if (!provider) return false
+  return !!provider.models && Object.keys(provider.models).length > 0
+}
+
 export function isAllowedVisibleProvider(provider: Provider, config: Config) {
   if (isCxmtCimiProvider(provider)) return true
   return isCustomProvider(provider.id, config)

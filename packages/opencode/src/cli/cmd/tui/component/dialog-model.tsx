@@ -6,10 +6,12 @@ import { DialogSelect } from "@tui/ui/dialog-select"
 import { useDialog } from "@tui/ui/dialog"
 import { createDialogProviderOptions, DialogProvider, providerDisplayName } from "./dialog-provider"
 import { DialogVariant } from "./dialog-variant"
+import { DialogModelEdit } from "./dialog-model-edit"
 import { useKeybind } from "../context/keybind"
+import { Keybind } from "@/util/keybind"
 import * as fuzzysort from "fuzzysort"
 import { useConnected } from "./use-connected"
-import { isAllowedVisibleProvider } from "./provider-filter"
+import { isAllowedVisibleProvider, isEditableProvider } from "./provider-filter"
 
 export function DialogModel(props: { providerID?: string }) {
   const local = useLocal()
@@ -167,6 +169,15 @@ export function DialogModel(props: { providerID?: string }) {
           disabled: !connected(),
           onTrigger: (option) => {
             local.model.toggleFavorite(option.value as { providerID: string; modelID: string })
+          },
+        },
+        {
+          keybind: Keybind.parse("e")[0],
+          title: "Edit models",
+          onTrigger: (option) => {
+            const val = option.value as { providerID: string; modelID: string }
+            if (!isEditableProvider(val.providerID, sync.data.config)) return
+            dialog.replace(() => <DialogModelEdit providerID={val.providerID} />)
           },
         },
       ]}

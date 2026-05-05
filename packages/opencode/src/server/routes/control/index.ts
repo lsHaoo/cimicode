@@ -11,6 +11,41 @@ import { errors } from "../../error"
 export function ControlPlaneRoutes(): Hono {
   const app = new Hono()
   return app
+    .get(
+      "/auth/:providerID",
+      describeRoute({
+        summary: "Get auth credentials",
+        description: "Get authentication credentials",
+        operationId: "auth.get",
+        responses: {
+          200: {
+            description: "Authentication credentials for the provider",
+            content: {
+              "application/json": {
+                schema: resolver(Auth.Info.zod.nullable()),
+              },
+            },
+          },
+          ...errors(400),
+        },
+      }),
+      validator(
+        "param",
+        z.object({
+          providerID: ProviderID.zod,
+        }),
+      ),
+      async (c) => {
+        const providerID = c.req.valid("param").providerID
+        const info = await AppRuntime.runPromise(
+          Effect.gen(function* () {
+            const auth = yield* Auth.Service
+            return yield* auth.get(providerID)
+          }),
+        )
+        return c.json(info ?? null)
+      },
+    )
     .put(
       "/auth/:providerID",
       describeRoute({

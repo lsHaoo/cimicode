@@ -28,6 +28,8 @@ export const dict = {
   "command.sidebar.toggle": "切换侧边栏",
 
   "command.project.open": "打开项目",
+  "command.project.previous": "上一个项目",
+  "command.project.next": "下一个项目",
 
   "command.provider.connect": "连接提供商",
 

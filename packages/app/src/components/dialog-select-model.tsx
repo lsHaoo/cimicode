@@ -11,6 +11,8 @@ import { List } from "@opencode-ai/ui/list"
 import { Tooltip } from "@opencode-ai/ui/tooltip"
 import { ModelTooltip } from "./model-tooltip"
 import { useLanguage } from "@/context/language"
+import { useGlobalSync } from "@/context/global-sync"
+import { isConfigCustomProvider, isCxmtCimiProvider } from "@/utils/provider-filter"
 
 type ModelState = ReturnType<typeof useLocal>["model"]
 
@@ -77,6 +79,15 @@ const ModelList: Component<{
 type ModelSelectorTriggerProps = Omit<ComponentProps<typeof Kobalte.Trigger>, "as" | "ref">
 type Dismiss = "escape" | "outside" | "select" | "manage" | "provider"
 
+function editableProvider(input: {
+  providerID?: string
+  provider?: { name?: string; npm?: string; models?: Record<string, unknown> }
+}) {
+  if (!input.providerID) return
+  if (isCxmtCimiProvider({ id: input.providerID, name: input.provider?.name })) return "preset"
+  if (isConfigCustomProvider(input.providerID, input.provider)) return "custom"
+}
+
 export function ModelSelectorPopover(props: {
   provider?: string
   model?: ModelState
@@ -85,6 +96,7 @@ export function ModelSelectorPopover(props: {
   triggerProps?: ModelSelectorTriggerProps
   onClose?: (cause: "escape" | "select") => void
 }) {
+  const model = props.model ?? useLocal().model
   const [store, setStore] = createStore<{
     open: boolean
     dismiss: Dismiss | null
@@ -93,6 +105,13 @@ export function ModelSelectorPopover(props: {
     dismiss: null,
   })
   const dialog = useDialog()
+  const globalSync = useGlobalSync()
+  const currentEditable = createMemo(() => {
+    const providerID = model.current()?.provider.id
+    const mode = editableProvider({ providerID, provider: providerID ? globalSync.data.config.provider?.[providerID] : undefined })
+    if (!providerID || !mode) return
+    return { providerID, mode }
+  })
 
   const close = (dismiss: Dismiss) => {
     setStore("dismiss", dismiss)
@@ -110,6 +129,20 @@ export function ModelSelectorPopover(props: {
     close("provider")
     void import("./dialog-select-provider").then((x) => {
       dialog.show(() => <x.DialogSelectProvider />)
+    })
+  }
+  const handleEditProvider = () => {
+    const current = currentEditable()
+    if (!current) return
+    close("provider")
+    if (current.mode === "preset") {
+      void import("./dialog-quick-setup-preset").then((x) => {
+        dialog.show(() => <x.DialogQuickSetupPreset providerID={current.providerID} />)
+      })
+      return
+    }
+    void import("./dialog-custom-provider").then((x) => {
+      dialog.show(() => <x.DialogCustomProvider back="close" mode="edit" providerID={current.providerID} />)
     })
   }
   const language = useLanguage()
@@ -156,6 +189,19 @@ export function ModelSelectorPopover(props: {
             class="p-1"
             action={
               <div class="flex items-center gap-1">
+                <Show when={currentEditable()}>
+                  <Tooltip placement="top" value={language.t("provider.custom.action.editCurrent")}>
+                    <Button
+                      size="small"
+                      variant="ghost"
+                      class="h-6 px-2 text-12-medium"
+                      aria-label={language.t("provider.custom.action.editCurrent")}
+                      onClick={handleEditProvider}
+                    >
+                      {language.t("common.edit")}
+                    </Button>
+                  </Tooltip>
+                </Show>
                 <Tooltip placement="top" value={language.t("command.provider.connect")}>
                   <IconButton
                     icon="plus-small"
@@ -188,6 +234,14 @@ export function ModelSelectorPopover(props: {
 export const DialogSelectModel: Component<{ provider?: string; model?: ModelState }> = (props) => {
   const dialog = useDialog()
   const language = useLanguage()
+  const globalSync = useGlobalSync()
+  const model = props.model ?? useLocal().model
+  const currentEditable = createMemo(() => {
+    const providerID = model.current()?.provider.id
+    const mode = editableProvider({ providerID, provider: providerID ? globalSync.data.config.provider?.[providerID] : undefined })
+    if (!providerID || !mode) return
+    return { providerID, mode }
+  })
 
   const provider = () => {
     void import("./dialog-select-provider").then((x) => {
@@ -201,13 +255,34 @@ export const DialogSelectModel: Component<{ provider?: string; model?: ModelStat
     })
   }
 
+  const edit = () => {
+    const current = currentEditable()
+    if (!current) return
+    if (current.mode === "preset") {
+      void import("./dialog-quick-setup-preset").then((x) => {
+        dialog.show(() => <x.DialogQuickSetupPreset providerID={current.providerID} />)
+      })
+      return
+    }
+    void import("./dialog-custom-provider").then((x) => {
+      dialog.show(() => <x.DialogCustomProvider back="close" mode="edit" providerID={current.providerID} />)
+    })
+  }
+
   return (
     <Dialog
       title={language.t("dialog.model.select.title")}
       action={
-        <Button class="h-7 -my-1 text-14-medium" icon="plus-small" tabIndex={-1} onClick={provider}>
-          {language.t("command.provider.connect")}
-        </Button>
+        <div class="flex items-center gap-2">
+          <Show when={currentEditable()}>
+            <Button class="h-7 -my-1 text-14-medium" tabIndex={-1} onClick={edit}>
+              {language.t("common.edit")}
+            </Button>
+          </Show>
+          <Button class="h-7 -my-1 text-14-medium" icon="plus-small" tabIndex={-1} onClick={provider}>
+            {language.t("command.provider.connect")}
+          </Button>
+        </div>
       }
     >
       <ModelList provider={props.provider} model={props.model} onSelect={() => dialog.close()} />

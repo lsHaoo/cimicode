@@ -7,8 +7,11 @@ import type {
   AppAgentsResponses,
   AppLogErrors,
   AppLogResponses,
+  AppRestartResponses,
   AppSkillsResponses,
   Auth as Auth3,
+  AuthGetErrors,
+  AuthGetResponses,
   AuthRemoveErrors,
   AuthRemoveResponses,
   AuthSetErrors,
@@ -38,11 +41,20 @@ import type {
   ExperimentalWorkspaceSessionRestoreErrors,
   ExperimentalWorkspaceSessionRestoreResponses,
   ExperimentalWorkspaceStatusResponses,
+  FileDeleteErrors,
+  FileDeleteResponses,
+  FileDownloadErrors,
+  FileDownloadResponses,
+  FileList2Errors,
+  FileList2Responses,
   FileListResponses,
+  FileMkdirErrors,
+  FileMkdirResponses,
   FilePartInput,
   FilePartSource,
   FileReadResponses,
   FileStatusResponses,
+  FileUploadResponses,
   FindFilesResponses,
   FindSymbolsResponses,
   FindTextResponses,
@@ -159,6 +171,11 @@ import type {
   SessionUnshareResponses,
   SessionUpdateErrors,
   SessionUpdateResponses,
+  SkillManagerDisableResponses,
+  SkillManagerEnableResponses,
+  SkillManagerGetStatusResponses,
+  SkillManagerInstallResponses,
+  SkillManagerUninstallResponses,
   SubtaskPartInput,
   SyncHistoryListErrors,
   SyncHistoryListResponses,
@@ -370,6 +387,25 @@ export class Auth extends HeyApiClient {
   }
 
   /**
+   * Get auth credentials
+   *
+   * Get authentication credentials
+   */
+  public get<ThrowOnError extends boolean = false>(
+    parameters: {
+      providerID: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams([parameters], [{ args: [{ in: "path", key: "providerID" }] }])
+    return (options?.client ?? this.client).get<AuthGetResponses, AuthGetErrors, ThrowOnError>({
+      url: "/auth/{providerID}",
+      ...options,
+      ...params,
+    })
+  }
+
+  /**
    * Set auth credentials
    *
    * Set authentication credentials
@@ -506,6 +542,36 @@ export class App extends HeyApiClient {
     )
     return (options?.client ?? this.client).get<AppSkillsResponses, unknown, ThrowOnError>({
       url: "/skill",
+      ...options,
+      ...params,
+    })
+  }
+
+  /**
+   * Restart server
+   *
+   * Restart the OpenCode server process
+   */
+  public restart<ThrowOnError extends boolean = false>(
+    parameters?: {
+      directory?: string
+      workspace?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).post<AppRestartResponses, unknown, ThrowOnError>({
+      url: "/reload",
       ...options,
       ...params,
     })
@@ -3377,6 +3443,156 @@ export class File extends HeyApiClient {
       ...params,
     })
   }
+
+  /**
+   * Upload file
+   *
+   * Upload a file to the specified path in the project directory. Supports files up to 500MB.
+   */
+  public upload<ThrowOnError extends boolean = false>(
+    parameters?: {
+      directory?: string
+      workspace?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).post<FileUploadResponses, unknown, ThrowOnError>({
+      url: "/file-manager/upload",
+      ...options,
+      ...params,
+    })
+  }
+
+  /**
+   * Create directory
+   *
+   * Create a directory at the specified path in the project directory.
+   */
+  public mkdir<ThrowOnError extends boolean = false>(
+    parameters?: {
+      directory?: string
+      workspace?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).post<FileMkdirResponses, FileMkdirErrors, ThrowOnError>({
+      url: "/file-manager/mkdir",
+      ...options,
+      ...params,
+    })
+  }
+
+  /**
+   * List directory
+   *
+   * List all files and directories in the specified path.
+   */
+  public list2<ThrowOnError extends boolean = false>(
+    parameters?: {
+      directory?: string
+      workspace?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).get<FileList2Responses, FileList2Errors, ThrowOnError>({
+      url: "/file-manager/list",
+      ...options,
+      ...params,
+    })
+  }
+
+  /**
+   * Download file or folder
+   *
+   * Download a file or folder from the specified path. Folders are automatically packaged as a zip archive.
+   */
+  public download<ThrowOnError extends boolean = false>(
+    parameters?: {
+      directory?: string
+      workspace?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).get<FileDownloadResponses, FileDownloadErrors, ThrowOnError>({
+      url: "/file-manager/download",
+      ...options,
+      ...params,
+    })
+  }
+
+  /**
+   * Delete file or folder
+   *
+   * Delete a file or folder at the specified path in the project directory.
+   */
+  public delete<ThrowOnError extends boolean = false>(
+    parameters?: {
+      directory?: string
+      workspace?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).delete<FileDeleteResponses, FileDeleteErrors, ThrowOnError>({
+      url: "/file-manager/delete",
+      ...options,
+      ...params,
+    })
+  }
 }
 
 export class Event extends HeyApiClient {
@@ -4357,6 +4573,190 @@ export class Formatter extends HeyApiClient {
   }
 }
 
+export class SkillManager extends HeyApiClient {
+  /**
+   * Get skill status
+   *
+   * Get the status of a skill, including whether it exists and is enabled.
+   */
+  public getStatus<ThrowOnError extends boolean = false>(
+    parameters: {
+      directory?: string
+      workspace?: string
+      skillName: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+            { in: "query", key: "skillName" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).get<SkillManagerGetStatusResponses, unknown, ThrowOnError>({
+      url: "/skill-manager/status",
+      ...options,
+      ...params,
+    })
+  }
+
+  /**
+   * Install skill
+   *
+   * Install a skill from the provided download URL. Requires X-Access-Token header for authentication.
+   */
+  public install<ThrowOnError extends boolean = false>(
+    parameters?: {
+      directory?: string
+      workspace?: string
+      skillName?: string
+      downloadUrl?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+            { in: "body", key: "skillName" },
+            { in: "body", key: "downloadUrl" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).post<SkillManagerInstallResponses, unknown, ThrowOnError>({
+      url: "/skill-manager/install",
+      ...options,
+      ...params,
+      headers: {
+        "Content-Type": "application/json",
+        ...options?.headers,
+        ...params.headers,
+      },
+    })
+  }
+
+  /**
+   * Uninstall skill
+   *
+   * Uninstall a skill by deleting its directory and files.
+   */
+  public uninstall<ThrowOnError extends boolean = false>(
+    parameters?: {
+      directory?: string
+      workspace?: string
+      skillName?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+            { in: "body", key: "skillName" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).delete<SkillManagerUninstallResponses, unknown, ThrowOnError>({
+      url: "/skill-manager/uninstall",
+      ...options,
+      ...params,
+      headers: {
+        "Content-Type": "application/json",
+        ...options?.headers,
+        ...params.headers,
+      },
+    })
+  }
+
+  /**
+   * Enable skill
+   *
+   * Enable a specific skill in the global configuration.
+   */
+  public enable<ThrowOnError extends boolean = false>(
+    parameters?: {
+      directory?: string
+      workspace?: string
+      skillName?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+            { in: "body", key: "skillName" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).put<SkillManagerEnableResponses, unknown, ThrowOnError>({
+      url: "/skill-manager/enable",
+      ...options,
+      ...params,
+      headers: {
+        "Content-Type": "application/json",
+        ...options?.headers,
+        ...params.headers,
+      },
+    })
+  }
+
+  /**
+   * Disable skill
+   *
+   * Disable a specific skill in the global configuration.
+   */
+  public disable<ThrowOnError extends boolean = false>(
+    parameters?: {
+      directory?: string
+      workspace?: string
+      skillName?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+            { in: "body", key: "skillName" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).put<SkillManagerDisableResponses, unknown, ThrowOnError>({
+      url: "/skill-manager/disable",
+      ...options,
+      ...params,
+      headers: {
+        "Content-Type": "application/json",
+        ...options?.headers,
+        ...params.headers,
+      },
+    })
+  }
+}
+
 export class OpencodeClient extends HeyApiClient {
   public static readonly __registry = new HeyApiRegistry<OpencodeClient>()
 
@@ -4493,5 +4893,10 @@ export class OpencodeClient extends HeyApiClient {
   private _formatter?: Formatter
   get formatter(): Formatter {
     return (this._formatter ??= new Formatter({ client: this.client }))
+  }
+
+  private _skillManager?: SkillManager
+  get skillManager(): SkillManager {
+    return (this._skillManager ??= new SkillManager({ client: this.client }))
   }
 }

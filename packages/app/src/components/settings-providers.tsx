@@ -61,7 +61,7 @@ export const SettingsProviders: Component = () => {
     if (isCxmtCimiProvider({ id: providerID, name: provider?.name })) {
       dialog.show(() => <DialogQuickSetupPreset providerID={providerID} />)
     } else {
-      dialog.show(() => <DialogCustomProvider back="close" />)
+      dialog.show(() => <DialogCustomProvider back="close" mode="edit" providerID={providerID} />)
     }
   }
 

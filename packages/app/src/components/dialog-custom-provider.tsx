@@ -6,19 +6,29 @@ import { ProviderIcon } from "@opencode-ai/ui/provider-icon"
 import { useMutation } from "@tanstack/solid-query"
 import { TextField } from "@opencode-ai/ui/text-field"
 import { showToast } from "@opencode-ai/ui/toast"
-import { batch, For } from "solid-js"
+import { batch, createMemo, For, onMount } from "solid-js"
 import { createStore, produce } from "solid-js/store"
 import { Link } from "@/components/link"
 import { useGlobalSDK } from "@/context/global-sdk"
 import { useGlobalSync } from "@/context/global-sync"
 import { useLanguage } from "@/context/language"
 import { useLocal } from "@/context/local"
-import { type FormState, headerRow, modelRow, validateCustomProvider } from "./dialog-custom-provider-form"
+import {
+  customProviderForm,
+  type CustomMode,
+  type FormState,
+  headerRow,
+  isCustomProvider,
+  modelRow,
+  validateCustomProvider,
+} from "./dialog-custom-provider-form"
 import { DialogSelectProvider } from "./dialog-select-provider"
 import { DialogSelectModel } from "./dialog-select-model"
 
 type Props = {
   back?: "providers" | "close"
+  mode?: CustomMode
+  providerID?: string
 }
 
 export function DialogCustomProvider(props: Props) {
@@ -26,6 +36,14 @@ export function DialogCustomProvider(props: Props) {
   const globalSync = useGlobalSync()
   const globalSDK = useGlobalSDK()
   const language = useLanguage()
+  const mode = () => props.mode ?? "create"
+  const editing = () => mode() === "edit"
+  const provider = createMemo(() => {
+    if (!editing() || !props.providerID) return
+    const item = globalSync.data.config.provider?.[props.providerID]
+    if (!isCustomProvider(item)) return
+    return item
+  })
 
   // 检查是否在 LocalProvider 上下文中
   let canShowModelDialog = false
@@ -37,14 +55,28 @@ export function DialogCustomProvider(props: Props) {
     console.log("Not in LocalProvider context, skipping model selection dialog")
   }
 
-  const [form, setForm] = createStore<FormState>({
-    providerID: "",
-    name: "",
-    baseURL: "",
-    apiKey: "",
-    models: [modelRow()],
-    headers: [headerRow()],
-    err: {},
+  const init = customProviderForm(
+    editing() && props.providerID
+      ? {
+          providerID: props.providerID,
+          provider: provider() ?? {},
+        }
+      : undefined,
+  )
+
+  const [form, setForm] = createStore<FormState>(init)
+
+  onMount(() => {
+    if (!editing() || !props.providerID) return
+    void globalSDK.client.auth
+      .get({ providerID: props.providerID })
+      .then((x) => {
+        const auth = x.data
+        if (!auth || auth.type !== "api") return
+        if (form.apiKey !== init.apiKey) return
+        setForm("apiKey", auth.key)
+      })
+      .catch(() => undefined)
   })
 
   const goBack = () => {
@@ -115,10 +147,12 @@ export function DialogCustomProvider(props: Props) {
 
   const validate = () => {
     const output = validateCustomProvider({
+      mode: mode(),
       form,
       t: language.t,
       disabledProviders: globalSync.data.config.disabled_providers ?? [],
       existingProviderIDs: new Set(globalSync.data.provider.all.map((p) => p.id)),
+      editingProviderID: props.providerID,
     })
     batch(() => {
       setForm("err", output.err)
@@ -153,19 +187,25 @@ export function DialogCustomProvider(props: Props) {
       dialog.close()
 
       // 发送自定义事件通知其他组件provider已更新
-      window.dispatchEvent(new CustomEvent('provider-updated', {
-        detail: { providerID: result.providerID, action: 'add', models: result.config.models }
-      }))
+      window.dispatchEvent(
+        new CustomEvent("provider-updated", {
+          detail: { providerID: result.providerID, action: editing() ? "edit" : "add", models: result.config.models },
+        }),
+      )
 
       showToast({
         variant: "success",
         icon: "circle-check",
-        title: language.t("provider.connect.toast.connected.title", { provider: result.name }),
-        description: language.t("provider.connect.toast.connected.description", { provider: result.name }),
+        title: editing()
+          ? language.t("provider.custom.toast.updated.title", { provider: result.name })
+          : language.t("provider.connect.toast.connected.title", { provider: result.name }),
+        description: editing()
+          ? language.t("provider.custom.toast.updated.description", { provider: result.name })
+          : language.t("provider.connect.toast.connected.description", { provider: result.name }),
       })
 
       // 在 LocalProvider 上下文中显示模型选择对话框
-      if (canShowModelDialog) {
+      if (!editing() && canShowModelDialog) {
         setTimeout(() => {
           dialog.show(() => <DialogSelectModel />)
         }, 150)
@@ -202,7 +242,9 @@ export function DialogCustomProvider(props: Props) {
       <div class="flex flex-col gap-6 px-2.5 pb-3 overflow-y-auto max-h-[60vh]">
         <div class="px-2.5 flex gap-4 items-center">
           <ProviderIcon id="synthetic" class="size-5 shrink-0 icon-strong-base" />
-          <div class="text-16-medium text-text-strong">{language.t("provider.custom.title")}</div>
+          <div class="text-16-medium text-text-strong">
+            {editing() ? language.t("provider.custom.edit.title") : language.t("provider.custom.title")}
+          </div>
         </div>
 
         <form onSubmit={save} class="px-2.5 pb-6 flex flex-col gap-6">
@@ -219,9 +261,14 @@ export function DialogCustomProvider(props: Props) {
               autofocus
               label={language.t("provider.custom.field.providerID.label")}
               placeholder={language.t("provider.custom.field.providerID.placeholder")}
-              description={language.t("provider.custom.field.providerID.description")}
+              description={language.t(
+                editing()
+                  ? "provider.custom.field.providerID.description.edit"
+                  : "provider.custom.field.providerID.description",
+              )}
               value={form.providerID}
               onChange={(v) => setField("providerID", v)}
+              readOnly={editing()}
               validationState={form.err.providerID ? "invalid" : undefined}
               error={form.err.providerID}
             />
@@ -345,7 +392,11 @@ export function DialogCustomProvider(props: Props) {
             variant="primary"
             disabled={saveMutation.isPending}
           >
-            {saveMutation.isPending ? language.t("common.saving") : language.t("common.submit")}
+            {saveMutation.isPending
+              ? language.t("common.saving")
+              : editing()
+                ? language.t("common.save")
+                : language.t("common.submit")}
           </Button>
         </form>
       </div>
