@@ -95,6 +95,8 @@ export const dict = {
   "command.session.share.description": "分享此工作階段並將連結複製到剪貼簿",
   "command.session.unshare": "取消分享工作階段",
   "command.session.unshare.description": "停止分享此工作階段",
+  "command.session.export": "匯出會話",
+  "command.session.export.description": "將此工作階段下載為 Markdown 檔案",
 
   "palette.search.placeholder": "搜尋檔案、命令和工作階段",
   "palette.empty": "找不到結果",

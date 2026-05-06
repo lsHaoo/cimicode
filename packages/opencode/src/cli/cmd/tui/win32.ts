@@ -3,6 +3,11 @@ import type { ReadStream } from "node:tty"
 
 const STD_INPUT_HANDLE = -10
 const ENABLE_PROCESSED_INPUT = 0x0001
+const KEY_DOWN = 0x8000
+const VK_CONTROL = 0x11
+const VK_SHIFT = 0x10
+const VK_INSERT = 0x2d
+const VK_V = 0x56
 
 const kernel = () =>
   dlopen("kernel32.dll", {
@@ -14,6 +19,13 @@ const kernel = () =>
 
 let k32: ReturnType<typeof kernel> | undefined
 
+const user = () =>
+  dlopen("user32.dll", {
+    GetAsyncKeyState: { args: ["i32"], returns: "i32" },
+  })
+
+let u32: ReturnType<typeof user> | undefined
+
 function load() {
   if (process.platform !== "win32") return false
   try {
@@ -22,6 +34,26 @@ function load() {
   } catch {
     return false
   }
+}
+
+function loadUser() {
+  if (process.platform !== "win32") return false
+  try {
+    u32 ??= user()
+    return true
+  } catch {
+    return false
+  }
+}
+
+function keyDown(key: number) {
+  return (u32!.symbols.GetAsyncKeyState(key) & KEY_DOWN) !== 0
+}
+
+export function win32IsPasteShortcutDown() {
+  if (process.platform !== "win32") return false
+  if (!loadUser()) return false
+  return (keyDown(VK_CONTROL) && keyDown(VK_V)) || (keyDown(VK_SHIFT) && keyDown(VK_INSERT))
 }
 
 /**

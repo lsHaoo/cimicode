@@ -93,6 +93,8 @@ export const dict = {
   "command.session.share.description": "Bu oturumu paylaş ve URL'yi panoya kopyala",
   "command.session.unshare": "Paylaşımı kaldır",
   "command.session.unshare.description": "Bu oturumun paylaşımını durdur",
+  "command.session.export": "Oturumu dışa aktar",
+  "command.session.export.description": "Bu oturumu bir Markdown dosyası olarak indir",
 
   "palette.search.placeholder": "Dosya, komut ve oturum ara",
   "palette.empty": "Sonuç bulunamadı",

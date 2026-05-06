@@ -89,6 +89,8 @@ export const dict = {
   "command.session.share.description": "Поделиться сессией и скопировать URL в буфер обмена",
   "command.session.unshare": "Отменить публикацию",
   "command.session.unshare.description": "Прекратить публикацию сессии",
+  "command.session.export": "Экспорт сессии",
+  "command.session.export.description": "Скачать эту сессию как файл Markdown",
 
   "palette.search.placeholder": "Поиск файлов, команд и сессий",
   "palette.empty": "Ничего не найдено",

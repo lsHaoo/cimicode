@@ -83,6 +83,8 @@ export const dict = {
   "command.session.share.description": "Compartilhar esta sessão e copiar a URL para a área de transferência",
   "command.session.unshare": "Parar de compartilhar sessão",
   "command.session.unshare.description": "Parar de compartilhar esta sessão",
+  "command.session.export": "Exportar sessão",
+  "command.session.export.description": "Baixar esta sessão como arquivo Markdown",
   "palette.search.placeholder": "Buscar arquivos, comandos e sessões",
   "palette.empty": "Nenhum resultado encontrado",
   "palette.group.commands": "Comandos",

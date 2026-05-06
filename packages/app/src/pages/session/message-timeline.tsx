@@ -32,6 +32,7 @@ import { useSync } from "@/context/sync"
 import { messageAgentColor } from "@/utils/agent"
 import { sessionTitle } from "@/utils/session-title"
 import { parseCommentNote, readCommentMetadata } from "@/utils/comment-note"
+import { formatTranscript, downloadMarkdown } from "@/utils/transcript"
 import { makeTimer } from "@solid-primitives/timer"
 
 type MessageComment = {
@@ -866,6 +867,19 @@ export function MessageTimeline(props: {
                                   }}
                                 >
                                   <DropdownMenu.ItemLabel>{language.t("common.rename")}</DropdownMenu.ItemLabel>
+                                </DropdownMenu.Item>
+                                <DropdownMenu.Item
+                                  onSelect={() => {
+                                    setTitle("menuOpen", false)
+                                    const session = info()
+                                    const messages = sessionMessages()
+                                    if (!session) return
+                                    const md = formatTranscript(session, messages, sync.data.part, sync.data.provider.all)
+                                    const filename = `session-${session.id.slice(0, 8)}.md`
+                                    downloadMarkdown(md, filename)
+                                  }}
+                                >
+                                  <DropdownMenu.ItemLabel>{language.t("command.session.export")}</DropdownMenu.ItemLabel>
                                 </DropdownMenu.Item>
                                 {/* <Show when={shareEnabled()}>
                                   <DropdownMenu.Item

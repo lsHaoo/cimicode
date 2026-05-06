@@ -43,6 +43,7 @@ import { DialogSkill } from "../dialog-skill"
 import { DialogWorkspaceCreate, restoreWorkspaceSession } from "../dialog-workspace-create"
 import { DialogWorkspaceUnavailable } from "../dialog-workspace-unavailable"
 import { useArgs } from "@tui/context/args"
+import { win32IsPasteShortcutDown } from "../../win32"
 
 export type PromptProps = {
   sessionID?: string
@@ -286,14 +287,7 @@ export function Prompt(props: PromptProps) {
         category: "Prompt",
         hidden: true,
         onSelect: async () => {
-          const content = await Clipboard.read()
-          if (content?.mime.startsWith("image/")) {
-            await pasteAttachment({
-              filename: "clipboard",
-              mime: content.mime,
-              content: content.data,
-            })
-          }
+          await pasteClipboard()
         },
       },
       {
@@ -901,6 +895,19 @@ export function Prompt(props: PromptProps) {
     )
   }
 
+  function normalizePastedText(text: string) {
+    return text.replace(/\r\n/g, "\n").replace(/\r/g, "\n")
+  }
+
+  function requestInputRender() {
+    setTimeout(() => {
+      // setTimeout is a workaround and needs to be addressed properly
+      if (!input || input.isDestroyed) return
+      input.getLayoutNode().markDirty()
+      renderer.requestRender()
+    }, 0)
+  }
+
   async function pasteAttachment(file: { filename?: string; filepath?: string; content: string; mime: string }) {
     const currentOffset = input.visualCursor.offset
     const extmarkStart = currentOffset
@@ -947,6 +954,129 @@ export function Prompt(props: PromptProps) {
       }),
     )
     return
+  }
+
+  async function pastePlainText(normalizedText: string) {
+    const pastedContent = normalizedText.trim()
+
+    // Windows Terminal <1.25 can surface image-only clipboard as an
+    // empty bracketed paste. Windows Terminal 1.25+ does not.
+    if (!pastedContent) {
+      command.trigger("prompt.paste")
+      return
+    }
+
+    const filepath = iife(() => {
+      const raw = pastedContent.replace(/^['"]+|['"]+$/g, "")
+      if (raw.startsWith("file://")) {
+        try {
+          return fileURLToPath(raw)
+        } catch {}
+      }
+      if (process.platform === "win32") return raw
+      return raw.replace(/\\(.)/g, "$1")
+    })
+    const isUrl = /^(https?):\/\//.test(filepath)
+    if (!isUrl) {
+      try {
+        const mime = await Filesystem.mimeType(filepath)
+        const filename = path.basename(filepath)
+        // Handle SVG as raw text content, not as base64 image
+        if (mime === "image/svg+xml") {
+          const content = await Filesystem.readText(filepath).catch(() => {})
+          if (content) {
+            pasteText(content, `[SVG: ${filename ?? "image"}]`)
+            return
+          }
+        }
+        if (mime.startsWith("image/") || mime === "application/pdf") {
+          const content = await Filesystem.readArrayBuffer(filepath)
+            .then((buffer) => Buffer.from(buffer).toString("base64"))
+            .catch(() => {})
+          if (content) {
+            await pasteAttachment({
+              filename,
+              filepath,
+              mime,
+              content,
+            })
+            return
+          }
+        }
+      } catch {}
+    }
+
+    const lineCount = (pastedContent.match(/\n/g)?.length ?? 0) + 1
+    if (
+      (lineCount >= 3 || pastedContent.length > 150) &&
+      kv.get("paste_summary_enabled", !sync.data.config.experimental?.disable_paste_summary)
+    ) {
+      pasteText(pastedContent, `[Pasted ~${lineCount} lines]`)
+      return
+    }
+
+    input.insertText(normalizedText)
+    requestInputRender()
+  }
+
+  async function pasteClipboard() {
+    const content = await Clipboard.read()
+    if (content?.mime.startsWith("image/")) {
+      await pasteAttachment({
+        filename: "clipboard",
+        mime: content.mime,
+        content: content.data,
+      })
+      return true
+    }
+    if (content?.mime.startsWith("text/")) {
+      await pastePlainText(normalizePastedText(content.data))
+      return true
+    }
+    return false
+  }
+
+  let lastPasteShortcut = 0
+  let pasteShortcutPending = false
+  async function pasteClipboardShortcut() {
+    if (pasteShortcutPending || Date.now() - lastPasteShortcut < 500) return true
+    pasteShortcutPending = true
+    try {
+      const handled = await pasteClipboard()
+      if (handled) lastPasteShortcut = Date.now()
+      return handled
+    } finally {
+      pasteShortcutPending = false
+    }
+  }
+
+  if (process.platform === "win32") {
+    let pasteShortcutDown = false
+    let dead = false
+    const interval = setInterval(() => {
+      if (props.disabled || !input || input.isDestroyed || !input.focused) {
+        pasteShortcutDown = false
+        return
+      }
+
+      const down = win32IsPasteShortcutDown()
+      if (!down) {
+        pasteShortcutDown = false
+        return
+      }
+      if (pasteShortcutDown) return
+
+      pasteShortcutDown = true
+      setTimeout(() => {
+        if (dead) return
+        if (Date.now() - lastPasteShortcut < 500) return
+        void pasteClipboardShortcut()
+      }, 75)
+    }, 50)
+    onCleanup(() => {
+      dead = true
+      clearInterval(interval)
+    })
   }
 
   const highlight = createMemo(() => {
@@ -1069,17 +1199,11 @@ export function Prompt(props: PromptProps) {
                 // This helps terminals that forward Ctrl+V to the app; Windows
                 // Terminal 1.25+ usually handles Ctrl+V before this path.
                 if (keybind.match("input_paste", e)) {
-                  const content = await Clipboard.read()
-                  if (content?.mime.startsWith("image/")) {
+                  if (await pasteClipboardShortcut()) {
                     e.preventDefault()
-                    await pasteAttachment({
-                      filename: "clipboard",
-                      mime: content.mime,
-                      content: content.data,
-                    })
                     return
                   }
-                  // If no image, let the default paste behavior continue
+                  // If no clipboard content is available, let the terminal try its default paste behavior.
                 }
                 if (keybind.match("input_clear", e) && store.prompt.input !== "") {
                   input.clear()
@@ -1148,16 +1272,18 @@ export function Prompt(props: PromptProps) {
                   event.preventDefault()
                   return
                 }
+                if (Date.now() - lastPasteShortcut < 500) {
+                  event.preventDefault()
+                  return
+                }
 
-                // Normalize line endings at the boundary
-                // Windows ConPTY/Terminal often sends CR-only newlines in bracketed paste
-                // Replace CRLF first, then any remaining CR
-                const normalizedText = decodePasteBytes(event.bytes).replace(/\r\n/g, "\n").replace(/\r/g, "\n")
-                const pastedContent = normalizedText.trim()
+                // Windows ConPTY/Terminal often sends CR-only newlines in bracketed paste.
+                const normalizedText = normalizePastedText(decodePasteBytes(event.bytes))
 
                 // Windows Terminal <1.25 can surface image-only clipboard as an
                 // empty bracketed paste. Windows Terminal 1.25+ does not.
-                if (!pastedContent) {
+                if (!normalizedText.trim()) {
+                  lastPasteShortcut = Date.now()
                   command.trigger("prompt.paste")
                   return
                 }
@@ -1165,65 +1291,8 @@ export function Prompt(props: PromptProps) {
                 // Once we cross an async boundary below, the terminal may perform its
                 // default paste unless we suppress it first and handle insertion ourselves.
                 event.preventDefault()
-
-                const filepath = iife(() => {
-                  const raw = pastedContent.replace(/^['"]+|['"]+$/g, "")
-                  if (raw.startsWith("file://")) {
-                    try {
-                      return fileURLToPath(raw)
-                    } catch {}
-                  }
-                  if (process.platform === "win32") return raw
-                  return raw.replace(/\\(.)/g, "$1")
-                })
-                const isUrl = /^(https?):\/\//.test(filepath)
-                if (!isUrl) {
-                  try {
-                    const mime = await Filesystem.mimeType(filepath)
-                    const filename = path.basename(filepath)
-                    // Handle SVG as raw text content, not as base64 image
-                    if (mime === "image/svg+xml") {
-                      const content = await Filesystem.readText(filepath).catch(() => {})
-                      if (content) {
-                        pasteText(content, `[SVG: ${filename ?? "image"}]`)
-                        return
-                      }
-                    }
-                    if (mime.startsWith("image/") || mime === "application/pdf") {
-                      const content = await Filesystem.readArrayBuffer(filepath)
-                        .then((buffer) => Buffer.from(buffer).toString("base64"))
-                        .catch(() => {})
-                      if (content) {
-                        await pasteAttachment({
-                          filename,
-                          filepath,
-                          mime,
-                          content,
-                        })
-                        return
-                      }
-                    }
-                  } catch {}
-                }
-
-                const lineCount = (pastedContent.match(/\n/g)?.length ?? 0) + 1
-                if (
-                  (lineCount >= 3 || pastedContent.length > 150) &&
-                  kv.get("paste_summary_enabled", !sync.data.config.experimental?.disable_paste_summary)
-                ) {
-                  pasteText(pastedContent, `[Pasted ~${lineCount} lines]`)
-                  return
-                }
-
-                input.insertText(normalizedText)
-
-                // Force layout update and render for the pasted content
-                setTimeout(() => {
-                  // setTimeout is a workaround and needs to be addressed properly
-                  if (!input || input.isDestroyed) return
-                  input.getLayoutNode().markDirty()
-                  renderer.requestRender()
-                }, 0)
+                lastPasteShortcut = Date.now()
+                await pastePlainText(normalizedText)
               }}
               ref={(r: TextareaRenderable) => {
                 input = r

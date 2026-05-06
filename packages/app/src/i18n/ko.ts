@@ -87,6 +87,8 @@ export const dict = {
   "command.session.share.description": "이 세션을 공유하고 URL을 클립보드에 복사",
   "command.session.unshare": "세션 공유 중지",
   "command.session.unshare.description": "이 세션 공유 중지",
+  "command.session.export": "세션 내보내기",
+  "command.session.export.description": "이 세션을 Markdown 파일로 다운로드",
   "palette.search.placeholder": "파일, 명령어 및 세션 검색",
   "palette.empty": "결과 없음",
   "palette.group.commands": "명령어",

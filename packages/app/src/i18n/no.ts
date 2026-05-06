@@ -92,6 +92,8 @@ export const dict = {
   "command.session.share.description": "Del denne sesjonen og kopier URL-en til utklippstavlen",
   "command.session.unshare": "Slutt å dele sesjon",
   "command.session.unshare.description": "Slutt å dele denne sesjonen",
+  "command.session.export": "Eksporter sesjon",
+  "command.session.export.description": "Last ned denne sesjonen som en Markdown-fil",
 
   "palette.search.placeholder": "Søk i filer, kommandoer og sesjoner",
   "palette.empty": "Ingen resultater funnet",

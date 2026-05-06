@@ -83,6 +83,8 @@ export const dict = {
   "command.session.share.description": "مشاركة هذه الجلسة ونسخ الرابط إلى الحافظة",
   "command.session.unshare": "إلغاء مشاركة الجلسة",
   "command.session.unshare.description": "إيقاف مشاركة هذه الجلسة",
+  "command.session.export": "تصدير الجلسة",
+  "command.session.export.description": "تنزيل هذه الجلسة كملف Markdown",
   "palette.search.placeholder": "البحث في الملفات والأوامر والجلسات",
   "palette.empty": "لا توجد نتائج",
   "palette.group.commands": "الأوامر",

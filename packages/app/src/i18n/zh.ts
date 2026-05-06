@@ -116,6 +116,8 @@ export const dict = {
   "command.session.share.description": "分享此会话并将链接复制到剪贴板",
   "command.session.unshare": "取消分享会话",
   "command.session.unshare.description": "停止分享此会话",
+  "command.session.export": "导出会话",
+  "command.session.export.description": "将此会话下载为 Markdown 文件",
 
   "palette.search.placeholder": "搜索文件、命令和会话",
   "palette.empty": "未找到结果",

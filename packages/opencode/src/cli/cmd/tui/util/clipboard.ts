@@ -17,6 +17,15 @@ const getClipboardy = lazy(async () => {
   return clipboardy
 })
 
+async function readWindowsText() {
+  const script =
+    "[Console]::OutputEncoding = [System.Text.Encoding]::UTF8; $text = Get-Clipboard -Raw -Format Text -ErrorAction SilentlyContinue; if ($null -ne $text) { [Console]::Out.Write($text) }"
+  const result = await Process.text(["powershell.exe", "-NonInteractive", "-NoProfile", "-Command", script], {
+    nothrow: true,
+  })
+  return result.text || undefined
+}
+
 /**
  * Writes text to clipboard via OSC 52 escape sequence.
  * This allows clipboard operations to work over SSH by having
@@ -87,6 +96,11 @@ export async function read(): Promise<Content | undefined> {
       if (imageBuffer.length > 0) {
         return { data: imageBuffer.toString("base64"), mime: "image/png" }
       }
+    }
+
+    const text = await readWindowsText()
+    if (text) {
+      return { data: text, mime: "text/plain" }
     }
   }
 
