@@ -20,6 +20,7 @@ interface ServerRowProps extends ParentProps {
   class?: string
   nameClass?: string
   versionClass?: string
+  version?: string
   dimmed?: boolean
   badge?: JSXElement
   showCredentials?: boolean
@@ -31,6 +32,7 @@ export function ServerRow(props: ServerRowProps) {
   let nameRef: HTMLSpanElement | undefined
   let versionRef: HTMLSpanElement | undefined
   const name = createMemo(() => serverName(props.conn))
+  const version = createMemo(() => props.version ?? props.status?.version)
 
   const check = () => {
     const nameTruncated = nameRef ? nameRef.scrollWidth > nameRef.clientWidth : false
@@ -41,7 +43,7 @@ export function ServerRow(props: ServerRowProps) {
   createEffect(() => {
     name()
     props.conn.http.url
-    props.status?.version
+    version()
     queueMicrotask(check)
   })
 
@@ -54,8 +56,8 @@ export function ServerRow(props: ServerRowProps) {
   const tooltipValue = () => (
     <span class="flex items-center gap-2">
       <span>{serverName(props.conn, true)}</span>
-      <Show when={props.status?.version}>
-        <span class="text-text-invert-weak">v{props.status?.version}</span>
+      <Show when={version()}>
+        {(value) => <span class="text-text-invert-weak">v{value()}</span>}
       </Show>
     </span>
   )
@@ -79,13 +81,15 @@ export function ServerRow(props: ServerRowProps) {
             <Show
               when={badge()}
               fallback={
-                <Show when={props.status?.version}>
-                  <span
-                    ref={versionRef}
-                    class={`${props.versionClass ?? "text-text-weak text-14-regular truncate"} min-w-0`}
-                  >
-                    v{props.status?.version}
-                  </span>
+                <Show when={version()}>
+                  {(value) => (
+                    <span
+                      ref={versionRef}
+                      class={`${props.versionClass ?? "text-text-weak text-14-regular truncate"} min-w-0`}
+                    >
+                      v{value()}
+                    </span>
+                  )}
                 </Show>
               }
             >

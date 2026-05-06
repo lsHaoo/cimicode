@@ -57,7 +57,7 @@ const channel = (() => {
 })()
 
 const getBase = (): Configuration => ({
-  artifactName: "Cimi_${version}-beta.${ext}",
+  artifactName: "Cimi_${version}.${ext}",
   afterPack,
   directories: {
     output: "dist",
