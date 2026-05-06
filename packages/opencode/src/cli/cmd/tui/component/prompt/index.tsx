@@ -1067,6 +1067,7 @@ export function Prompt(props: PromptProps) {
       if (pasteShortcutDown) return
 
       pasteShortcutDown = true
+      lastPasteShortcut = Date.now()
       setTimeout(() => {
         if (dead) return
         if (Date.now() - lastPasteShortcut < 500) return
