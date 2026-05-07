@@ -6,7 +6,7 @@ import { ProviderIcon } from "@opencode-ai/ui/provider-icon"
 import { useMutation } from "@tanstack/solid-query"
 import { TextField } from "@opencode-ai/ui/text-field"
 import { showToast } from "@opencode-ai/ui/toast"
-import { batch, createMemo, For, onMount } from "solid-js"
+import { batch, createMemo, For } from "solid-js"
 import { createStore, produce } from "solid-js/store"
 import { Link } from "@/components/link"
 import { useGlobalSDK } from "@/context/global-sdk"
@@ -65,19 +65,6 @@ export function DialogCustomProvider(props: Props) {
   )
 
   const [form, setForm] = createStore<FormState>(init)
-
-  onMount(() => {
-    if (!editing() || !props.providerID) return
-    void globalSDK.client.auth
-      .get({ providerID: props.providerID })
-      .then((x) => {
-        const auth = x.data
-        if (!auth || auth.type !== "api") return
-        if (form.apiKey !== init.apiKey) return
-        setForm("apiKey", auth.key)
-      })
-      .catch(() => undefined)
-  })
 
   const goBack = () => {
     if (props.back === "close") {
