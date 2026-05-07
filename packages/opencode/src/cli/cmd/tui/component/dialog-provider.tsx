@@ -360,3 +360,15 @@ async function PromptsMethod(props: PromptsMethodProps) {
   }
   return inputs
 }
+
+export function providerDisplayName(provider: string): string {
+  const names: Record<string, string> = {
+    opencode: "OpenCode",
+    "opencode-go": "OpenCode Go",
+    openai: "OpenAI",
+    anthropic: "Anthropic",
+    google: "Google",
+    "github-copilot": "GitHub Copilot",
+  }
+  return names[provider] ?? provider.charAt(0).toUpperCase() + provider.slice(1).replace(/-/g, " ")
+}
