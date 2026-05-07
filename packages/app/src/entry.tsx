@@ -1,16 +1,17 @@
 // @refresh reload
 
+import * as Sentry from "@sentry/solid"
 import { render } from "solid-js/web"
 import { AppBaseProviders, AppInterface } from "@/app"
 import { type Platform, PlatformProvider } from "@/context/platform"
 import { dict as en } from "@/i18n/en"
 import { dict as zh } from "@/i18n/zh"
 import { handleNotificationClick } from "@/utils/notification-click"
-import { cimiBoot } from "@/utils/cimi"
+import { authFromToken } from "@/utils/server"
 import pkg from "../package.json"
 import { ServerConnection } from "./context/server"
 
-const DEFAULT_SERVER_URL_KEY = "cimicode.settings.dat:defaultServerUrl"
+const DEFAULT_SERVER_URL_KEY = "opencode.settings.dat:defaultServerUrl"
 
 const getLocale = () => {
   if (typeof navigator !== "object") return "en" as const
@@ -68,7 +69,7 @@ const notify: Platform["notify"] = async (title, description, href) => {
 
   const notification = new Notification(title, {
     body: description ?? "",
-    icon: "https://app.cxmt.com/s3/oa-public/fedt/agi/cimicode-icon_beta.svg",
+    icon: "https://opencode.ai/favicon-96x96-v3.png",
   })
 
   notification.onclick = () => {
@@ -99,9 +100,9 @@ if (!(root instanceof HTMLElement) && import.meta.env.DEV) {
 }
 
 const getCurrentUrl = () => {
-  if (location.hostname.includes("cimicode.ai")) return "http://localhost:4096"
+  if (location.hostname.includes("opencode.ai")) return "http://localhost:4096"
   if (import.meta.env.DEV)
-    return `http://${import.meta.env.VITE_CIMICODE_SERVER_HOST ?? "localhost"}:${import.meta.env.VITE_CIMICODE_SERVER_PORT ?? "4096"}`
+    return `http://${import.meta.env.VITE_OPENCODE_SERVER_HOST ?? "localhost"}:${import.meta.env.VITE_OPENCODE_SERVER_PORT ?? "4096"}`
   return location.origin
 }
 
@@ -109,6 +110,13 @@ const getDefaultUrl = () => {
   const lsDefault = readDefaultServerUrl()
   if (lsDefault) return lsDefault
   return getCurrentUrl()
+}
+
+const clearAuthToken = () => {
+  const params = new URLSearchParams(location.search)
+  if (!params.has("auth_token")) return
+  params.delete("auth_token")
+  history.replaceState(null, "", location.pathname + (params.size ? `?${params}` : "") + location.hash)
 }
 
 const platform: Platform = {
@@ -126,26 +134,36 @@ const platform: Platform = {
   setDefaultServer: writeDefaultServerUrl,
 }
 
-// 检查是否在本地环境
-const isLocalhost = location.hostname === "localhost" || location.hostname === "127.0.0.1" || location.hostname === ""
-
-// 简化版 iframe 检测：只允许在 iframe 中访问，localhost 除外
-const isInIframe = window !== window.parent
-if (!isInIframe && !isLocalhost) {
-  document.body.innerHTML = `
-    <div style="display:flex;align-items:center;justify-content:center;height:100vh;margin:0;background:#1a1a1a;color:#fff;font-family:system-ui,sans-serif;">
-      <div style="text-align:center;">
-        <h1 style="font-size:24px;margin-bottom:16px;">访问受限</h1>
-        <p style="color:#888;">此页面仅支持在智多鑫-CimiCode内访问</p>
-      </div>
-    </div>
-  `
-  throw new Error("Direct access blocked")
+if (import.meta.env.VITE_SENTRY_DSN) {
+  Sentry.init({
+    dsn: import.meta.env.VITE_SENTRY_DSN,
+    environment: import.meta.env.VITE_SENTRY_ENVIRONMENT ?? import.meta.env.MODE,
+    release: import.meta.env.VITE_SENTRY_RELEASE ?? `web@${pkg.version}`,
+    initialScope: {
+      tags: {
+        platform: "web",
+      },
+    },
+    integrations: (integrations) => {
+      return integrations.filter(
+        (i) =>
+          i.name !== "Breadcrumbs" && !(import.meta.env.OPENCODE_CHANNEL === "prod" && i.name === "GlobalHandlers"),
+      )
+    },
+  })
 }
 
 if (root instanceof HTMLElement) {
-  cimiBoot()
-  const server: ServerConnection.Http = { type: "http", http: { url: getCurrentUrl() } }
+  const auth = authFromToken(new URLSearchParams(location.search).get("auth_token"))
+  clearAuthToken()
+  const server: ServerConnection.Http = {
+    type: "http",
+    authToken: !!auth,
+    http: {
+      url: getCurrentUrl(),
+      ...auth,
+    },
+  }
   render(
     () => (
       <PlatformProvider value={platform}>

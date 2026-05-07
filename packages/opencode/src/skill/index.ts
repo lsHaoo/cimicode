@@ -1,7 +1,5 @@
-import os from "os"
 import path from "path"
-import { fileURLToPath, pathToFileURL } from "url"
-import { cpSync, existsSync, mkdirSync, readdirSync } from "fs"
+import { pathToFileURL } from "url"
 import z from "zod"
 import { Effect, Layer, Context, Schema } from "effect"
 import { zod } from "@/util/effect-zod"
@@ -21,45 +19,11 @@ import * as Log from "@opencode-ai/core/util/log"
 import { Discovery } from "./discovery"
 
 const log = Log.create({ service: "skill" })
-const EXTERNAL_DIRS = [".claude", ".agents"]
+const CLAUDE_EXTERNAL_DIR = ".claude"
+const AGENTS_EXTERNAL_DIR = ".agents"
 const EXTERNAL_SKILL_PATTERN = "skills/**/SKILL.md"
 const OPENCODE_SKILL_PATTERN = "{skill,skills}/**/SKILL.md"
 const SKILL_PATTERN = "**/SKILL.md"
-const BUILTIN_SKILLS_DIR = path.join(Global.Path.config, "skills")
-
-function resolveBuiltinSkillsSource(): string | null {
-  // 1. Monorepo development: packages/skills relative to this file
-  //    packages/opencode/src/skill/index.ts -> ../../../skills -> packages/skills
-  try {
-    const devSource = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../../skills")
-    if (existsSync(path.join(devSource, "brainstorming", "SKILL.md"))) return devSource
-  } catch {}
-
-  // 2. Bundled CLI: skills/ directory next to the executable
-  try {
-    const exeDir = path.dirname(process.execPath)
-    const bundledSource = path.join(exeDir, "skills")
-    if (existsSync(path.join(bundledSource, "brainstorming", "SKILL.md"))) return bundledSource
-  } catch {}
-
-  return null
-}
-
-function syncBuiltinSkills() {
-  if (process.env.OPENCODE_TEST_HOME) return
-  mkdirSync(BUILTIN_SKILLS_DIR, { recursive: true })
-
-  const source = resolveBuiltinSkillsSource()
-  if (!source) return
-
-  for (const entry of readdirSync(source, { withFileTypes: true })) {
-    if (!entry.isDirectory()) continue
-    const targetSkill = path.join(BUILTIN_SKILLS_DIR, entry.name)
-    if (!existsSync(targetSkill)) {
-      cpSync(path.join(source, entry.name), targetSkill, { recursive: true })
-    }
-  }
-}
 
 export const Info = Schema.Struct({
   name: Schema.String,
@@ -183,25 +147,25 @@ const discoverSkills = Effect.fnUntraced(function* (
   config: Config.Interface,
   discovery: Discovery.Interface,
   fsys: AppFileSystem.Interface,
+  global: Global.Interface,
   directory: string,
   worktree: string,
 ) {
   const state: ScanState = { matches: new Set(), dirs: new Set() }
 
-  // Builtin skills from ~/.cimi/cimicode/skills (lowest priority, user skills override)
-  if (!process.env.OPENCODE_TEST_HOME && (yield* fsys.isDir(BUILTIN_SKILLS_DIR))) {
-    yield* scan(state, BUILTIN_SKILLS_DIR, SKILL_PATTERN, { scope: "builtin" })
-  }
-
+  const externalDirs: string[] = []
   if (!Flag.OPENCODE_DISABLE_EXTERNAL_SKILLS) {
-    for (const dir of EXTERNAL_DIRS) {
-      const root = path.join(Global.Path.home, dir)
+    if (!Flag.OPENCODE_DISABLE_CLAUDE_CODE_SKILLS) externalDirs.push(CLAUDE_EXTERNAL_DIR)
+    externalDirs.push(AGENTS_EXTERNAL_DIR)
+
+    for (const dir of externalDirs) {
+      const root = path.join(global.home, dir)
       if (!(yield* fsys.isDir(root))) continue
       yield* scan(state, root, EXTERNAL_SKILL_PATTERN, { dot: true, scope: "global" })
     }
 
     const upDirs = yield* fsys
-      .up({ targets: EXTERNAL_DIRS, start: directory, stop: worktree })
+      .up({ targets: externalDirs, start: directory, stop: worktree })
       .pipe(Effect.catch(() => Effect.succeed([] as string[])))
 
     for (const root of upDirs) {
@@ -216,7 +180,7 @@ const discoverSkills = Effect.fnUntraced(function* (
 
   const cfg = yield* config.get()
   for (const item of cfg.skills?.paths ?? []) {
-    const expanded = item.startsWith("~/") ? path.join(os.homedir(), item.slice(2)) : item
+    const expanded = item.startsWith("~/") ? path.join(global.home, item.slice(2)) : item
     const dir = path.isAbsolute(expanded) ? expanded : path.join(directory, expanded)
     if (!(yield* fsys.isDir(dir))) {
       log.warn("skill path not found", { path: dir })
@@ -257,14 +221,14 @@ export const layer = Layer.effect(
     const config = yield* Config.Service
     const bus = yield* Bus.Service
     const fsys = yield* AppFileSystem.Service
+    const global = yield* Global.Service
     const discovered = yield* InstanceState.make(
       Effect.fn("Skill.discovery")(function* (ctx) {
-        syncBuiltinSkills()
-        return yield* discoverSkills(config, discovery, fsys, ctx.directory, ctx.worktree)
+        return yield* discoverSkills(config, discovery, fsys, global, ctx.directory, ctx.worktree)
       }),
     )
     const state = yield* InstanceState.make(
-      Effect.fn("Skill.state")(function* (ctx) {
+      Effect.fn("Skill.state")(function* () {
         const s: State = { skills: {}, dirs: new Set() }
         yield* loadSkills(s, yield* InstanceState.get(discovered), bus)
         return s
@@ -301,6 +265,7 @@ export const defaultLayer = layer.pipe(
   Layer.provide(Config.defaultLayer),
   Layer.provide(Bus.layer),
   Layer.provide(AppFileSystem.defaultLayer),
+  Layer.provide(Global.layer),
 )
 
 export function fmt(list: Info[], opts: { verbose: boolean }) {

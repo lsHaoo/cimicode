@@ -3,8 +3,6 @@ import { dict as en } from "./en"
 type Keys = keyof typeof en
 
 export const dict = {
-  "session.header.more.restartService": "Hizmeti yeniden başlat",
-  "session.header.more.restartServiceConfirm": "Hizmeti yeniden başlatmak istediğinizden emin misiniz?",
   "command.category.suggested": "Önerilen",
   "command.category.view": "Görünüm",
   "command.category.project": "Proje",
@@ -36,7 +34,7 @@ export const dict = {
   "command.session.next": "Sonraki oturum",
   "command.session.previous.unseen": "Önceki okunmamış oturum",
   "command.session.next.unseen": "Sonraki okunmamış oturum",
-  "command.session.archive": "Oturumu sil",
+  "command.session.archive": "Oturumu arşivle",
 
   "command.palette": "Komut paleti",
 
@@ -93,8 +91,6 @@ export const dict = {
   "command.session.share.description": "Bu oturumu paylaş ve URL'yi panoya kopyala",
   "command.session.unshare": "Paylaşımı kaldır",
   "command.session.unshare.description": "Bu oturumun paylaşımını durdur",
-  "command.session.export": "Oturumu dışa aktar",
-  "command.session.export.description": "Bu oturumu bir Markdown dosyası olarak indir",
 
   "palette.search.placeholder": "Dosya, komut ve oturum ara",
   "palette.empty": "Sonuç bulunamadı",
@@ -106,9 +102,9 @@ export const dict = {
   "dialog.provider.group.popular": "Popüler",
   "dialog.provider.group.other": "Diğer",
   "dialog.provider.tag.recommended": "Önerilen",
-  "dialog.provider.cimi.note": "Claude, GPT, Gemini ve daha fazlasını içeren seçilmiş modeller",
-  "dialog.provider.cimi.tagline": "Güvenilir optimize edilmiş modeller",
-  "dialog.provider.cimigo.tagline": "Herkes için düşük maliyetli abonelik",
+  "dialog.provider.opencode.note": "Claude, GPT, Gemini ve daha fazlasını içeren seçilmiş modeller",
+  "dialog.provider.opencode.tagline": "Güvenilir optimize edilmiş modeller",
+  "dialog.provider.opencodeGo.tagline": "Herkes için düşük maliyetli abonelik",
   "dialog.provider.anthropic.note": "Pro ve Max dahil Claude modellerine doğrudan erişim",
   "dialog.provider.copilot.note": "GitHub Copilot üzerinden kodlama yardımı için yapay zekâ modelleri",
   "dialog.provider.openai.note": "Hızlı ve yetenekli genel yapay zekâ görevleri için GPT modelleri",
@@ -123,7 +119,7 @@ export const dict = {
   "dialog.model.manage.description": "Model seçicide hangi modellerin görüneceğini özelleştirin.",
   "dialog.model.manage.provider.toggle": "Tüm {{provider}} modellerini aç/kapat",
 
-  "dialog.model.unpaid.freeModels.title": "Cimi tarafından sunulan ücretsiz modeller",
+  "dialog.model.unpaid.freeModels.title": "OpenCode tarafından sunulan ücretsiz modeller",
   "dialog.model.unpaid.addMore.title": "Popüler sağlayıcılardan daha fazla model ekleyin",
 
   "dialog.provider.viewAll": "Daha fazla sağlayıcı göster",
@@ -136,18 +132,19 @@ export const dict = {
   "provider.connect.status.waiting": "Yetkilendirme bekleniyor...",
   "provider.connect.status.failed": "Yetkilendirme başarısız: {{error}}",
   "provider.connect.apiKey.description":
-    "{{provider}} hesabınızı bağlamak ve Cimi'da {{provider}} modellerini kullanmak için {{provider}} API anahtarınızı girin.",
+    "{{provider}} hesabınızı bağlamak ve OpenCode'da {{provider}} modellerini kullanmak için {{provider}} API anahtarınızı girin.",
   "provider.connect.apiKey.label": "{{provider}} API anahtarı",
   "provider.connect.apiKey.placeholder": "API anahtarı",
   "provider.connect.apiKey.required": "API anahtarı gerekli",
-  "provider.connect.CimiCodeZen.line1":
-    "Cimi Zen, kodlama ajanları için seçilmiş güvenilir optimize edilmiş modellere erişim sağlar.",
-  "provider.connect.CimiCodeZen.line2":
+  "provider.connect.opencodeZen.line1":
+    "OpenCode Zen, kodlama ajanları için seçilmiş güvenilir optimize edilmiş modellere erişim sağlar.",
+  "provider.connect.opencodeZen.line2":
     "Tek bir API anahtarıyla Claude, GPT, Gemini, GLM ve daha fazlası gibi modellere erişebilirsiniz.",
-  "provider.connect.CimiCodeZen.visit.prefix": "",
-  "provider.connect.CimiCodeZen.visit.link": "Cimi.ai/zen",
-  "provider.connect.CimiCodeZen.visit.suffix": " adresini ziyaret ederek API anahtarınızı alın.",
-  "provider.connect.oauth.code.visit.prefix": "Hesabınızı bağlamak ve Cimi'da {{provider}} modellerini kullanmak için ",
+  "provider.connect.opencodeZen.visit.prefix": "",
+  "provider.connect.opencodeZen.visit.link": "opencode.ai/zen",
+  "provider.connect.opencodeZen.visit.suffix": " adresini ziyaret ederek API anahtarınızı alın.",
+  "provider.connect.oauth.code.visit.prefix":
+    "Hesabınızı bağlamak ve OpenCode'da {{provider}} modellerini kullanmak için ",
   "provider.connect.oauth.code.visit.link": "bu bağlantıya",
   "provider.connect.oauth.code.visit.suffix": " tıklayarak yetkilendirme kodunuzu alın.",
   "provider.connect.oauth.code.label": "{{method}} yetkilendirme kodu",
@@ -157,12 +154,15 @@ export const dict = {
   "provider.connect.oauth.auto.visit.prefix": "",
   "provider.connect.oauth.auto.visit.link": "Bu bağlantıya",
   "provider.connect.oauth.auto.visit.suffix":
-    " tıklayarak aşağıdaki kodu girin ve hesabınızı bağlayarak Cimi'da {{provider}} modellerini kullanın.",
+    " tıklayarak aşağıdaki kodu girin ve hesabınızı bağlayarak OpenCode'da {{provider}} modellerini kullanın.",
   "provider.connect.oauth.auto.confirmationCode": "Onay kodu",
   "provider.connect.toast.connected.title": "{{provider}} bağlandı",
   "provider.connect.toast.connected.description": "{{provider}} modelleri artık kullanımda.",
 
   "provider.custom.title": "Özel sağlayıcı",
+  "provider.custom.description.prefix": "OpenAI uyumlu bir sağlayıcı yapılandırın. ",
+  "provider.custom.description.link": "Sağlayıcı yapılandırma dökümanları",
+  "provider.custom.description.suffix": " sayfasına bakın.",
   "provider.custom.field.providerID.label": "Sağlayıcı kimlik",
   "provider.custom.field.providerID.placeholder": "saglayicim",
   "provider.custom.field.providerID.description": "Küçük harfler, rakamlar, tire veya alt çizgi",
@@ -225,6 +225,7 @@ export const dict = {
   "common.cancel": "İptal",
   "common.connect": "Bağlan",
   "common.disconnect": "Bağlantı Kes",
+  "common.continue": "Gönder",
   "common.submit": "Gönder",
   "common.save": "Kaydet",
   "common.saving": "Kaydediliyor...",
@@ -298,7 +299,7 @@ export const dict = {
   "dialog.mcp.empty": "Yapılandırılmış MCP yok",
 
   "dialog.lsp.empty": "LSP'ler dosya türlerinden otomatik algılanır",
-  "dialog.plugins.empty": "Eklentileri .cimi/cimicode klasöründe yapılandırın",
+  "dialog.plugins.empty": "Eklentiler opencode.json içinde yapılandırılır",
 
   "mcp.status.connected": "bağlı",
   "mcp.status.failed": "başarısız",
@@ -311,7 +312,7 @@ export const dict = {
   "dialog.directory.empty": "Klasör bulunamadı",
 
   "dialog.server.title": "Sunucular",
-  "dialog.server.description": "Bu uygulamanın hangi Cimi sunucusuna bağlanacağını değiştirin.",
+  "dialog.server.description": "Bu uygulamanın hangi OpenCode sunucusuna bağlanacağını değiştirin.",
   "dialog.server.search.placeholder": "Sunucu ara",
   "dialog.server.empty": "Henüz sunucu yok",
   "dialog.server.add.title": "Sunucu ekle",
@@ -442,12 +443,21 @@ export const dict = {
 
   "toast.session.listFailed.title": "{{project}} için oturumlar yüklenemedi",
 
+  "toast.update.title": "Güncelleme mevcut",
+  "toast.update.description": "OpenCode'un yeni bir sürümü ({{version}}) yüklemeye hazır.",
+  "toast.update.action.installRestart": "Yükle ve yeniden başlat",
+  "toast.update.action.notYet": "Şimdi değil",
 
   "error.page.title": "Bir şeyler yanlış gitti",
   "error.page.description": "Uygulama yüklenirken bir hata oluştu.",
   "error.page.details.label": "Hata Detayları",
   "error.page.action.restart": "Yeniden Başlat",
-  "error.page.report.prefix": "Lütfen bu hatayı Cimi ekibine bildirin",
+  "error.page.action.report": "Hatayı Bildir",
+  "error.page.action.reported": "Hata Bildirildi",
+  "error.page.action.checking": "Kontrol ediliyor...",
+  "error.page.action.checkUpdates": "Güncellemeleri kontrol et",
+  "error.page.action.updateTo": "{{version}} sürümüne güncelle",
+  "error.page.report.prefix": "Lütfen bu hatayı OpenCode ekibine bildirin",
   "error.page.report.discord": "Discord üzerinden",
   "error.page.version": "Sürüm: {{version}}",
 
@@ -465,9 +475,9 @@ export const dict = {
   "error.chain.responseBody": "Yanıt gövdesi:\n{{body}}",
   "error.chain.didYouMean": "Bunu mu demek istediniz: {{suggestions}}",
   "error.chain.modelNotFound": "Model bulunamadı: {{provider}}/{{model}}",
-  "error.chain.checkConfig": "Yapılandırma dosyanızı (Cimi.json) sağlayıcı/model adlarını kontrol edin",
+  "error.chain.checkConfig": "Yapılandırma dosyanızı (opencode.json) sağlayıcı/model adlarını kontrol edin",
   "error.chain.mcpFailed":
-    'MCP sunucusu "{{name}}" başarısız oldu. Not: Cimi henüz MCP kimlik doğrulamasını desteklemiyor.',
+    'MCP sunucusu "{{name}}" başarısız oldu. Not: OpenCode henüz MCP kimlik doğrulamasını desteklemiyor.',
   "error.chain.providerAuthFailed": "Sağlayıcı kimlik doğrulaması başarısız ({{provider}}): {{message}}",
   "error.chain.providerInitFailed":
     '"{{provider}}" sağlayıcısı başlatılamadı. Kimlik bilgilerini ve yapılandırmayı kontrol edin.',
@@ -589,7 +599,7 @@ export const dict = {
   "common.learnMore": "Daha fazla bilgi",
   "common.rename": "Yeniden adlandır",
   "common.reset": "Sıfırla",
-  "common.archive": "Sil",
+  "common.archive": "Arşivle",
   "common.delete": "Sil",
   "common.close": "Kapat",
   "common.edit": "Düzenle",
@@ -603,13 +613,13 @@ export const dict = {
   "sidebar.workspaces.enable": "Çalışma alanlarını etkinleştir",
   "sidebar.workspaces.disable": "Çalışma alanlarını devre dışı bırak",
   "sidebar.gettingStarted.title": "Başlarken",
-  "sidebar.gettingStarted.line1": "Cimi ücretsiz modeller içerir, böylece hemen başlayabilirsiniz.",
+  "sidebar.gettingStarted.line1": "OpenCode ücretsiz modeller içerir, böylece hemen başlayabilirsiniz.",
   "sidebar.gettingStarted.line2": "Claude, GPT, Gemini vb. modelleri kullanmak için herhangi bir sağlayıcı bağlayın.",
   "sidebar.project.recentSessions": "Son oturumlar",
   "sidebar.project.viewAllSessions": "Tüm oturumları görüntüle",
   "sidebar.project.clearNotifications": "Bildirimleri temizle",
 
-  "app.name.desktop": "Cimi Masaüstü",
+  "app.name.desktop": "OpenCode Masaüstü",
 
   "settings.section.desktop": "Masaüstü",
   "settings.section.server": "Sunucu",
@@ -617,7 +627,7 @@ export const dict = {
   "settings.tab.shortcuts": "Kısayollar",
   "settings.desktop.section.wsl": "WSL",
   "settings.desktop.wsl.title": "WSL entegrasyonu",
-  "settings.desktop.wsl.description": "Cimi sunucusunu Windows'ta WSL içinde çalıştırın.",
+  "settings.desktop.wsl.description": "OpenCode sunucusunu Windows'ta WSL içinde çalıştırın.",
 
   "settings.general.section.appearance": "Görünüm",
   "settings.general.section.notifications": "Sistem bildirimleri",
@@ -627,15 +637,20 @@ export const dict = {
   "settings.general.section.display": "Ekran",
 
   "settings.general.row.language.title": "Dil",
-  "settings.general.row.language.description": "Cimi'un görünüm dilini değiştirin",
+  "settings.general.row.language.description": "OpenCode'un görünüm dilini değiştirin",
   "settings.general.row.appearance.title": "Görünüm",
-  "settings.general.row.appearance.description": "Cimi'un cihazınızdaki görünümünü özelleştirin",
+  "settings.general.row.appearance.description": "OpenCode'un cihazınızdaki görünümünü özelleştirin",
   "settings.general.row.colorScheme.title": "Renk şeması",
-  "settings.general.row.colorScheme.description": "Cimi'un sistem, açık veya koyu temayı takip etip etmeyeceğini seçin",
+  "settings.general.row.colorScheme.description":
+    "OpenCode'un sistem, açık veya koyu temayı takip etip etmeyeceğini seçin",
   "settings.general.row.theme.title": "Tema",
-  "settings.general.row.theme.description": "Cimi'un temasını özelleştirin.",
-  "settings.general.row.font.title": "Yazı Tipi",
-  "settings.general.row.font.description": "Kod bloklarında kullanılan monospace yazı tipini özelleştirin",
+  "settings.general.row.theme.description": "OpenCode'un temasını özelleştirin.",
+  "settings.general.row.font.title": "Kod Yazı Tipi",
+  "settings.general.row.font.description": "Kod bloklarında kullanılan yazı tipini özelleştirin",
+  "settings.general.row.terminalFont.title": "Terminal Font",
+  "settings.general.row.terminalFont.description": "Customise the font used in the terminal",
+  "settings.general.row.uiFont.title": "Arayüz Yazı Tipi",
+  "settings.general.row.uiFont.description": "Arayüz genelinde kullanılan yazı tipini özelleştirin",
   "settings.general.row.followup.title": "Takip davranışı",
   "settings.general.row.followup.description":
     "Takip komutlarının hemen yönlendirilmesini mi yoksa sırada beklemesini mi istediğinizi seçin",
@@ -650,6 +665,10 @@ export const dict = {
   "settings.general.row.editToolPartsExpanded.description":
     "Zaman çizelgesinde düzenleme, yazma ve yama araç bileşenlerini varsayılan olarak genişletilmiş göster",
 
+  "settings.general.row.showSessionProgressBar.title": "Oturum ilerleme çubuğunu göster",
+  "settings.general.row.showSessionProgressBar.description":
+    "Ajan çalışırken oturumun üst kısmında animasyonlu ilerleme çubuğunu göster",
+
   "settings.general.row.wayland.title": "Yerel Wayland kullan",
   "settings.general.row.wayland.description":
     "Wayland'da X11 geri dönüşünü devre dışı bırak. Yeniden başlatma gerektirir.",
@@ -660,27 +679,13 @@ export const dict = {
   "settings.general.row.releaseNotes.description": "Güncellemelerden sonra Yenilikler bildirimlerini göster",
 
   "settings.updates.row.startup.title": "Başlangıçta güncellemeleri kontrol et",
-  "settings.updates.row.startup.description": "Cimi başladığında otomatik güncelleme kontrolü yap",
+  "settings.updates.row.startup.description": "OpenCode başladığında otomatik güncelleme kontrolü yap",
   "settings.updates.row.check.title": "Güncellemeleri kontrol et",
   "settings.updates.row.check.description": "Elle güncelleme kontrolü yap ve varsa yükle",
   "settings.updates.action.checkNow": "Şimdi kontrol et",
   "settings.updates.action.checking": "Kontrol ediliyor...",
   "settings.updates.toast.latest.title": "Güncelsiniz",
-  "settings.updates.toast.latest.description": "Cimi'un en son sürümünü kullanıyorsunuz.",
-
-  "font.option.ibmPlexMono": "IBM Plex Mono",
-  "font.option.cascadiaCode": "Cascadia Code",
-  "font.option.firaCode": "Fira Code",
-  "font.option.hack": "Hack",
-  "font.option.inconsolata": "Inconsolata",
-  "font.option.intelOneMono": "Intel One Mono",
-  "font.option.iosevka": "Iosevka",
-  "font.option.jetbrainsMono": "JetBrains Mono",
-  "font.option.mesloLgs": "Meslo LGS",
-  "font.option.robotoMono": "Roboto Mono",
-  "font.option.sourceCodePro": "Source Code Pro",
-  "font.option.ubuntuMono": "Ubuntu Mono",
-  "font.option.geistMono": "Geist Mono",
+  "settings.updates.toast.latest.description": "OpenCode'un en son sürümünü kullanıyorsunuz.",
 
   "sound.option.none": "Yok",
   "sound.option.alert01": "Uyarı 01",
@@ -807,16 +812,12 @@ export const dict = {
   "settings.permissions.tool.skill.description": "Ada göre bir beceri yükle",
   "settings.permissions.tool.lsp.title": "LSP",
   "settings.permissions.tool.lsp.description": "Dil sunucusu sorguları çalıştır",
-  "settings.permissions.tool.todoread.title": "Görev Oku",
-  "settings.permissions.tool.todoread.description": "Görev listesini oku",
   "settings.permissions.tool.todowrite.title": "Görev Yaz",
   "settings.permissions.tool.todowrite.description": "Görev listesini güncelle",
   "settings.permissions.tool.webfetch.title": "Web Getir",
   "settings.permissions.tool.webfetch.description": "Bir URL'den içerik getir",
   "settings.permissions.tool.websearch.title": "Web Ara",
   "settings.permissions.tool.websearch.description": "Web'de ara",
-  "settings.permissions.tool.codesearch.title": "Kod Ara",
-  "settings.permissions.tool.codesearch.description": "Web'de kod ara",
   "settings.permissions.tool.external_directory.title": "Harici Dizin",
   "settings.permissions.tool.external_directory.description": "Proje dizini dışındaki dosyalara eriş",
   "settings.permissions.tool.doom_loop.title": "Sonsuz Döngü",
@@ -849,8 +850,8 @@ export const dict = {
   "workspace.reset.confirm": '"{{name}}" çalışma alanı sıfırlansın mı?',
   "workspace.reset.button": "Çalışma alanını sıfırla",
   "workspace.reset.archived.none": "Arşivlenecek aktif oturum yok.",
-  "workspace.reset.archived.one": "1 oturum silinecek.",
-  "workspace.reset.archived.many": "{{count}} oturum silinecek.",
+  "workspace.reset.archived.one": "1 oturum arşivlenecek.",
+  "workspace.reset.archived.many": "{{count}} oturum arşivlenecek.",
   "workspace.reset.note": "Bu işlem çalışma alanını varsayılan dalla eşleşecek şekilde sıfırlayacak.",
   "common.open": "Aç",
   "dialog.releaseNotes.action.getStarted": "Başla",

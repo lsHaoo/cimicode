@@ -1,4 +1,5 @@
-﻿import { test, expect, mock, beforeEach } from "bun:test"
+import { test, expect, mock, beforeEach } from "bun:test"
+import { InstanceRuntime } from "../../src/project/instance-runtime"
 import { Effect } from "effect"
 import type { MCP as MCPNS } from "../../src/mcp/index"
 
@@ -171,6 +172,7 @@ beforeEach(() => {
 // Import after mocks
 const { MCP } = await import("../../src/mcp/index")
 const { Instance } = await import("../../src/project/instance")
+const { WithInstance } = await import("../../src/project/with-instance")
 const { tmpdir } = await import("../fixture/fixture")
 
 // --- Helper ---
@@ -183,7 +185,7 @@ function withInstance(
     await using tmp = await tmpdir({
       init: async (dir) => {
         await Bun.write(
-          `${dir}/cimicode.json`,
+          `${dir}/opencode.json`,
           JSON.stringify({
             $schema: "https://opencode.ai/config.json",
             mcp: config,
@@ -192,12 +194,12 @@ function withInstance(
       },
     })
 
-    await Instance.provide({
+    await WithInstance.provide({
       directory: tmp.path,
       fn: async () => {
         await Effect.runPromise(MCP.Service.use(fn).pipe(Effect.provide(MCP.defaultLayer)))
         // dispose instance to clean up state between tests
-        await Instance.dispose()
+        await InstanceRuntime.disposeInstance(Instance.current)
       },
     })
   }
@@ -349,7 +351,7 @@ test(
 
 test(
   "add() closes the old client when replacing a server",
-  // Don't put the server in config 鈥?add it dynamically so we control
+  // Don't put the server in config — add it dynamically so we control
   // exactly which client instance is "first" vs "second".
   withInstance({}, (mcp) =>
     Effect.gen(function* () {
@@ -647,7 +649,7 @@ test("McpOAuthCallback.cancelPending is keyed by mcpName but pendingAuths uses o
   const oauthState = "abc123hexstate"
   const callbackPromise = McpOAuthCallback.waitForCallback(oauthState, "my-mcp-server")
 
-  // cancelPending is called with mcpName 鈥?should find the entry via reverse index
+  // cancelPending is called with mcpName — should find the entry via reverse index
   McpOAuthCallback.cancelPending("my-mcp-server")
 
   // The callback should still be pending because cancelPending looked up
@@ -704,7 +706,7 @@ test(
 )
 
 // ========================================================================
-// Test: transport leak 鈥?local stdio timeout (#19168)
+// Test: transport leak — local stdio timeout (#19168)
 // ========================================================================
 
 test(
@@ -731,7 +733,7 @@ test(
 )
 
 // ========================================================================
-// Test: transport leak 鈥?remote timeout (#19168)
+// Test: transport leak — remote timeout (#19168)
 // ========================================================================
 
 test(
@@ -758,7 +760,7 @@ test(
 )
 
 // ========================================================================
-// Test: transport leak 鈥?failed remote transports not closed (#19168)
+// Test: transport leak — failed remote transports not closed (#19168)
 // ========================================================================
 
 test(

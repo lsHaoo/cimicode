@@ -1,43 +1,12 @@
 import { TextField } from "@opencode-ai/ui/text-field"
+import * as Sentry from "@sentry/solid"
+import { Logo } from "@opencode-ai/ui/logo"
 import { Button } from "@opencode-ai/ui/button"
-import { Component, Show, createSignal } from "solid-js"
+import { Component, createSignal, Show } from "solid-js"
+import { createStore } from "solid-js/store"
 import { usePlatform } from "@/context/platform"
 import { useLanguage } from "@/context/language"
-import { WindowControls } from "@/components/window-controls"
-
-const LOGO_URL = "https://app.cxmt.com/s3/oa-public/fedt/agi/cimicode-logo.webp"
-
-function RemoteLogo(props: { class?: string }) {
-  const [loaded, setLoaded] = createSignal<boolean | null>(null)
-
-  return (
-    <Show
-      when={loaded() !== false}
-      fallback={
-        <span
-          style={{
-            color: "#3b82f6",
-            "font-size": "24px",
-            "font-weight": "600",
-            display: "flex",
-            "align-items": "center",
-            "justify-content": "center",
-          }}
-        >
-          智多鑫Cimi
-        </span>
-      }
-    >
-      <img
-        src={LOGO_URL}
-        alt="Cimi"
-        class={props.class}
-        onLoad={() => setLoaded(true)}
-        onError={() => setLoaded(false)}
-      />
-    </Show>
-  )
-}
+import { Icon } from "@opencode-ai/ui/icon"
 
 export type InitError = {
   name: string
@@ -252,12 +221,43 @@ interface ErrorPageProps {
 export const ErrorPage: Component<ErrorPageProps> = (props) => {
   const platform = usePlatform()
   const language = useLanguage()
+  const [store, setStore] = createStore({
+    checking: false,
+    version: undefined as string | undefined,
+    actionError: undefined as string | undefined,
+  })
+
+  async function checkForUpdates() {
+    if (!platform.checkUpdate) return
+    setStore("checking", true)
+    await platform
+      .checkUpdate()
+      .then((result) => {
+        setStore("actionError", undefined)
+        if (result.updateAvailable && result.version) setStore("version", result.version)
+      })
+      .catch((err) => {
+        setStore("actionError", formatError(err, language.t))
+      })
+      .finally(() => {
+        setStore("checking", false)
+      })
+  }
+
+  async function installUpdate() {
+    if (!platform.updateAndRestart) return
+    await platform
+      .updateAndRestart()
+      .then(() => setStore("actionError", undefined))
+      .catch((err) => {
+        setStore("actionError", formatError(err, language.t))
+      })
+  }
 
   return (
     <div class="relative flex-1 h-screen w-screen min-h-0 flex flex-col items-center justify-center bg-background-base font-sans">
-      <WindowControls class="absolute right-0 top-0 z-10 flex items-center" />
       <div class="w-2/3 max-w-3xl flex flex-col items-center justify-center gap-8">
-        <RemoteLogo class="w-58.5 shrink-0" />
+        <Logo class="w-58.5 opacity-12 shrink-0" />
         <div class="flex flex-col items-center gap-2 text-center">
           <h1 class="text-lg font-medium text-text-strong">{language.t("error.page.title")}</h1>
           <p class="text-sm text-text-weak">{language.t("error.page.description")}</p>
@@ -271,18 +271,54 @@ export const ErrorPage: Component<ErrorPageProps> = (props) => {
           label={language.t("error.page.details.label")}
           hideLabel
         />
-        <div class="flex items-center gap-3">
+        <div class="flex flex-row items-center justify-center gap-3 flex-wrap max-w-64">
           <Button size="large" onClick={platform.restart}>
             {language.t("error.page.action.restart")}
           </Button>
+          <Show when={Sentry.isEnabled}>
+            {(_) => {
+              const [reported, setReported] = createSignal(false)
+              return (
+                <Button
+                  size="large"
+                  disabled={reported()}
+                  onClick={() => {
+                    Sentry.captureException(props.error)
+                    setReported(true)
+                  }}
+                >
+                  {language.t(reported() ? "error.page.action.reported" : "error.page.action.report")}
+                </Button>
+              )
+            }}
+          </Show>
+          <Show when={platform.checkUpdate}>
+            <Show
+              when={store.version}
+              fallback={
+                <Button size="large" variant="ghost" onClick={checkForUpdates} disabled={store.checking}>
+                  {store.checking
+                    ? language.t("error.page.action.checking")
+                    : language.t("error.page.action.checkUpdates")}
+                </Button>
+              }
+            >
+              <Button size="large" onClick={installUpdate}>
+                {language.t("error.page.action.updateTo", { version: store.version ?? "" })}
+              </Button>
+            </Show>
+          </Show>
         </div>
-        {/* <div class="flex flex-col items-center gap-2">
+        <Show when={store.actionError}>
+          {(message) => <p class="text-xs text-text-danger-base text-center max-w-2xl">{message()}</p>}
+        </Show>
+        <div class="flex flex-col items-center gap-2">
           <div class="flex items-center justify-center gap-1">
             {language.t("error.page.report.prefix")}
             <button
               type="button"
               class="flex items-center text-text-interactive-base gap-1"
-              onClick={() => platform.openLink("https://cimicode.ai/desktop-feedback")}
+              onClick={() => platform.openLink("https://opencode.ai/desktop-feedback")}
             >
               <div>{language.t("error.page.report.discord")}</div>
               <Icon name="discord" class="text-text-interactive-base" />
@@ -293,7 +329,7 @@ export const ErrorPage: Component<ErrorPageProps> = (props) => {
               <p class="text-xs text-text-weak">{language.t("error.page.version", { version: version() })}</p>
             )}
           </Show>
-        </div> */}
+        </div>
       </div>
     </div>
   )
