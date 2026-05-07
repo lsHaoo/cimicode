@@ -10,8 +10,8 @@ function getSkillInstallDir(): string {
 }
 
 async function disposeInstanceForReload() {
-  const { Instance } = await import("@/project/instance")
-  await Instance.disposeAll()
+  const { disposeAllInstances } = await import("@/project/instance-runtime")
+  await disposeAllInstances()
 }
 
 type UninstallErrorType = "not_found" | "delete_failed"

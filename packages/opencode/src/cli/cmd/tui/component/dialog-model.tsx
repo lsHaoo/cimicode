@@ -44,7 +44,7 @@ export function DialogModel(props: { providerID?: string }) {
             key: item,
             value: { providerID: provider.id, modelID: model.id },
             title: model.name ?? item.modelID,
-            description: providerDisplayName(provider),
+            description: providerDisplayName(provider.id),
             category,
             disabled: provider.id === "opencode" && model.id.includes("-nano"),
             footer: model.cost?.input === 0 && provider.id === "opencode" ? "Free" : undefined,
@@ -69,7 +69,7 @@ export function DialogModel(props: { providerID?: string }) {
       filter((provider) => isAllowedVisibleProvider(provider, sync.data.config)),
       sortBy(
         (provider) => provider.id !== "opencode",
-        (provider) => providerDisplayName(provider),
+        (provider) => providerDisplayName(provider.id),
       ),
       flatMap((provider) =>
         pipe(
@@ -83,7 +83,7 @@ export function DialogModel(props: { providerID?: string }) {
             description: favorites.some((item) => item.providerID === provider.id && item.modelID === model)
               ? "(Favorite)"
               : undefined,
-            category: connected() ? providerDisplayName(provider) : undefined,
+            category: connected() ? providerDisplayName(provider.id) : undefined,
             disabled: provider.id === "opencode" && model.includes("-nano"),
             footer: info.cost?.input === 0 && provider.id === "opencode" ? "Free" : undefined,
             onSelect() {

@@ -92,8 +92,8 @@ async function getYstUrl(): Promise<string> {
 
   // 2. Fallback 到 Config
   const config = await AppRuntime.runPromise(Config.Service.use((cfg) => cfg.get()))
-  if (config.ystUrl) {
-    return config.ystUrl
+  if ((config as any).ystUrl) {
+    return (config as any).ystUrl
   }
 
   // 3. 使用默认值
@@ -132,7 +132,7 @@ async function decryptWithYst(fileBuffer: Buffer): Promise<{ buffer: Buffer; ret
         "Content-Type": "application/octet-stream",
         "data~counSize": fileBuffer.length.toString(),
       },
-      body: fileBuffer,
+      body: new Uint8Array(fileBuffer),
       signal: controller.signal,
     })
 

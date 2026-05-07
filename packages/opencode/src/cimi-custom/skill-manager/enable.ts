@@ -6,8 +6,8 @@ import { AppRuntime } from "@/effect/app-runtime"
 const log = Log.create({ service: "skill-manager" })
 
 async function disposeInstanceForReload() {
-  const { Instance } = await import("@/project/instance")
-  await Instance.disposeAll()
+  const { disposeAllInstances } = await import("@/project/instance-runtime")
+  await disposeAllInstances()
 }
 
 export async function enable(skillName: string) {
@@ -25,13 +25,13 @@ export async function enable(skillName: string) {
     const config = await AppRuntime.runPromise(Config.Service.use((cfg) => cfg.get()))
     const skillPermission = config.permission?.skill ?? "allow"
 
-    let newPermission
+    let newPermission: Record<string, "allow" | "ask" | "deny"> | "allow" | "ask" | "deny"
     if (typeof skillPermission === "string" && skillPermission === "deny") {
       newPermission = { [skillName]: "allow" }
     } else if (typeof skillPermission === "string") {
       newPermission = skillPermission
     } else {
-      newPermission = { ...skillPermission, [skillName]: "allow" as const }
+      newPermission = { ...skillPermission, [skillName]: "allow" }
       if (newPermission[skillName] === "deny") {
         delete newPermission[skillName]
       }

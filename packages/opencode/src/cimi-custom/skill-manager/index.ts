@@ -5,14 +5,11 @@ export { uninstall } from "./uninstall"
 export { enable } from "./enable"
 export { disable } from "./disable"
 
-// 导出类型
-export type {
+// 导出类型和 Zod schema
+export {
   Status,
   InstallResult,
   UninstallResult,
   EnableResult,
   DisableResult,
 } from "./types"
-
-// 导出 Zod schema
-export { Status, InstallResult, UninstallResult, EnableResult, DisableResult } from "./types"

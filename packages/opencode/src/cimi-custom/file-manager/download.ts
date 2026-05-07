@@ -121,7 +121,7 @@ async function handleDownloadFolder(c: Context, fullPath: string, relativePath: 
         await zipWriter.add(item.relativePath.replace(/\\/g, "/") + "/")
       } else {
         const fileContent = await fs.promises.readFile(item.fullPath)
-        const blob = new Blob([fileContent])
+        const blob = new Blob([new Uint8Array(fileContent)])
         await zipWriter.add(item.relativePath.replace(/\\/g, "/"), new BlobReader(blob))
       }
     }

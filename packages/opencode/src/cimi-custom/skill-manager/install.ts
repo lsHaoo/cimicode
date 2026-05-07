@@ -90,7 +90,7 @@ async function extractSkill(zipBuffer: ArrayBuffer, skillName: string, isUpdate:
         const targetDirPath = path.dirname(targetPath)
         await fs.mkdir(targetDirPath, { recursive: true })
 
-        const fileBlob = await entry.getData(new BlobWriter())
+        const fileBlob = await entry.getData?.(new BlobWriter()) ?? new Blob()
         const fileArrayBuffer = await fileBlob.arrayBuffer()
         await fs.writeFile(targetPath, Buffer.from(fileArrayBuffer))
       }
@@ -129,8 +129,8 @@ async function extractSkill(zipBuffer: ArrayBuffer, skillName: string, isUpdate:
 }
 
 async function disposeInstanceForReload() {
-  const { Instance } = await import("@/project/instance")
-  await Instance.disposeAll()
+  const { disposeAllInstances } = await import("@/project/instance-runtime")
+  await disposeAllInstances()
 }
 
 type InstallErrorType =
