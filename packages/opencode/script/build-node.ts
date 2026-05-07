@@ -4,6 +4,7 @@ import { Script } from "@opencode-ai/script"
 import fs from "fs"
 import path from "path"
 import { fileURLToPath } from "url"
+import pkg from "../package.json"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -12,6 +13,8 @@ const dir = path.resolve(__dirname, "..")
 process.chdir(dir)
 
 await import("./generate.ts")
+
+const buildVersion = process.env.OPENCODE_VERSION ?? pkg.version
 
 // Load migrations from migration directories
 const migrationDirs = (
@@ -52,7 +55,7 @@ await Bun.build({
   external: ["jsonc-parser", "@lydell/node-pty"],
   define: {
     OPENCODE_MIGRATIONS: JSON.stringify(migrations),
-    OPENCODE_VERSION: `'${Script.version}'`,
+    OPENCODE_VERSION: `'${buildVersion}'`,
     OPENCODE_CHANNEL: `'${Script.channel}'`,
   },
   files: {

@@ -300,6 +300,12 @@ export default function Layout(props: ParentProps) {
   createEffect(() => {
     if (!layout.sidebar.opened()) return
     setHoverProject(undefined)
+    if (peekt !== undefined) {
+      clearTimeout(peekt)
+      peekt = undefined
+    }
+    setState("peek", undefined)
+    setState("peeked", false)
   })
 
   createEffect(() => {
@@ -542,11 +548,11 @@ export default function Layout(props: ParentProps) {
 
     if (list.length === 0) {
       if (!last) return
-      await openProject(last, true)
+      await openProject(last, true, { restoreSession: false })
     } else {
       const next = list.find((project) => project.worktree === last) ?? list[0]
       if (!next) return
-      await openProject(next.worktree, true)
+      await openProject(next.worktree, true, { restoreSession: false })
     }
   })
 
@@ -1273,10 +1279,14 @@ export default function Layout(props: ParentProps) {
     return root
   }
 
-  async function navigateToProject(directory: string | undefined) {
+  async function navigateToProject(directory: string | undefined, options?: { restoreSession?: boolean }) {
     if (!directory) return
     const root = projectRoot(directory)
     server.projects.touch(root)
+    if (options?.restoreSession === false) {
+      navigateWithSidebarReset(`/${base64Encode(root)}/session`)
+      return
+    }
     const project = layout.projects.list().find((item) => item.worktree === root)
     let dirs = project
       ? effectiveWorkspaceOrder(root, [root, ...(project.sandboxes ?? [])], store.workspaceOrder[root])
@@ -1353,9 +1363,9 @@ export default function Layout(props: ParentProps) {
     navigateWithSidebarReset(`/${base64Encode(session.directory)}/session/${session.id}`)
   }
 
-  function openProject(directory: string, navigate = true) {
+  function openProject(directory: string, navigate = true, options?: { restoreSession?: boolean }) {
     layout.projects.open(directory)
-    if (navigate) return navigateToProject(directory)
+    if (navigate) return navigateToProject(directory, options)
   }
 
   const handleDeepLinks = (urls: string[]) => {
@@ -2031,7 +2041,10 @@ export default function Layout(props: ParentProps) {
       setState("hoverProject", hoverOpen ? worktree : undefined)
     },
     navigateToProject,
-    openSidebar: () => layout.sidebar.open(),
+    openSidebar: () => {
+      setHoverProject(undefined)
+      layout.sidebar.open()
+    },
     closeProject,
     showEditProjectDialog,
     toggleProjectWorkspaces,
@@ -2399,7 +2412,14 @@ export default function Layout(props: ParentProps) {
             <SortableProvider ids={projects().map((p) => p.worktree)}>
               <For each={projects()}>
                 {(project) => (
-                  <SortableProject ctx={projectSidebarCtx} project={project} sortNow={sortNow} mobile={false} />
+                  <SortableProject
+                    ctx={projectSidebarCtx}
+                    project={project}
+                    sortNow={sortNow}
+                    mobile={false}
+                    previewEnabled={() => false}
+                    closeSidebarOnNavigate
+                  />
                 )}
               </For>
             </SortableProvider>
@@ -2576,7 +2596,7 @@ export default function Layout(props: ParentProps) {
                 arm()
               }}
             >
-              <Show when={peekProject()}>
+              <Show when={!layout.sidebar.opened() && peekProject()}>
                 <SidebarPanel project={peekProject} merged={false} />
               </Show>
             </div>

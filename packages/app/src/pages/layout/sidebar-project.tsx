@@ -13,6 +13,10 @@ import { useNotification } from "@/context/notification"
 import { ProjectIcon, SessionItem, type SessionItemProps } from "./sidebar-items"
 import { displayName, sortedRootSessions } from "./helpers"
 
+type NavigateToProjectOptions = {
+  restoreSession?: boolean
+}
+
 export type ProjectSidebarContext = {
   currentDir: Accessor<string>
   currentProject: Accessor<LocalProject | undefined>
@@ -23,7 +27,7 @@ export type ProjectSidebarContext = {
   onProjectMouseLeave: (worktree: string) => void
   onProjectFocus: (worktree: string) => void
   onHoverOpenChanged: (worktree: string, hovered: boolean) => void
-  navigateToProject: (directory: string) => void
+  navigateToProject: (directory: string, options?: NavigateToProjectOptions) => void
   openSidebar: () => void
   closeProject: (directory: string) => void
   showEditProjectDialog: (project: LocalProject) => void
@@ -62,7 +66,7 @@ const ProjectTile = (props: {
   onProjectMouseEnter: (worktree: string, event: MouseEvent) => void
   onProjectMouseLeave: (worktree: string) => void
   onProjectFocus: (worktree: string) => void
-  navigateToProject: (directory: string) => void
+  navigateToProject: (directory: string, options?: NavigateToProjectOptions) => void
   showEditProjectDialog: (project: LocalProject) => void
   toggleProjectWorkspaces: (project: LocalProject) => void
   workspacesEnabled: (project: LocalProject) => boolean
@@ -70,6 +74,7 @@ const ProjectTile = (props: {
   setMenu: (value: boolean) => void
   setOpen: (value: boolean) => void
   setSuppressHover: (value: boolean) => void
+  closeSidebarOnNavigate?: boolean
   language: ReturnType<typeof useLanguage>
 }): JSX.Element => {
   const notification = useNotification()
@@ -137,6 +142,11 @@ const ProjectTile = (props: {
           props.setOpen(false)
           if (props.selected()) {
             layout.sidebar.toggle()
+            return
+          }
+          if (props.closeSidebarOnNavigate) {
+            layout.sidebar.close()
+            props.navigateToProject(props.project.worktree, { restoreSession: false })
             return
           }
           props.navigateToProject(props.project.worktree)
@@ -272,6 +282,8 @@ export const SortableProject = (props: {
   mobile?: boolean
   ctx: ProjectSidebarContext
   sortNow: Accessor<number>
+  previewEnabled?: Accessor<boolean>
+  closeSidebarOnNavigate?: boolean
 }): JSX.Element => {
   const globalSync = useGlobalSync()
   const language = useLanguage()
@@ -286,8 +298,8 @@ export const SortableProject = (props: {
   })
 
   const isHoverProject = () => props.ctx.hoverProject() === props.project.worktree
-  const preview = createMemo(() => !props.mobile && props.ctx.sidebarOpened())
-  const overlay = createMemo(() => !props.mobile && !props.ctx.sidebarOpened())
+  const preview = createMemo(() => !props.mobile && props.ctx.sidebarOpened() && (props.previewEnabled?.() ?? true))
+  const overlay = createMemo(() => !props.mobile && !props.ctx.sidebarOpened() && (props.previewEnabled?.() ?? true))
   const active = createMemo(() => state.menu || (preview() ? isHoverProject() : overlay() && isHoverProject()))
 
   const hoverOpen = () => isHoverProject() && preview() && !selected() && !state.menu
@@ -327,6 +339,7 @@ export const SortableProject = (props: {
       setMenu={(value) => setState("menu", value)}
       setOpen={(value) => props.ctx.onHoverOpenChanged(props.project.worktree, value)}
       setSuppressHover={(value) => setState("suppressHover", value)}
+      closeSidebarOnNavigate={props.closeSidebarOnNavigate}
       language={language}
     />
   )

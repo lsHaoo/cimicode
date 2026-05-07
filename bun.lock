@@ -30,7 +30,7 @@
     },
     "packages/app": {
       "name": "@opencode-ai/app",
-      "version": "0.1.18",
+      "version": "0.1.19-beta",
       "dependencies": {
         "@kobalte/core": "catalog:",
         "@opencode-ai/core": "workspace:*",
@@ -260,7 +260,7 @@
     },
     "packages/desktop-electron": {
       "name": "@opencode-ai/desktop-electron",
-      "version": "0.1.18",
+      "version": "0.1.19-beta",
       "dependencies": {
         "drizzle-orm": "catalog:",
         "effect": "catalog:",
@@ -348,7 +348,7 @@
     },
     "packages/opencode": {
       "name": "opencode",
-      "version": "0.1.18",
+      "version": "0.1.19-beta",
       "bin": {
         "opencode": "./bin/opencode",
       },
@@ -629,7 +629,7 @@
     },
     "packages/web": {
       "name": "@opencode-ai/web",
-      "version": "0.1.18",
+      "version": "0.1.19-beta",
       "dependencies": {
         "@astrojs/cloudflare": "12.6.3",
         "@astrojs/markdown-remark": "6.3.1",
