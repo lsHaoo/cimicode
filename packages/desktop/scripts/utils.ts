@@ -1,4 +1,6 @@
 import { $ } from "bun"
+import { existsSync } from "node:fs"
+import { join } from "node:path"
 
 export type Channel = "dev" | "beta" | "prod"
 
@@ -61,7 +63,7 @@ export function getCurrentSidecar(target = RUST_TARGET ?? nativeTarget()) {
 export async function copyBinaryToSidecarFolder(source: string) {
   const dir = `resources`
   await $`mkdir -p ${dir}`
-  const dest = windowsify(`${dir}/opencode-cli`)
+  const dest = windowsify(`${dir}/cimicode-cli`)
   await $`cp ${source} ${dest}`
   if (process.platform === "win32" && process.env.GITHUB_ACTIONS === "true") {
     await $`pwsh -NoLogo -NoProfile -ExecutionPolicy Bypass -File ../../script/sign-windows.ps1 ${dest}`
@@ -74,4 +76,15 @@ export async function copyBinaryToSidecarFolder(source: string) {
 export function windowsify(path: string) {
   if (path.endsWith(".exe")) return path
   return `${path}${process.platform === "win32" ? ".exe" : ""}`
+}
+
+export function findCliBinary(baseDir: string): string {
+  const os = process.platform === "win32" ? "windows" : process.platform
+  const name = `opencode-${os}-${process.arch}`
+  const binaryPath = join(baseDir, "packages", "opencode", "dist", name, "bin", "opencode")
+  const fullPath = windowsify(binaryPath)
+  if (!existsSync(fullPath)) {
+    throw new Error(`CLI binary not found at ${fullPath}`)
+  }
+  return fullPath
 }

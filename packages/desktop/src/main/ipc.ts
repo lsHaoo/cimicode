@@ -7,6 +7,7 @@ import type {
   ServerReadyData,
   SqliteMigrationProgress,
   TitlebarTheme,
+  WindowConfig,
   WslConfig,
 } from "../preload/types"
 import { getStore } from "./store"
@@ -20,6 +21,7 @@ const pickerFilters = (ext?: string[]) => {
 type Deps = {
   killSidecar: () => Promise<void> | void
   awaitInitialization: (sendStep: (step: InitStep) => void) => Promise<ServerReadyData>
+  getWindowConfig: () => Promise<WindowConfig> | WindowConfig
   consumeInitialDeepLinks: () => Promise<string[]> | string[]
   getDefaultServerUrl: () => Promise<string | null> | string | null
   setDefaultServerUrl: (url: string | null) => Promise<void> | void
@@ -32,6 +34,9 @@ type Deps = {
   wslPath: (path: string, mode: "windows" | "linux" | null) => Promise<string>
   resolveAppPath: (appName: string) => Promise<string | null>
   loadingWindowComplete: () => void
+  runUpdater: (alertOnFail: boolean) => Promise<void> | void
+  checkUpdate: () => Promise<{ updateAvailable: boolean; version?: string }>
+  installUpdate: () => Promise<void> | void
   setBackgroundColor: (color: string) => void
 }
 
@@ -59,6 +64,10 @@ export function registerIpcHandlers(deps: Deps) {
   )
   ipcMain.handle("resolve-app-path", (_event: IpcMainInvokeEvent, appName: string) => deps.resolveAppPath(appName))
   ipcMain.on("loading-window-complete", () => deps.loadingWindowComplete())
+  ipcMain.handle("get-window-config", () => deps.getWindowConfig())
+  ipcMain.handle("run-updater", (_event: IpcMainInvokeEvent, alertOnFail: boolean) => deps.runUpdater(alertOnFail))
+  ipcMain.handle("check-update", () => deps.checkUpdate())
+  ipcMain.handle("install-update", () => deps.installUpdate())
   ipcMain.handle("set-background-color", (_event: IpcMainInvokeEvent, color: string) => deps.setBackgroundColor(color))
   ipcMain.handle("store-get", (_event: IpcMainInvokeEvent, name: string, key: string) => {
     try {

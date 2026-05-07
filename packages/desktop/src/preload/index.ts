@@ -61,6 +61,10 @@ const api: ElectronAPI = {
   setZoomFactor: (factor) => ipcRenderer.invoke("set-zoom-factor", factor),
   setTitlebar: (theme) => ipcRenderer.invoke("set-titlebar", theme),
   loadingWindowComplete: () => ipcRenderer.send("loading-window-complete"),
+  getWindowConfig: () => ipcRenderer.invoke("get-window-config"),
+  runUpdater: (alertOnFail) => ipcRenderer.invoke("run-updater", alertOnFail),
+  checkUpdate: () => ipcRenderer.invoke("check-update"),
+  installUpdate: () => ipcRenderer.invoke("install-update"),
   setBackgroundColor: (color: string) => ipcRenderer.invoke("set-background-color", color),
 }
 

@@ -1,6 +1,8 @@
 export const dict: Record<string, string> = {
   "ui.sessionReview.title": "Session changes",
   "ui.sessionReview.title.lastTurn": "Last turn changes",
+  "ui.sessionReview.title.git": "Uncommitted Changes",
+  "ui.sessionReview.title.branch": "Branch Changes",
   "ui.sessionReview.diffStyle.unified": "Unified",
   "ui.sessionReview.diffStyle.split": "Split",
   "ui.sessionReview.expandAll": "Expand all",

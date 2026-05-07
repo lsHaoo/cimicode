@@ -1,13 +1,15 @@
 import { execFile } from "node:child_process"
+import { existsSync } from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 import { promisify } from "node:util"
 
-import type { Configuration } from "electron-builder"
+import type { AfterPackContext, Configuration } from "electron-builder"
 
 const execFileAsync = promisify(execFile)
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..")
 const signScript = path.join(rootDir, "script", "sign-windows.ps1")
+const projectDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)))
 
 async function signWindows(configuration: { path: string }) {
   if (process.platform !== "win32") return
@@ -20,25 +22,63 @@ async function signWindows(configuration: { path: string }) {
   )
 }
 
+async function afterPack(context: AfterPackContext) {
+  if (context.electronPlatformName !== "win32") return
+
+  const rcedit = path.join(
+    process.env.LOCALAPPDATA || "",
+    "electron-builder/Cache/winCodeSign/winCodeSign-2.6.0/rcedit-x64.exe",
+  )
+  const productFilename = context.appInfo?.productFilename ?? context.packager?.appInfo?.productFilename
+  if (!productFilename) return
+  const exeName = `${productFilename}.exe`
+  const exePath = path.join(context.appOutDir, exeName)
+  const iconPath = path.join(projectDir, "resources/icons/icon.ico")
+
+  for (let attempt = 1; attempt <= 5; attempt++) {
+    await new Promise((r) => setTimeout(r, 1000 * attempt))
+    try {
+      await execFileAsync(rcedit, [exePath, "--set-icon", iconPath])
+      console.log(`  • icon applied via afterPack (attempt ${attempt}) → ${exeName}`)
+      return
+    } catch (e: any) {
+      console.warn(`  • afterPack icon attempt ${attempt} failed: ${e.message}`)
+    }
+  }
+  console.warn(`  • afterPack: all icon attempts failed for ${exeName}`)
+}
+
 const channel = (() => {
-  const raw = process.env.OPENCODE_CHANNEL
+  const raw = process.env.CIMICODE_CHANNEL
   if (raw === "dev" || raw === "beta" || raw === "prod") return raw
   return "dev"
 })()
 
 const getBase = (): Configuration => ({
-  artifactName: "opencode-desktop-${os}-${arch}.${ext}",
+  artifactName: "Cimi_${version}.${ext}",
+  afterPack,
   directories: {
     output: "dist",
     buildResources: "resources",
   },
   files: ["out/**/*", "resources/**/*"],
   extraResources: [
-    {
-      from: "native/",
-      to: "native/",
-      filter: ["index.js", "index.d.ts", "build/Release/mac_window.node", "swift-build/**"],
-    },
+    ...(existsSync(path.join(projectDir, "native"))
+      ? [
+          {
+            from: "native/",
+            to: "native/",
+            filter: ["index.js", "index.d.ts", "build/Release/mac_window.node", "swift-build/**"],
+          },
+        ]
+      : []),
+    ...(existsSync(path.join(projectDir, "resources/cimicode-cli.exe"))
+      ? [{ from: "resources/cimicode-cli.exe", to: "cimicode-cli.exe" }]
+      : existsSync(path.join(projectDir, "resources/cimicode-cli"))
+        ? [{ from: "resources/cimicode-cli", to: "cimicode-cli" }]
+        : []),
+    { from: "resources/cimicode.cmd", to: "cimicode.cmd" },
+    { from: "../../packages/skills/", to: "skills/" },
   ],
   mac: {
     category: "public.app-category.developer-tools",
@@ -54,15 +94,16 @@ const getBase = (): Configuration => ({
     sign: true,
   },
   protocols: {
-    name: "OpenCode",
-    schemes: ["opencode"],
+    name: "Cimi",
+    schemes: ["cimi"],
   },
   win: {
     icon: `resources/icons/icon.ico`,
+    signAndEditExecutable: false,
     signtoolOptions: {
       sign: signWindows,
     },
-    target: ["nsis"],
+    target: ["nsis", "dir"],
     verifyUpdateCodeSignature: false,
   },
   nsis: {
@@ -70,6 +111,7 @@ const getBase = (): Configuration => ({
     allowToChangeInstallationDirectory: true,
     installerIcon: `resources/icons/icon.ico`,
     installerHeaderIcon: `resources/icons/icon.ico`,
+    include: "installer.nsh",
   },
   linux: {
     icon: `resources/icons`,
@@ -85,29 +127,29 @@ function getConfig() {
     case "dev": {
       return {
         ...base,
-        appId: "ai.opencode.desktop.dev",
-        productName: "OpenCode Dev",
-        rpm: { packageName: "opencode-dev" },
+        appId: "ai.cimicode.desktop.dev",
+        productName: "Cimi Dev",
+        rpm: { packageName: "cimicode-dev" },
       }
     }
     case "beta": {
       return {
         ...base,
-        appId: "ai.opencode.desktop.beta",
-        productName: "OpenCode Beta",
-        protocols: { name: "OpenCode Beta", schemes: ["opencode"] },
-        publish: { provider: "github", owner: "anomalyco", repo: "opencode-beta", channel: "latest" },
-        rpm: { packageName: "opencode-beta" },
+        appId: "ai.cimicode.desktop.beta",
+        productName: "Cimi Beta",
+        protocols: { name: "Cimi Beta", schemes: ["cimi"] },
+        publish: { provider: "github", owner: "anomalyco", repo: "cimicode-beta", channel: "latest" },
+        rpm: { packageName: "cimicode-beta" },
       }
     }
     case "prod": {
       return {
         ...base,
-        appId: "ai.opencode.desktop",
-        productName: "OpenCode",
-        protocols: { name: "OpenCode", schemes: ["opencode"] },
-        publish: { provider: "github", owner: "anomalyco", repo: "opencode", channel: "latest" },
-        rpm: { packageName: "opencode" },
+        appId: "ai.cimicode.desktop",
+        productName: "Cimi",
+        protocols: { name: "Cimi", schemes: ["cimi"] },
+        publish: { provider: "github", owner: "anomalyco", repo: "cimicode", channel: "latest" },
+        rpm: { packageName: "cimicode" },
       }
     }
   }

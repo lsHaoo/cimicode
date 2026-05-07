@@ -189,6 +189,18 @@ const createPlatform = (): Platform => {
 
     storage,
 
+    checkUpdate: async () => {
+      const config = await window.api.getWindowConfig().catch(() => ({ updaterEnabled: false }))
+      if (!config.updaterEnabled) return { updateAvailable: false }
+      return window.api.checkUpdate()
+    },
+
+    updateAndRestart: async () => {
+      const config = await window.api.getWindowConfig().catch(() => ({ updaterEnabled: false }))
+      if (!config.updaterEnabled) return
+      await window.api.installUpdate()
+    },
+
     restart: async () => {
       await window.api.killSidecar().catch(() => undefined)
       window.api.relaunch()
@@ -266,6 +278,7 @@ listenForDeepLinks()
 
 render(() => {
   const platform = createPlatform()
+  const [windowConfig] = createResource(() => window.api.getWindowConfig().catch(() => ({ updaterEnabled: false })))
   const loadLocale = async () => {
     const current = await platform.storage?.("opencode.global.dat").getItem("language")
     const legacy = current ? undefined : await platform.storage?.().getItem("language.v1")
@@ -342,6 +355,7 @@ render(() => {
   const appReady = () =>
     !defaultServer.loading &&
     !sidecar.loading &&
+    !windowConfig.loading &&
     !windowCount.loading &&
     !locale.loading
 
