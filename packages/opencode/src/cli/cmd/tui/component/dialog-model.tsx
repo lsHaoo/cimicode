@@ -34,7 +34,7 @@ export function DialogModel(props: { providerID?: string }) {
     function toOptions(items: typeof favorites, category: string) {
       if (!showSections) return []
       return items.flatMap((item) => {
-        const provider = sync.data.provider.find((x) => x.id === item.providerID)
+        const provider = (sync.data.provider ?? []).find((x) => x.id === item.providerID)
         if (!provider) return []
         if (!isAllowedVisibleProvider(provider, sync.data.config)) return []
         const model = provider.models[item.modelID]
@@ -65,7 +65,7 @@ export function DialogModel(props: { providerID?: string }) {
     )
 
     const providerOptions = pipe(
-      sync.data.provider,
+      sync.data.provider ?? [],
       filter((provider) => isAllowedVisibleProvider(provider, sync.data.config)),
       sortBy(
         (provider) => provider.id !== "opencode",

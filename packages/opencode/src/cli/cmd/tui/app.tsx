@@ -400,7 +400,7 @@ function App(props: { onSnapshot?: () => Promise<string[]> }) {
 
   createEffect(
     on(
-      () => sync.status === "complete" && sync.data.provider.length === 0,
+      () => sync.status === "complete" && (sync.data.provider?.length ?? 0) === 0,
       (isEmpty, wasEmpty) => {
         // only trigger when we transition into an empty-provider state
         if (!isEmpty || wasEmpty) return
@@ -416,7 +416,7 @@ function App(props: { onSnapshot?: () => Promise<string[]> }) {
       value: "session.list",
       keybind: "session_list",
       category: "Session",
-      suggested: sync.data.session.length > 0,
+      suggested: (sync.data.session?.length ?? 0) > 0,
       slash: {
         name: "sessions",
         aliases: ["resume", "continue"],
@@ -572,7 +572,7 @@ function App(props: { onSnapshot?: () => Promise<string[]> }) {
       },
       category: "Provider",
     },
-    ...(sync.data.console_state.switchableOrgCount > 1
+    ...(sync.data.console_state?.switchableOrgCount > 1
       ? [
           {
             title: "Switch org",

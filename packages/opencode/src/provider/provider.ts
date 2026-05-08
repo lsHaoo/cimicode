@@ -620,7 +620,7 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
             log.info("gitlab model discovery starting", { instanceUrl })
             const result = await discoverWorkflowModels({ instanceUrl, getHeaders }, { workingDirectory: directory })
 
-            if (!result.models.length) {
+            if (!result.models?.length) {
               log.info("gitlab model discovery skipped: no models found", {
                 project: result.project
                   ? {

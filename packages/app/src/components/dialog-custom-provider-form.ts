@@ -44,6 +44,7 @@ export type FormState = {
   name: string
   baseURL: string
   apiKey: string
+  hasExistingKey: boolean
   models: ModelRow[]
   headers: HeaderRow[]
   err: {
@@ -176,8 +177,9 @@ export function isCustomProvider(provider: CustomProvider | undefined) {
   return true
 }
 
-export function customProviderForm(input?: { providerID: string; provider: CustomProvider }): FormState {
+export function customProviderForm(input?: { providerID: string; provider: CustomProvider; isConnected?: boolean }): FormState {
   const apiKey = input?.provider.env?.[0] ? `{env:${input.provider.env[0]}}` : ""
+  const hasExistingKey = !!(input?.isConnected && !input?.provider.env?.[0])
   const models = input?.provider.models
     ? Object.entries(input.provider.models).map(([id, item]) => ({
         row: nextRow(),
@@ -200,6 +202,7 @@ export function customProviderForm(input?: { providerID: string; provider: Custo
     name: input?.provider.name ?? "",
     baseURL: input?.provider.options?.baseURL ?? "",
     apiKey,
+    hasExistingKey,
     models: models.length > 0 ? models : [modelRow()],
     headers: headers.length > 0 ? headers : [headerRow()],
     err: {},

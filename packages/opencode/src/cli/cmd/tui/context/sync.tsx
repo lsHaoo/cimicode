@@ -425,9 +425,13 @@ export const { use: useSync, provider: SyncProvider } = createSimpleContext({
             const sessions = responses[5]
 
             batch(() => {
-              setStore("provider", reconcile(providers.providers))
-              setStore("provider_default", reconcile(providers.default))
-              setStore("provider_next", reconcile(providerList))
+              setStore("provider", reconcile(providers?.providers ?? []))
+              setStore("provider_default", reconcile(providers?.default ?? {}))
+              setStore("provider_next", reconcile({
+                all: providerList?.all ?? [],
+                default: providerList?.default ?? {},
+                connected: providerList?.connected ?? [],
+              }))
               setStore("console_state", reconcile(consoleState))
               setStore("agent", reconcile(agents))
               setStore("config", reconcile(config))

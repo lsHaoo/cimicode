@@ -60,6 +60,7 @@ export function DialogCustomProvider(props: Props) {
       ? {
           providerID: props.providerID,
           provider: provider() ?? {},
+          isConnected: globalSync.data.provider.connected.includes(props.providerID),
         }
       : undefined,
   )
@@ -277,7 +278,7 @@ export function DialogCustomProvider(props: Props) {
             />
             <TextField
               label={language.t("provider.custom.field.apiKey.label")}
-              placeholder={language.t("provider.custom.field.apiKey.placeholder")}
+              placeholder={form.hasExistingKey && !form.apiKey ? "••••••••••••" : language.t("provider.custom.field.apiKey.placeholder")}
               description={language.t("provider.custom.field.apiKey.description")}
               value={form.apiKey}
               onChange={(v) => setField("apiKey", v)}

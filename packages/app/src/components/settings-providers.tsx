@@ -147,7 +147,7 @@ export const SettingsProviders: Component = () => {
                       }
                     >
                       <div class="flex items-center gap-2">
-                        <Show when={isConfigCustom(item.id)}>
+                        <Show when={canDisconnect(item)}>
                           <Button size="large" variant="ghost" onClick={() => edit(item.id)}>
                             {language.t("common.edit")}
                           </Button>

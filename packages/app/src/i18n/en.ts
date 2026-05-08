@@ -89,6 +89,8 @@ export const dict = {
   "command.session.share.description": "Share this session and copy the URL to clipboard",
   "command.session.unshare": "Unshare session",
   "command.session.unshare.description": "Stop sharing this session",
+  "command.session.export": "Export session",
+  "command.session.export.description": "Download this session as a Markdown file",
 
   "palette.search.placeholder": "Search files, commands, and sessions",
   "palette.empty": "No results found",
