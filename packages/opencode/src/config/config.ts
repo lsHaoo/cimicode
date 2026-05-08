@@ -484,6 +484,32 @@ export const layer = Layer.effect(
         const global = yield* getGlobal()
         yield* merge(Global.Path.config, global, "global")
 
+        // Write default global config with enterprise permissions when no config file exists
+        const globalFile = globalConfigFile()
+        if (!(yield* fs.existsSafe(globalFile))) {
+          yield* fs
+            .writeFileString(
+              globalFile,
+              JSON.stringify(
+                {
+                  $schema: "https://opencode.ai/config.json",
+                  permission: {
+                    read: "allow",
+                    edit: "ask",
+                    bash: "ask",
+                  },
+                },
+                null,
+                2,
+              ) + "\n",
+            )
+            .pipe(
+              Effect.catch((e: unknown) =>
+                Effect.sync(() => log.warn("failed to write default global config", { error: String(e) })),
+              ),
+            )
+        }
+
         if (Flag.OPENCODE_CONFIG) {
           yield* merge(Flag.OPENCODE_CONFIG, yield* loadFile(Flag.OPENCODE_CONFIG))
           log.debug("loaded custom config", { path: Flag.OPENCODE_CONFIG })
