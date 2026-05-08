@@ -439,9 +439,13 @@ function Option(props: {
         </Show>
       </text>
       <Show when={props.footer}>
-        <box flexShrink={0}>
-          <text fg={props.active ? fg : theme.textMuted}>{props.footer}</text>
-        </box>
+        {(footer) => (
+          <box flexShrink={0}>
+            <Show when={typeof footer() === "string"} fallback={footer()}>
+              <text fg={props.active ? fg : theme.textMuted}>{footer() as string}</text>
+            </Show>
+          </box>
+        )}
       </Show>
     </>
   )
